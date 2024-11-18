@@ -1,0 +1,24 @@
+[
+    {   
+        "id" : "001",
+        "name": "A",
+        "value": "ONE"
+    },
+    {   
+        "id" : "002",
+        "name": "B",
+        "value": "TWO"
+    },    {   
+        "id" : "003",
+        "name": "C",
+        "value": "THREE"
+    },    {   
+        "id" : "004",
+        "name": "D",
+        "value": "FOUR"
+    },    {   
+        "id" : "005",
+        "name": "E",
+        "value": "FIVE"
+    }
+]

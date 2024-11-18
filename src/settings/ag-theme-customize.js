@@ -1,0 +1,32 @@
+import { themeQuartz } from "@ag-grid-community/theming";
+
+export const agGridThemeCustomize = themeQuartz.withParams({
+  accentColor: "#00FF00",
+  backgroundColor: "#21222C",
+  borderColor: "#429356",
+  borderRadius: 0,
+  browserColorScheme: "dark",
+  cellHorizontalPaddingScale: 1,
+  cellTextColor: "#00FF00",
+  columnBorder: true,
+  fontFamily: {
+    googleFont: "IBM Plex Mono",
+  },
+  fontSize: 12,
+  foregroundColor: "#00FF00",
+  headerBackgroundColor: "#21222C",
+  headerFontSize: 14,
+  headerFontWeight: 700,
+  headerTextColor: "#68FF8E",
+  headerVerticalPaddingScale: 1.5,
+  oddRowBackgroundColor: "#21222C",
+  rangeSelectionBackgroundColor: "#FFFF0020",
+  rangeSelectionBorderColor: "#00FF00",
+  rangeSelectionBorderStyle: "dashed",
+  rowBorder: true,
+  rowVerticalPaddingScale: 1.5,
+  sidePanelBorder: true,
+  spacing: 4,
+  wrapperBorder: true,
+  wrapperBorderRadius: 0,
+});
