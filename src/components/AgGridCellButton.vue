@@ -47,6 +47,10 @@ const { params } = defineProps<{ params: ICellRendererParams }>()
 .buttonCell > DIV {
   display: flex;
   justify-content: space-between;
+
+  .hidden+BUTTON {
+    margin-left: 0;
+  }
 }
 
 .hidden {

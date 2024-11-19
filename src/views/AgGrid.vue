@@ -11,47 +11,100 @@ const gridOptions = inject("gridOptions");
 const columnDefs = ref([
     {
         headerName: "項次",
+        field: "masterRowNumber",
         minWidth: 70,
         maxWidth: 70,
         pinned: "left",
-        lockPosition: true,
-        headerCheckboxSelection: true, // 表頭是否顯示全選框
-        checkboxSelection: (params) => params.data.name !== "禁用選擇", // 是否顯示單元格選擇框
+        headerCheckboxSelection: true, // 顯示全選框
+        checkboxSelection: true, // 顯示選擇框
+        cellRenderer: "agGroupCellRenderer", // 顯示 detail grid 按鈕
         valueGetter: (params) => params.node.rowIndex + 1,
         cellStyle: { textAlign: "center" },
     },
     {
         headerName: "一般",
         field: "",
-        hide: false, // 是否隱藏
-        editable: true, // 是否編輯
+        // minWidth: 120,
+        // maxWidth: 120,
+        hide: false, // 隱藏
+        editable: true, // 編輯
         pinned: null, // "left" 或 "right"
-        lockPinned: true, // 鎖定位置
-        resizable: true, // 是否可調整列寬
-        suppressMenu: true, // 是否禁用右鍵菜單
-
-        cellRenderer: (params) => `<b>${params.value}</b>`, // 自定義單元格內容
-        cellEditor: "agTextCellEditor", // 單元格編輯器
-        valueFormatter: (params) => `名稱: ${params.value}`, // 格式化顯示的數據
-        valueGetter: (params) => params.data.name.toUpperCase(), // 自定義數據獲取方式
-        valueSetter: (params) => {
-            params.data.name = params.newValue.toLowerCase();
-            return true; // 設置成功返回 true
+        rowGroup: false, // 列作為分組鍵。
+        /* 
+            rowData(數據源)
+            ↓↑
+            Getter(讀取) / Setter(寫入) (邏輯處理)
+            ↓↑
+            Formatter(顯示) / Parser(輸入) (格式化)
+            ↓↑
+            格 (Grid)
+        */
+        valueFormatter: (params) => { },     // 處理顯示的數據格式
+        valueParser: (params) => { },        // 處理輸入的數據格式
+        valueGetter: (params) => { },        // 直接讀取 rowData
+        valueSetter: (params) => { },        // 直接寫入 rowData
+    },
+    {
+        field: "input",
+        headerName: "輸入",
+        // minWidth: 120,
+        // maxWidth: 120,
+        editable: true,
+        valueFormatter: (params) => params.value || "請輸入",
+        // valueParser: (params) => { },        // 處理輸入的數據格式
+        // valueGetter: (params) => { },        // 直接讀取 rowData
+        // valueSetter: (params) => { },        // 直接寫入 rowData
+        cellClass: "cellInput",
+        // cellStyle: { textAlign: "right" }
+    },
+    {
+        field: "date",
+        headerName: "日期",
+        // minWidth: 120,
+        // maxWidth: 120,
+        editable: true,
+        cellEditor: "agDateStringCellEditor",
+        valueFormatter: (params) => params.value || "請輸入",
+        // valueParser: (params) => { },        // 處理輸入的數據格式
+        // valueGetter: (params) => { },        // 直接讀取 rowData
+        // valueSetter: (params) => { },        // 直接寫入 rowData
+        cellClass: "cellInput",
+        // cellStyle: { textAlign: "right" }
+    },
+    {
+        field: "select",
+        headerName: "選單",
+        // minWidth: 120,
+        // maxWidth: 120,
+        editable: true,
+        cellEditor: "agRichSelectCellEditor",
+        cellEditorParams: (params) => {
+            return {
+                values: ["選項1", "選項2", "選項3"],
+                allowTyping: true,
+                filterList: true,
+                highlightMatch: true,
+                searchType: "matchAny",
+                valueListMaxHeight: 200, //（pixel）
+            }
         },
-        headerClass: "custom-header-class", // 自定義表頭樣式
-        cellClass: (params) => (params.value.length > 5 ? "long-text" : "short-text"), // 動態樣式
-        cellStyle: { color: "blue", textAlign: "center" }, // 單元格樣式
+        valueFormatter: (params) => params.value || "請選擇",
+        // valueParser: (params) => { },        // 處理輸入的數據格式
+        // valueGetter: (params) => { },        // 直接讀取 rowData
+        // valueSetter: (params) => { },        // 直接寫入 rowData
+        cellClass: "cellInput",
+        // cellStyle: { textAlign: "right" }
     },
     {
         headerName: "按鈕",
-        minWidth: 400,
-        maxWidth: 400,
+        minWidth: 320,
+        maxWidth: 320,
         pinned: "right",
         lockPosition: true,
         cellRenderer: "AgGridCellButton",
         cellRendererParams:
         {
-            btn1: { label: "1", type: "primary", func: (params) => console.log(params), show: false, disabled: false },
+            btn1: { label: "1", type: "primary", func: (params) => console.log(params), show: true, disabled: false },
             btn2: { label: "2", type: "success", func: (params) => console.log(params), show: true, disabled: false },
             btn3: { label: "3", type: "warning", func: (params) => console.log(params), show: true, disabled: false },
             btn4: { label: "4", type: "danger", func: (params) => console.log(params), show: true, disabled: false },
@@ -82,5 +135,11 @@ const onGridReady = (params) => {
 <style lang="scss" scoped>
 .agGrid {
     height: 40rem;
+
+    :deep(.cellInput) {
+        border-radius: 0.25rem;
+        border: 1px solid lime;
+        cursor: pointer;
+    }
 }
 </style>

@@ -4,9 +4,13 @@ import router from "./router";
 import pinia from "./store";
 import ElementPlus from "element-plus";
 import { VueQueryPlugin } from "@tanstack/vue-query";
+import "ag-grid-enterprise";
 import { AgGridVue } from "ag-grid-vue3";
+
+/* 自定 gridOptions */
 import { gridOptions } from "@/settings/gridOptions";
 
+/* 樣式 */
 import "element-plus/dist/index.css";
 import "./style/style.css";
 
@@ -31,6 +35,6 @@ app.use(router);
 app.use(pinia);
 app.use(ElementPlus);
 app.use(VueQueryPlugin, vueQueryPluginOptions);
-app.component('ag-grid-vue', AgGridVue)
+app.component("ag-grid-vue", AgGridVue);
 
 app.mount("#app");

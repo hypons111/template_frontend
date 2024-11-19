@@ -12,6 +12,7 @@
     <section>
         <el-form :model="form" :rules="passvieRules" ref="passvieRef" label-position="top">
             <el-row :gutter="30">
+                <!-- 注意 optionFilter -->
                 <SelectPassvie v-model="form.passvieModel" :label="'Passvie Select'" :options="options" :span="5"
                     :optionFilter="(item) => item.filter(({ name }) => name === 'A')" :optionParser="(item) => `[${item.id}]${item.name}`" 
                     :clearable="true" :multiple="false" :disabled="false" :placeholder="'請選擇'" prop="passvieModel" />
@@ -23,6 +24,7 @@
     <section>
         <el-form :model="form" :rules="apiRules" ref="apiRef" label-position="top">
             <el-row :gutter="30">
+                <!-- 注意 optionFilter -->
                 <SelectApi v-model="form.apiModel" :label="'API Select'" apiUrl="/json/options.json" :span="5"
                     :optionFilter="(item) => item.filter(({ name }) => name === 'A')" :optionParser="(item) => `[${item.id}]${item.name}`" 
                     :clearable="true" :multiple="false" :disabled="false" :placeholder="'請選擇'" prop="apiModel" />
@@ -65,8 +67,9 @@ const apiRules = reactive({
 const options = ref([])
 async function fetchOption() {
     try {
-        const response = await axios.get("/json/options.json")
-        options.value = response.data
+        const responseData = await axios.get("/json/options.json").then(({data}) => data)
+        console.log(responseData)
+        options.value = await axios.get("/json/options.json").then(({data}) => data)
     } catch(error) { console.log(error)}
 }
 
@@ -97,5 +100,9 @@ onBeforeMount(() => {
 })
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+  SECTION {
+    height: 20%;
+  }
+</style>
 

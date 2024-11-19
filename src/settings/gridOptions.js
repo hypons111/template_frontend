@@ -19,6 +19,10 @@ export const gridOptions = {
       resizable: true, // 是否可調整列寬
       sortable: false, // 啟用排序
       filter: false, // 啟用篩選
+      suppressMenu: true, // 禁用右鍵菜單
+      resizable: false, // 調整列寬
+      lockPosition: true, // 鎖定位置
+      lockPinned: true, // 鎖定 pinned 
   },
   components: {
       AgGridCellButton: AgGridCellButton
