@@ -8,7 +8,7 @@ import "ag-grid-enterprise";
 import { AgGridVue } from "ag-grid-vue3";
 
 /* 自定 gridOptions */
-import { gridOptions } from "@/settings/gridOptions";
+import { defaultGridOptions } from "@/settings/defaultGridOptions";
 
 /* 樣式 */
 import "element-plus/dist/index.css";
@@ -29,7 +29,7 @@ const vueQueryPluginOptions = {
 
 const app = createApp(App);
 
-app.provide("gridOptions", gridOptions);
+app.provide("defaultGridOptions", defaultGridOptions);
 
 app.use(router);
 app.use(pinia);

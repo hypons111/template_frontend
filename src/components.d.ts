@@ -7,6 +7,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    AgGridButton: typeof import('./components/AgGridButton.vue')['default']
     AgGridCellButton: typeof import('./components/AgGridCellButton.vue')['default']
     Button: typeof import('./components/Button.vue')['default']
     ButtonGroup: typeof import('./components/ButtonGroup.vue')['default']
