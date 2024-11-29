@@ -2,15 +2,16 @@ import axios from "axios";
 interface IExample {
   id?: number;
   name?: string;
-  yes?: boolean;
-  func?: Function;
+  value?: Function;
 }
 
 const api = {
-  example: async () => await axios.get<IExample[]>("/json/options.json").then(({data}) => data),
+  arrayData: async () => await axios.get<IExample[]>("/json/array.json").then(({data}) => data),
+  objectData: async () => await axios.get<IExample[]>("/json/object.json").then(({data}) => data),
+  objectArrayData: async () => await axios.get<IExample[]>("/json/objectArray.json").then(({data}) => data),
 };
 
-const createMap = <T>(data: T[], key: keyof T) => {
+const parser = <T>(data: T[], key: keyof T) => {
   const map = new Map<T[keyof T], T>();
   data.forEach((e) => {
     if (e[key] !== undefined) {
@@ -20,7 +21,9 @@ const createMap = <T>(data: T[], key: keyof T) => {
   return map;
 };
 
-export const examplesQuery = { queryKey: ["example"], queryFn: api.example };
-export const examplesMapQuery = { ...examplesQuery, select: (data) => createMap(data, "id") };
+export const arrayData = { queryKey: ["arrayData"], queryFn: api.arrayData };
+export const objectData = { queryKey: ["objectData"], queryFn: api.objectData };
+export const objectArrayData = { queryKey: ["objectArrayData"], queryFn: api.objectArrayData };
+// export const examplesMapQuery = { ...examplesObjArr, select: (data) => parser(data, "id") };
 
 

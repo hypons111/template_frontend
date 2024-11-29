@@ -1,46 +1,48 @@
 <template>
+    {{ objectOption.data }}
     <section>
-        <button @click="test">test</button>
-        <ag-grid-vue class="agGrid" :grid-options="gridOptions" :detailCellRendererParams="detailCellRendererParams" :rowData="rowData" @grid-ready="onGridReady" />
+        <ag-grid-vue class="agGrid" :grid-options="gridOptions" :detailCellRendererParams="detailCellRendererParams"
+            :rowData="rowData" @grid-ready="onGridReady" />
     </section>
 </template>
 
+<script setup>import { useQuery } from "@tanstack/vue-query";
+import { arrayData, objectData, objectArrayData } from "@/utils/useQuery";
+import { addMaseterRow, getGridData } from "@/utils/agGrid"
 
+const arrayOption = useQuery(arrayData);
+const objectOption = useQuery(objectData);
+const objectArrayOption = useQuery(objectArrayData);
 
-<script setup>
+const gridApi = ref();
 
-/* 
-    rowData(數據源)
-        ↓↑
-    Getter(讀取) / Setter(寫入) (邏輯處理)
-        ↓↑
-    Formatter(顯示) / Parser(輸入) (格式化)
-        ↓↑
-    格 (Grid)
-*/
+const onGridReady = (params) => {
+    gridApi.value = params.api;
+};
+
 const defaultGridOptions = inject("defaultGridOptions");
+
 const gridOptions = {
     ...defaultGridOptions(), // 預設 gridOptions 副本
     columnDefs: [
         {
             headerName: "項次",
-            field: "",
+            field: "masterRowNumber",
             minWidth: 70,
             maxWidth: 70,
             pinned: "left",
             headerCheckboxSelection: true, // 顯示全選框
             checkboxSelection: true, // 顯示選擇框
             cellRenderer: "agGroupCellRenderer", // 顯示 detail grid 按鈕
-            valueGetter: (params) => params.node.rowIndex + 1,
             cellStyle: { textAlign: "center" },
         },
         {
-            headerName: "一般",
+            headerName: "一般 cell",
             field: "cell",
             // minWidth: 120,
             // maxWidth: 120,
             hide: false, // 隱藏
-            editable: true, // 編輯
+            editable: false, // 編輯
             pinned: null, // "left" 或 "right"
             rowGroup: false, // 列作為分組鍵。
             // valueFormatter: (params) => { },     // 處理顯示的數據格式
@@ -51,7 +53,7 @@ const gridOptions = {
         },
         {
             field: "input",
-            headerName: "輸入",
+            headerName: "輸入 input",
             // minWidth: 120,
             // maxWidth: 120,
             editable: true,
@@ -64,7 +66,7 @@ const gridOptions = {
         },
         {
             field: "date",
-            headerName: "日期",
+            headerName: "日期 date",
             // minWidth: 120,
             // maxWidth: 120,
             editable: true,
@@ -77,50 +79,82 @@ const gridOptions = {
             // cellStyle: { textAlign: "right" }
         },
         {
-            field: "UseQuery",
-            headerName: "UseQuery 查詢選單",
+            field: "array",
+            headerName: "查詢選單 Array",
             // minWidth: 120,
             // maxWidth: 120,
             editable: true,
             cellEditor: "agRichSelectCellEditor",
-            cellEditorParams: (params) => {
+            cellEditorParams: () => {
                 return {
-                    values: Array.from(examplesMap.data.value).map(item => item[1].name),
+                    values: arrayOption.data.value,
+                    searchType: "matchAny",
                     allowTyping: true,
                     filterList: true,
                     highlightMatch: true,
-                    searchType: "matchAny",
-                    valueListMaxHeight: 200, //（pixel）
-                }
+                    valueListMaxHeight: 200,
+                };
             },
-            valueFormatter: (params) => params.value || "請選擇",
-            // valueParser: (params) => { },        // 處理輸入的數據格式
-            // valueGetter: (params) => { },        // 直接讀取 rowData
-            // valueSetter: (params) => { },        // 直接寫入 rowData
             cellClass: "cellInput",
             // cellStyle: { textAlign: "right" }
         },
         {
-            field: "select",
-            headerName: "查詢選單",
+            field: "object",
+            headerName: "查詢選單 Object",
             // minWidth: 120,
             // maxWidth: 120,
             editable: true,
             cellEditor: "agRichSelectCellEditor",
-            cellEditorParams: (params) => {
+            cellEditorParams: () => {
                 return {
-                    values: ["選項1", "選項2", "選項3"],
+                    values: Object.values(objectOption.data.value).map(({name}) => name),
+                    searchType: "matchAny",
                     allowTyping: true,
                     filterList: true,
                     highlightMatch: true,
-                    searchType: "matchAny",
-                    valueListMaxHeight: 200, //（pixel）
+                    valueListMaxHeight: 200,
+                };
+            },
+            valueGetter: (params) => {
+                try {
+                    return objectOption.data.value[params.data.object].name
+                } catch(E) {
+                    return params.data.objectArray
                 }
             },
-            valueFormatter: (params) => params.value || "請選擇",
-            // valueParser: (params) => { },        // 處理輸入的數據格式
-            // valueGetter: (params) => { },        // 直接讀取 rowData
-            // valueSetter: (params) => { },        // 直接寫入 rowData
+            valueSetter: (params) => {
+                params.data.useQuery = objectOption.data.value.find(item => item.name === params.newValue).value
+            },
+            cellClass: "cellInput",
+            // cellStyle: { textAlign: "right" }
+        },
+        {
+            field: "objectArray",
+            headerName: "查詢選單 Object Array",
+            // minWidth: 120,
+            // maxWidth: 120,
+            editable: true,
+            cellEditor: "agRichSelectCellEditor",
+            cellEditorParams: () => {
+                return {
+                    values: objectArrayOption.data.value.map(({ name }) => name),
+                    searchType: "matchAny",
+                    allowTyping: true,
+                    filterList: true,
+                    highlightMatch: true,
+                    valueListMaxHeight: 200,
+                };
+            },
+            valueGetter: (params) => {
+                try {
+                    return objectArrayOption.data.value.find(item => item.value === params.data.objectArray).name
+                } catch(E) {
+                    return params.data.objectArray
+                }
+            },
+            valueSetter: (params) => {
+                params.data.objectArray = objectArrayOption.data.value.find(item => item.name === params.newValue).value
+            },
             cellClass: "cellInput",
             // cellStyle: { textAlign: "right" }
         },
@@ -132,7 +166,21 @@ const gridOptions = {
             lockPosition: true,
             headerComponent: "AgGridButton",
             headerComponentParams: {
-                btn1: { label: "1", type: "primary", show: true, disabled: false, func: (params) => console.log(params) },
+                btn1: {
+                    label: "新增", type: "primary", show: true, disabled: false, func: (params) => {
+                        addMaseterRow(params, {
+                            cell: "",
+                            date: null,
+                            input: "",
+                            useQuery: ""
+                        })
+                    }
+                },
+                btn2: {
+                    label: "存檔", type: "success", show: true, disabled: false, func: (params) => {
+                        console.log(getGridData(gridApi)[0].master)
+                    }
+                },
             },
             cellRenderer: "AgGridButton",
             cellRendererParams:
@@ -150,6 +198,7 @@ const gridOptions = {
     onRowGroupOpened: (params) => { },
     onCellEditingStopped: (params) => { },
 }
+
 const detailCellRendererParams = {
     detailGridOptions: {
         ...defaultGridOptions(), // 預設 gridOptions 副本
@@ -276,68 +325,51 @@ const detailCellRendererParams = {
     onCellEditingStopped: (params) => { },
 }
 
-
 const rowData = ref([
     {
         masterRowIndex: 0,
         masterRowNumber: 1,
-        cell: "A",
-        input: null,
+        cell: "A cell",
+        input: "",
         date: null,
-        tanstack: null,
-        search: null,
+        array: "A",
+        object: "001",
+        objectArray: "A",
     },
-    {
-        masterRowIndex: 1,
-        masterRowNumber: 2,
-        cell: "B",
-        input: null,
-        date: null,
-        tanstack: null,
-        search: null
-    },
-    {
-        masterRowIndex: 2,
-        masterRowNumber: 3,
-        cell: "C",
-        input: null,
-        date: null,
-        tanstack: null,
-        search: null
-    },
-    {
-        masterRowIndex: 3,
-        masterRowNumber: 4,
-        cell: "D",
-        input: null,
-        date: null,
-        tanstack: null,
-        search: null
-    },
-    {
-        masterRowIndex: 4,
-        masterRowNumber: 5,
-        cell: "E",
-        input: null,
-        date: null,
-        tanstack: null,
-        search: null
-    }
+    // {
+    //     masterRowIndex: 1,
+    //     masterRowNumber: 2,
+    //     cell: "B cell",
+    //     input: "",
+    //     date: null,
+    //     objectArray: "B",
+    // },
+    // {
+    //     masterRowIndex: 2,
+    //     masterRowNumber: 3,
+    //     cell: "C cell",
+    //     input: "",
+    //     date: null,
+    //     objectArray: "C",
+    // },
+    // {
+    //     masterRowIndex: 3,
+    //     masterRowNumber: 4,
+    //     cell: "D cell",
+    //     input: "",
+    //     date: null,
+    //     objectArray: "D",
+    // },
+    // {
+    //     masterRowIndex: 4,
+    //     masterRowNumber: 5,
+    //     cell: "E cell",
+    //     input: "",
+    //     date: null,
+    //     objectArray: "E",
+    // }
 ]);
 
-const gridApi = ref();
-const onGridReady = (params) => {
-    gridApi.value = params.api;
-};
-
-import { useQuery } from "@tanstack/vue-query";
-import { examplesQuery, examplesMapQuery } from "@/utils/useQuery";
-const examples = useQuery(examplesQuery);
-const examplesMap = useQuery(examplesMapQuery);
-function test() {
-    console.log(examples.data.value)
-    console.log(examplesMap.data.value)
-}
 
 
 </script>

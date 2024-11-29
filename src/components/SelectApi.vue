@@ -3,12 +3,18 @@
     <el-skeleton v-if="isPending" :rows="1" animated />
 
     <el-form-item v-else-if="isError" :label="label">
-      <el-input :value="'錯誤 : ' + error?.message" :disabled="disabled" />
+      <el-input :value="'錯誤 : ' + error?.message" disabled />
     </el-form-item>
 
     <el-form-item v-else-if="data" :prop="prop" :label="label">
-      <el-select-v2 v-model="modelValue" :clearable="clearable" :multiple="multiple" :disabled="disabled"
-        :placeholder="placeholder" :options="options" />
+      <el-select-v2 
+        v-model="modelValue" 
+        :clearable="clearable" 
+        :multiple="multiple" 
+        :disabled="disabled"
+        :placeholder="placeholder" 
+        :options="options" 
+      />
     </el-form-item>
   </el-col>
 </template>

@@ -17,6 +17,7 @@ declare module 'vue' {
     CommonInput: typeof import('./components/CommonInput.vue')['default']
     CommonSelect: typeof import('./components/CommonSelect.vue')['default']
     CommonStaticSelect: typeof import('./components/CommonStaticSelect.vue')['default']
+    copy: typeof import('./components/SelectApi copy.vue')['default']
     DatePicker: typeof import('./components/DatePicker.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCol: typeof import('element-plus/es')['ElCol']
@@ -42,6 +43,11 @@ declare module 'vue' {
     Select: typeof import('./components/Select.vue')['default']
     SelectApi: typeof import('./components/SelectApi.vue')['default']
     SelectPassvie: typeof import('./components/SelectPassvie.vue')['default']
+    SelectQuery: typeof import('./components/SelectQuery.vue')['default']
+    SelectSearch: typeof import('./components/SelectSearch.vue')['default']
     SelectStatic: typeof import('./components/SelectStatic.vue')['default']
+  }
+  export interface ComponentCustomProperties {
+    vLoading: typeof import('element-plus/es')['ElLoadingDirective']
   }
 }

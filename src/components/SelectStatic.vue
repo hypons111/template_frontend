@@ -1,10 +1,17 @@
 <template>
   <el-col :span="span" :xs="24">
     <el-form-item :prop="prop" :label="labelObj[label]">
-      <el-select v-model="modelValue" :clearable="clearable" :multiple="multiple" :disabled="disabled"
-        :placeholder="placeholder">
+      
+      <el-select 
+        v-model="modelValue" 
+        :clearable="clearable" 
+        :multiple="multiple" 
+        :disabled="disabled"
+        :placeholder="placeholder"
+      >
         <el-option v-for="item in options[label]" :key="item.value" :label="item.label" :value="item.value" />
       </el-select>
+
     </el-form-item>
   </el-col>
 </template>

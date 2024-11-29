@@ -1,24 +1,32 @@
 [
-    {   
-        "id" : "001",
-        "name": "A",
-        "value": "ONE"
-    },
-    {   
-        "id" : "002",
-        "name": "B",
-        "value": "TWO"
-    },    {   
-        "id" : "003",
-        "name": "C",
-        "value": "THREE"
-    },    {   
-        "id" : "004",
-        "name": "D",
-        "value": "FOUR"
-    },    {   
-        "id" : "005",
-        "name": "E",
-        "value": "FIVE"
-    }
+  {
+    "id": "001",
+    "name": "A",
+    "value": "選項 1"
+  },
+  {
+    "id": "002",
+    "name": "B",
+    "value": "選項 2"
+  },
+  {
+    "id": "003",
+    "name": "C",
+    "value": "選項 3"
+  },
+  {
+    "id": "004",
+    "name": "D",
+    "value": "選項 4"
+  },
+  {
+    "id": "005",
+    "name": "E",
+    "value": "選項 5"
+  },
+  {
+    "id": "005",
+    "name": "E",
+    "value": "選項 5"
+  }
 ]

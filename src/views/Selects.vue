@@ -32,6 +32,18 @@
         </el-form>
         <button @click="testApi">Console Log</button>
     </section>
+
+    <section>
+        <el-form :model="form" :rules="searchRules" ref="searchRef" label-position="top">
+            <el-row :gutter="30">
+                <!-- 注意 optionFilter -->
+                <SelectSearch v-model="form.searchModel" :label="'Search Select'" apiUrl="https://api.sampleapis.com/rickandmorty/characters" :span="5"
+                    :optionParser="(item) => `[${item.species}] ${item.name}`" 
+                    :clearable="true" :disabled="false" :placeholder="'請輸入關鍵字'" prop="searchModel" />
+            </el-row>
+        </el-form>
+        <button @click="testSearch">Console Log</button>
+    </section>
 </template>
 
 <script setup>
@@ -42,6 +54,7 @@ const form = reactive({
     staticModel: undefined,
     passvieModel: undefined,
     apiModel: undefined,
+    searchModel: undefined,
 });
 
 /* static */
@@ -56,10 +69,16 @@ const passvieRules = reactive({
     passvieModel: [{ required: true, message: "請選擇 passvie", trigger: "blur" }]
 });
 
-/* passvie */
+/* api */
 const apiRef = ref();
 const apiRules = reactive({
     apiModel: [{ required: true, message: "請選擇 passvie", trigger: "blur" }]
+});
+
+/* search */
+const searchRef = ref();
+const searchRules = reactive({
+    searchModel: [{ required: true, message: "請選擇 search", trigger: "blur" }]
 });
 
 
@@ -70,7 +89,7 @@ async function fetchOption() {
         const responseData = await axios.get("/json/options.json").then(({data}) => data)
         console.log(responseData)
         options.value = await axios.get("/json/options.json").then(({data}) => data)
-    } catch(error) { console.log(error)}
+    } catch(error) { console.log(error) }
 }
 
 function testStatic() {
@@ -91,6 +110,13 @@ function testApi() {
     apiRef.value?.validate((valid, fields) => {
         if (valid) {
             console.log(form.apiModel);
+        }
+    });
+}
+function testSearch() {
+    searchRef.value?.validate((valid, fields) => {
+        if (valid) {
+            console.log(form.searchModel);
         }
     });
 }
