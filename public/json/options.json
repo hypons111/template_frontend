@@ -2,31 +2,26 @@
   {
     "id": "001",
     "name": "A",
-    "value": "選項 1"
+    "value": "選項 A"
   },
   {
     "id": "002",
     "name": "B",
-    "value": "選項 2"
+    "value": "選項 B"
   },
   {
     "id": "003",
     "name": "C",
-    "value": "選項 3"
+    "value": "選項 C"
   },
   {
     "id": "004",
     "name": "D",
-    "value": "選項 4"
+    "value": "選項 D"
   },
   {
     "id": "005",
     "name": "E",
-    "value": "選項 5"
-  },
-  {
-    "id": "005",
-    "name": "E",
-    "value": "選項 5"
+    "value": "選項 E"
   }
 ]

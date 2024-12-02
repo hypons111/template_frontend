@@ -1,6 +1,5 @@
 <template>
-    {{ objectOption.data }}
-    <section>
+    <section v-if="objectArrayOption.data.value">
         <ag-grid-vue class="agGrid" :grid-options="gridOptions" :detailCellRendererParams="detailCellRendererParams"
             :rowData="rowData" @grid-ready="onGridReady" />
     </section>
@@ -8,7 +7,16 @@
 
 <script setup>import { useQuery } from "@tanstack/vue-query";
 import { arrayData, objectData, objectArrayData } from "@/utils/useQuery";
-import { addMaseterRow, getGridData } from "@/utils/agGrid"
+import {
+    addMaseterRow,
+    getMasterData,
+    getMasterRow,
+    deletemasterRow,
+    addDetailrRow,
+    getDetailData,
+    getDetailRow,
+    deleteDetailRow
+} from "@/utils/agGrid"
 
 const arrayOption = useQuery(arrayData);
 const objectOption = useQuery(objectData);
@@ -53,7 +61,7 @@ const gridOptions = {
         },
         {
             field: "input",
-            headerName: "輸入 input",
+            headerName: "input",
             // minWidth: 120,
             // maxWidth: 120,
             editable: true,
@@ -66,7 +74,7 @@ const gridOptions = {
         },
         {
             field: "date",
-            headerName: "日期 date",
+            headerName: "date",
             // minWidth: 120,
             // maxWidth: 120,
             editable: true,
@@ -80,7 +88,7 @@ const gridOptions = {
         },
         {
             field: "array",
-            headerName: "查詢選單 Array",
+            headerName: "選單 Array",
             // minWidth: 120,
             // maxWidth: 120,
             editable: true,
@@ -100,14 +108,14 @@ const gridOptions = {
         },
         {
             field: "object",
-            headerName: "查詢選單 Object",
+            headerName: "選單 Object",
             // minWidth: 120,
             // maxWidth: 120,
             editable: true,
             cellEditor: "agRichSelectCellEditor",
             cellEditorParams: () => {
                 return {
-                    values: Object.values(objectOption.data.value).map(({name}) => name),
+                    values: Object.values(objectOption.data.value).map(({ id, name }) => `[${id}] ${name}`),
                     searchType: "matchAny",
                     allowTyping: true,
                     filterList: true,
@@ -115,29 +123,31 @@ const gridOptions = {
                     valueListMaxHeight: 200,
                 };
             },
-            valueGetter: (params) => {
-                try {
-                    return objectOption.data.value[params.data.object].name
-                } catch(E) {
-                    return params.data.objectArray
+            valueFormatter: (params) => {
+                for (let key in objectOption.data.value) {
+                    if (objectOption.data.value[key].value === params.value) {
+                        const option = objectOption.data.value[key]
+                        return `[${option.id}] ${option.name}`
+                    }
                 }
             },
             valueSetter: (params) => {
-                params.data.useQuery = objectOption.data.value.find(item => item.name === params.newValue).value
+                const id = params.newValue.slice(1, 4)
+                params.data.object = objectOption.data.value[id].value
             },
             cellClass: "cellInput",
             // cellStyle: { textAlign: "right" }
         },
         {
             field: "objectArray",
-            headerName: "查詢選單 Object Array",
+            headerName: "選單 Object Array",
             // minWidth: 120,
             // maxWidth: 120,
             editable: true,
             cellEditor: "agRichSelectCellEditor",
             cellEditorParams: () => {
                 return {
-                    values: objectArrayOption.data.value.map(({ name }) => name),
+                    values: objectArrayOption.data.value.map(({ id, name }) => `[${id}] ${name}`),
                     searchType: "matchAny",
                     allowTyping: true,
                     filterList: true,
@@ -145,52 +155,58 @@ const gridOptions = {
                     valueListMaxHeight: 200,
                 };
             },
-            valueGetter: (params) => {
-                try {
-                    return objectArrayOption.data.value.find(item => item.value === params.data.objectArray).name
-                } catch(E) {
-                    return params.data.objectArray
+            valueFormatter: (params) => {
+                for (let option of objectArrayOption.data.value) {
+                    if (option.value === params.value) {
+                        return `[${option.id}] ${option.name}`
+                    }
                 }
             },
             valueSetter: (params) => {
-                params.data.objectArray = objectArrayOption.data.value.find(item => item.name === params.newValue).value
+                const newValueId = params.newValue.slice(1, 4)
+                params.data.objectArray = objectArrayOption.data.value.find(({ id }) => id === newValueId).value
             },
             cellClass: "cellInput",
             // cellStyle: { textAlign: "right" }
         },
         {
             headerName: "按鈕",
-            minWidth: 320,
-            maxWidth: 320,
+            minWidth: 350,
+            maxWidth: 350,
             pinned: "right",
             lockPosition: true,
             headerComponent: "AgGridButton",
             headerComponentParams: {
                 btn1: {
-                    label: "新增", type: "primary", show: true, disabled: false, func: (params) => {
-                        addMaseterRow(params, {
-                            cell: "",
+                    label: "Add Master Row", type: "primary", show: true, disabled: false, func: (params) => {
+                        addMaseterRow(gridApi, params, {
+                            cell: `New Master Row`,
                             date: null,
                             input: "",
-                            useQuery: ""
+                            array: "A",
+                            object: "A",
+                            objectArray: "A",
+                            details: []
                         })
                     }
                 },
                 btn2: {
-                    label: "存檔", type: "success", show: true, disabled: false, func: (params) => {
-                        console.log(getGridData(gridApi)[0].master)
+                    label: "Get Master", type: "success", show: true, disabled: false, func: (params) => {
+                        console.log(getMasterData(gridApi))
                     }
                 },
             },
             cellRenderer: "AgGridButton",
             cellRendererParams:
             {
-                btn1: { label: "1", type: "primary", show: true, disabled: false, func: (params) => console.log(params) },
-                btn2: { label: "2", type: "success", show: true, disabled: false, func: (params) => console.log(params) },
-                btn3: { label: "3", type: "warning", show: true, disabled: false, func: (params) => console.log(params) },
-                btn4: { label: "4", type: "danger", show: true, disabled: false, func: (params) => console.log(params) },
-                btn5: { label: "5", type: "info", show: true, disabled: false, func: (params) => console.log(params) },
-                btn6: { label: "6", type: "", show: true, disabled: false, func: (params) => console.log(params) },
+                btn1: { label: "Get Master Row", type: "success", show: true, disabled: false, func: (params) => console.log(getMasterRow(gridApi, params.data.masterRowIndex)) },
+                btn2: { label: "Delete Master Row", type: "danger", show: true, disabled: false, func: (params) => deletemasterRow(gridApi, params.data) },
+                // btn1: { label: "1", type: "primary", show: true, disabled: false, func: (params) => console.log(params) },
+                // btn2: { label: "2", type: "success", show: true, disabled: false, func: (params) => console.log(params) },
+                // btn3: { label: "3", type: "warning", show: true, disabled: false, func: (params) => console.log(params) },
+                // btn4: { label: "4", type: "danger", show: true, disabled: false, func: (params) => console.log(params) },
+                // btn5: { label: "5", type: "info", show: true, disabled: false, func: (params) => console.log(params) },
+                // btn6: { label: "6", type: "", show: true, disabled: false, func: (params) => console.log(params) },
             },
             // cellClass: () => ""
         }
@@ -204,22 +220,22 @@ const detailCellRendererParams = {
         ...defaultGridOptions(), // 預設 gridOptions 副本
         columnDefs: [
             {
-                headerName: "detail_項次",
-                field: "",
+                headerName: "項次",
+                field: "detailRowNumber",
                 minWidth: 70,
                 maxWidth: 70,
                 pinned: "left",
                 headerCheckboxSelection: true, // 顯示全選框
                 checkboxSelection: true, // 顯示選擇框
-                cellRenderer: "agGroupCellRenderer", // 顯示 detail grid 按鈕
-                valueGetter: (params) => params.node.rowIndex + 1,
                 cellStyle: { textAlign: "center" },
             },
             {
-                headerName: "detail_一般",
+                headerName: "一般 cell",
                 field: "cell",
+                // minWidth: 120,
+                // maxWidth: 120,
                 hide: false, // 隱藏
-                editable: true, // 編輯
+                editable: false, // 編輯
                 pinned: null, // "left" 或 "right"
                 rowGroup: false, // 列作為分組鍵。
                 // valueFormatter: (params) => { },     // 處理顯示的數據格式
@@ -230,7 +246,9 @@ const detailCellRendererParams = {
             },
             {
                 field: "input",
-                headerName: "detail_輸入",
+                headerName: "input",
+                // minWidth: 120,
+                // maxWidth: 120,
                 editable: true,
                 valueFormatter: (params) => params.value || "請輸入",
                 // valueParser: (params) => { },        // 處理輸入的數據格式
@@ -241,7 +259,9 @@ const detailCellRendererParams = {
             },
             {
                 field: "date",
-                headerName: "detail_日期",
+                headerName: "date",
+                // minWidth: 120,
+                // maxWidth: 120,
                 editable: true,
                 cellEditor: "agDateStringCellEditor",
                 valueFormatter: (params) => params.value || "請輸入",
@@ -252,68 +272,125 @@ const detailCellRendererParams = {
                 // cellStyle: { textAlign: "right" }
             },
             {
-                field: "UseQuery",
-                headerName: "detail_UseQuery 查詢選單",
+                field: "array",
+                headerName: "選單 Array",
+                // minWidth: 120,
+                // maxWidth: 120,
                 editable: true,
                 cellEditor: "agRichSelectCellEditor",
-                cellEditorParams: (params) => {
+                cellEditorParams: () => {
                     return {
-                        values: Array.from(examplesMap.data.value).map(item => item[1].name),
+                        values: arrayOption.data.value,
+                        searchType: "matchAny",
                         allowTyping: true,
                         filterList: true,
                         highlightMatch: true,
-                        searchType: "matchAny",
-                        valueListMaxHeight: 200, //（pixel）
-                    }
+                        valueListMaxHeight: 200,
+                    };
                 },
-                valueFormatter: (params) => params.value || "請選擇",
-                // valueParser: (params) => { },        // 處理輸入的數據格式
-                // valueGetter: (params) => { },        // 直接讀取 rowData
-                // valueSetter: (params) => { },        // 直接寫入 rowData
                 cellClass: "cellInput",
                 // cellStyle: { textAlign: "right" }
             },
             {
-                field: "select",
-                headerName: "detail_查詢選單",
+                field: "object",
+                headerName: "選單 Object",
+                // minWidth: 120,
+                // maxWidth: 120,
                 editable: true,
                 cellEditor: "agRichSelectCellEditor",
-                cellEditorParams: (params) => {
+                cellEditorParams: () => {
                     return {
-                        values: ["選項1", "選項2", "選項3"],
+                        values: Object.values(objectOption.data.value).map(({ id, name }) => `[${id}] ${name}`),
+                        searchType: "matchAny",
                         allowTyping: true,
                         filterList: true,
                         highlightMatch: true,
-                        searchType: "matchAny",
-                        valueListMaxHeight: 200, //（pixel）
+                        valueListMaxHeight: 200,
+                    };
+                },
+                valueFormatter: (params) => {
+                    for (let key in objectOption.data.value) {
+                        if (objectOption.data.value[key].value === params.value) {
+                            const option = objectOption.data.value[key]
+                            return `[${option.id}] ${option.name}`
+                        }
                     }
                 },
-                valueFormatter: (params) => params.value || "請選擇",
-                // valueParser: (params) => { },        // 處理輸入的數據格式
-                // valueGetter: (params) => { },        // 直接讀取 rowData
-                // valueSetter: (params) => { },        // 直接寫入 rowData
+                valueSetter: (params) => {
+                    const id = params.newValue.slice(1, 4)
+                    params.data.object = objectOption.data.value[id].value
+                },
                 cellClass: "cellInput",
                 // cellStyle: { textAlign: "right" }
             },
             {
-                headerName: "detail_按鈕",
-                minWidth: 320,
-                maxWidth: 320,
+                field: "objectArray",
+                headerName: "選單 Object Array",
+                // minWidth: 120,
+                // maxWidth: 120,
+                editable: true,
+                cellEditor: "agRichSelectCellEditor",
+                cellEditorParams: () => {
+                    return {
+                        values: objectArrayOption.data.value.map(({ id, name }) => `[${id}] ${name}`),
+                        searchType: "matchAny",
+                        allowTyping: true,
+                        filterList: true,
+                        highlightMatch: true,
+                        valueListMaxHeight: 200,
+                    };
+                },
+                valueFormatter: (params) => {
+                    for (let option of objectArrayOption.data.value) {
+                        if (option.value === params.value) {
+                            return `[${option.id}] ${option.name}`
+                        }
+                    }
+                },
+                valueSetter: (params) => {
+                    const newValueId = params.newValue.slice(1, 4)
+                    params.data.objectArray = objectArrayOption.data.value.find(({ id }) => id === newValueId).value
+                },
+                cellClass: "cellInput",
+                // cellStyle: { textAlign: "right" }
+            },
+            {
+                headerName: "按鈕",
+                minWidth: 270,
+                maxWidth: 270,
                 pinned: "right",
                 lockPosition: true,
                 headerComponent: "AgGridButton",
                 headerComponentParams: {
-                    btn1: { label: "1", type: "primary", show: true, disabled: false, func: (params) => console.log(params) },
+                    btn1: {
+                        label: "Add Detail Row", type: "primary", show: true, disabled: false, func: (params) => {
+                            addDetailrRow(gridApi, params, {
+                                cell: "New Detail Row",
+                                date: null,
+                                input: "",
+                                array: "A",
+                                object: "A",
+                                objectArray: "A",
+                            })
+                        }
+                    },
+                    btn2: {
+                        label: "Get Detail", type: "success", show: false, disabled: false, func: (params) => {
+                            console.log(getDetailData(gridApi, params))
+                        }
+                    },
                 },
                 cellRenderer: "AgGridButton",
                 cellRendererParams:
                 {
-                    btn1: { label: "1", type: "primary", show: true, disabled: false, func: (params) => console.log(params) },
-                    btn2: { label: "2", type: "success", show: true, disabled: false, func: (params) => console.log(params) },
-                    btn3: { label: "3", type: "warning", show: true, disabled: false, func: (params) => console.log(params) },
-                    btn4: { label: "4", type: "danger", show: true, disabled: false, func: (params) => console.log(params) },
-                    btn5: { label: "5", type: "info", show: true, disabled: false, func: (params) => console.log(params) },
-                    btn6: { label: "6", type: "", show: true, disabled: false, func: (params) => console.log(params) },
+                    btn1: { label: "Get Detail Row", type: "success", show: true, disabled: false, func: (params) => console.log(getDetailRow(gridApi, params.data.masterRowIndex, params.data.detailRowIndex)) },
+                    btn4: { label: "Delete Detail Row", type: "danger", show: true, disabled: false, func: (params) => deleteDetailRow(gridApi, params.data) },
+                    // btn1: { label: "1", type: "primary", show: true, disabled: false, func: (params) => console.log(params) },
+                    // btn2: { label: "2", type: "success", show: true, disabled: false, func: (params) => console.log(params) },
+                    // btn3: { label: "3", type: "warning", show: true, disabled: false, func: (params) => console.log(params) },
+                    // btn4: { label: "4", type: "danger", show: true, disabled: false, func: (params) => console.log(params) },
+                    // btn5: { label: "5", type: "info", show: true, disabled: false, func: (params) => console.log(params) },
+                    // btn6: { label: "6", type: "", show: true, disabled: false, func: (params) => console.log(params) },
                 },
                 // cellClass: () => ""
             }
@@ -329,48 +406,130 @@ const rowData = ref([
     {
         masterRowIndex: 0,
         masterRowNumber: 1,
-        cell: "A cell",
+        cell: "Master A",
         input: "",
         date: null,
         array: "A",
-        object: "001",
+        object: "A",
         objectArray: "A",
+        details: [
+            {
+                masterRowIndex: 0,
+                masterRowNumber: 1,
+                detailRowIndex: 0,
+                detailRowNumber: 1,
+                cell: "Detail a",
+                input: "",
+                date: null,
+                array: "A",
+                object: "A",
+                objectArray: "A",
+            },
+            {
+                masterRowIndex: 0,
+                masterRowNumber: 1,
+                detailRowIndex: 1,
+                detailRowNumber: 2,
+                cell: "Detail b",
+                input: "",
+                date: null,
+                array: "B",
+                object: "B",
+                objectArray: "B",
+            },
+            {
+                masterRowIndex: 0,
+                masterRowNumber: 1,
+                detailRowIndex: 2,
+                detailRowNumber: 3,
+                cell: "Detail c",
+                input: "",
+                date: null,
+                array: "C",
+                object: "C",
+                objectArray: "C",
+            }
+        ]
     },
-    // {
-    //     masterRowIndex: 1,
-    //     masterRowNumber: 2,
-    //     cell: "B cell",
-    //     input: "",
-    //     date: null,
-    //     objectArray: "B",
-    // },
-    // {
-    //     masterRowIndex: 2,
-    //     masterRowNumber: 3,
-    //     cell: "C cell",
-    //     input: "",
-    //     date: null,
-    //     objectArray: "C",
-    // },
-    // {
-    //     masterRowIndex: 3,
-    //     masterRowNumber: 4,
-    //     cell: "D cell",
-    //     input: "",
-    //     date: null,
-    //     objectArray: "D",
-    // },
-    // {
-    //     masterRowIndex: 4,
-    //     masterRowNumber: 5,
-    //     cell: "E cell",
-    //     input: "",
-    //     date: null,
-    //     objectArray: "E",
-    // }
+    {
+        masterRowIndex: 1,
+        masterRowNumber: 2,
+        cell: "Master B",
+        input: "",
+        date: null,
+        array: "B",
+        object: "B",
+        objectArray: "B",
+        details: [
+            {
+                masterRowIndex: 1,
+                masterRowNumber: 2,
+                detailRowIndex: 0,
+                detailRowNumber: 1,
+                cell: "Detail a",
+                input: "",
+                date: null,
+                array: "A",
+                object: "A",
+                objectArray: "A",
+            },
+            {
+                masterRowIndex: 1,
+                masterRowNumber: 2,
+                detailRowIndex: 1,
+                detailRowNumber: 2,
+                cell: "Detail b",
+                input: "",
+                date: null,
+                array: "B",
+                object: "B",
+                objectArray: "B",
+            },
+            {
+                masterRowIndex: 1,
+                masterRowNumber: 2,
+                detailRowIndex: 2,
+                detailRowNumber: 3,
+                cell: "Detail c",
+                input: "",
+                date: null,
+                array: "C",
+                object: "C",
+                objectArray: "C",
+            }
+        ]
+    },
+    {
+        masterRowIndex: 2,
+        masterRowNumber: 3,
+        cell: "Master C",
+        input: "",
+        date: null,
+        array: "C",
+        object: "C",
+        objectArray: "C",
+    },
+    {
+        masterRowIndex: 3,
+        masterRowNumber: 4,
+        cell: "Master D",
+        input: "",
+        date: null,
+        array: "D",
+        object: "D",
+        objectArray: "D",
+    },
+    {
+        masterRowIndex: 4,
+        masterRowNumber: 5,
+        cell: "Master E",
+        input: "",
+        date: null,
+        array: "E",
+        object: "E",
+        objectArray: "E",
+    }
 ]);
-
-
 
 </script>
 
