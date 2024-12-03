@@ -1,4 +1,3 @@
-
 import { agGridThemeCustomize } from "@/settings/ag-theme-customize";
 import AgGridButton from "@/components/AgGridButton.vue";
 
@@ -24,5 +23,5 @@ export const defaultGridOptions = () => ({
   },
   components: {
     AgGridButton: AgGridButton
-  },
+  }
 });

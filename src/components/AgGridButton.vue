@@ -34,9 +34,14 @@ const { params } = defineProps<{ params: ICellRendererParams }>()
 <style>
 .buttonCell {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
 
-  .hidden+BUTTON {
+  .el-button+.el-button {
+    margin-left: 0.5rem;
+  }
+
+  .el-button,
+  .hidden+.el-button {
     margin-left: 0;
   }
 

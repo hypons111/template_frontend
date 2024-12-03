@@ -33,4 +33,9 @@ import { ref } from "vue";
     margin-right: 0.5rem;
   }
 }
+
+#routerView {
+  height: 100%;
+  /* border: 1px solid gold; */
+}
 </style>

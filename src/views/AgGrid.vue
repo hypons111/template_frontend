@@ -9,11 +9,10 @@
 import { arrayData, objectData, objectArrayData } from "@/utils/useQuery";
 import {
     addMaseterRow,
-    getMasterData,
+    getGridData,
     getMasterRow,
-    deletemasterRow,
+    deleteMasterRow,
     addDetailrRow,
-    getDetailData,
     getDetailRow,
     deleteDetailRow
 } from "@/utils/agGrid"
@@ -23,7 +22,6 @@ const objectOption = useQuery(objectData);
 const objectArrayOption = useQuery(objectArrayData);
 
 const gridApi = ref();
-
 const onGridReady = (params) => {
     gridApi.value = params.api;
 };
@@ -31,7 +29,7 @@ const onGridReady = (params) => {
 const defaultGridOptions = inject("defaultGridOptions");
 
 const gridOptions = {
-    ...defaultGridOptions(), // 預設 gridOptions 副本
+    ...defaultGridOptions(), // 基本 gridOptions 設定
     columnDefs: [
         {
             headerName: "項次",
@@ -45,8 +43,9 @@ const gridOptions = {
             cellStyle: { textAlign: "center" },
         },
         {
-            headerName: "一般 cell",
+            headerName: "Cell",
             field: "cell",
+            // flex" 1,
             // minWidth: 120,
             // maxWidth: 120,
             hide: false, // 隱藏
@@ -60,35 +59,32 @@ const gridOptions = {
             // cellStyle: { textAlign: "right" }
         },
         {
+            headerName: "Input",
             field: "input",
-            headerName: "input",
+            // flex" 1,
             // minWidth: 120,
             // maxWidth: 120,
             editable: true,
             valueFormatter: (params) => params.value || "請輸入",
-            // valueParser: (params) => { },        // 處理輸入的數據格式
-            // valueGetter: (params) => { },        // 直接讀取 rowData
-            // valueSetter: (params) => { 輸入檢查 },        // 直接寫入 rowData
             cellClass: "cellInput",
             // cellStyle: { textAlign: "right" }
         },
         {
+            headerName: "Date",
             field: "date",
-            headerName: "date",
+            // flex" 1,
             // minWidth: 120,
             // maxWidth: 120,
             editable: true,
             cellEditor: "agDateStringCellEditor",
             valueFormatter: (params) => params.value || "請輸入",
-            // valueParser: (params) => { },        // 處理輸入的數據格式
-            // valueGetter: (params) => { },        // 直接讀取 rowData
-            // valueSetter: (params) => { },        // 直接寫入 rowData
             cellClass: "cellInput",
             // cellStyle: { textAlign: "right" }
         },
         {
-            field: "array",
             headerName: "選單 Array",
+            field: "array",
+            // flex" 1,
             // minWidth: 120,
             // maxWidth: 120,
             editable: true,
@@ -107,8 +103,9 @@ const gridOptions = {
             // cellStyle: { textAlign: "right" }
         },
         {
-            field: "object",
             headerName: "選單 Object",
+            field: "object",
+            // flex" 1,
             // minWidth: 120,
             // maxWidth: 120,
             editable: true,
@@ -139,8 +136,9 @@ const gridOptions = {
             // cellStyle: { textAlign: "right" }
         },
         {
-            field: "objectArray",
             headerName: "選單 Object Array",
+            field: "objectArray",
+            // flex" 1,
             // minWidth: 120,
             // maxWidth: 120,
             editable: true,
@@ -171,13 +169,18 @@ const gridOptions = {
         },
         {
             headerName: "按鈕",
-            minWidth: 350,
-            maxWidth: 350,
+            minWidth: 505,
+            maxWidth: 505,
             pinned: "right",
             lockPosition: true,
             headerComponent: "AgGridButton",
             headerComponentParams: {
                 btn1: {
+                    label: "Get Master", type: "success", show: true, disabled: false, func: (params) => {
+                        console.log(getGridData(gridApi))
+                    }
+                },
+                btn2: {
                     label: "Add Master Row", type: "primary", show: true, disabled: false, func: (params) => {
                         addMaseterRow(gridApi, params, {
                             cell: `New Master Row`,
@@ -190,17 +193,25 @@ const gridOptions = {
                         })
                     }
                 },
-                btn2: {
-                    label: "Get Master", type: "success", show: true, disabled: false, func: (params) => {
-                        console.log(getMasterData(gridApi))
-                    }
-                },
             },
             cellRenderer: "AgGridButton",
             cellRendererParams:
             {
                 btn1: { label: "Get Master Row", type: "success", show: true, disabled: false, func: (params) => console.log(getMasterRow(gridApi, params.data.masterRowIndex)) },
-                btn2: { label: "Delete Master Row", type: "danger", show: true, disabled: false, func: (params) => deletemasterRow(gridApi, params.data) },
+                btn2: {
+                    label: "Add Detail Row", type: "primary", show: true, disabled: false, func: (params) => addDetailrRow(gridApi, params, {
+                        /* 
+                            註 : 在文件內 search "!!!"
+                        */
+                        cell: "New Detail Row",
+                        date: null,
+                        input: "",
+                        array: "A",
+                        object: "A",
+                        objectArray: "A",
+                    })
+                },
+                btn3: { label: "Delete Master Row", type: "danger", show: true, disabled: false, func: (params) => deleteMasterRow(gridApi, params.data) },
                 // btn1: { label: "1", type: "primary", show: true, disabled: false, func: (params) => console.log(params) },
                 // btn2: { label: "2", type: "success", show: true, disabled: false, func: (params) => console.log(params) },
                 // btn3: { label: "3", type: "warning", show: true, disabled: false, func: (params) => console.log(params) },
@@ -211,13 +222,29 @@ const gridOptions = {
             // cellClass: () => ""
         }
     ],
-    onRowGroupOpened: (params) => { },
+    // /* 
+    onRowGroupOpened: (event) => {
+        // !!! 
+        // 新增 detail row 按鈕放在 detail header 時 「使用」 這個 onRowGroupOpened Event
+        // 新增 detail row 按鈕放在 master cell 時 「註解」 這個 onRowGroupOpened Event
+        if (event.node && event.node.master && event.node.expanded) {
+            const rowId = event.node.id;
+            gridApi.value.forEachNode(node => {
+                if (node.id === rowId) {
+                    node.setExpanded(true);
+                } else {
+                    node.setExpanded(false);
+                }
+            })
+        }
+    },
+    // */
     onCellEditingStopped: (params) => { },
 }
 
 const detailCellRendererParams = {
     detailGridOptions: {
-        ...defaultGridOptions(), // 預設 gridOptions 副本
+        ...defaultGridOptions(), // 基本 gridOptions 設定
         columnDefs: [
             {
                 headerName: "項次",
@@ -230,50 +257,44 @@ const detailCellRendererParams = {
                 cellStyle: { textAlign: "center" },
             },
             {
-                headerName: "一般 cell",
+                headerName: "Cell",
                 field: "cell",
+                // flex" 1,
                 // minWidth: 120,
                 // maxWidth: 120,
                 hide: false, // 隱藏
                 editable: false, // 編輯
                 pinned: null, // "left" 或 "right"
                 rowGroup: false, // 列作為分組鍵。
-                // valueFormatter: (params) => { },     // 處理顯示的數據格式
-                // valueParser: (params) => { },        // 處理輸入的數據格式
-                // valueGetter: (params) => { },        // 直接讀取 rowData
-                // valueSetter: (params) => { },        // 直接寫入 rowData
                 // cellStyle: { textAlign: "right" }
             },
             {
+                headerName: "Input",
                 field: "input",
-                headerName: "input",
+                // flex" 1,
                 // minWidth: 120,
                 // maxWidth: 120,
                 editable: true,
                 valueFormatter: (params) => params.value || "請輸入",
-                // valueParser: (params) => { },        // 處理輸入的數據格式
-                // valueGetter: (params) => { },        // 直接讀取 rowData
-                // valueSetter: (params) => { 輸入檢查 },        // 直接寫入 rowData
                 cellClass: "cellInput",
                 // cellStyle: { textAlign: "right" }
             },
             {
+                headerName: "Date",
                 field: "date",
-                headerName: "date",
+                // flex" 1,
                 // minWidth: 120,
                 // maxWidth: 120,
                 editable: true,
                 cellEditor: "agDateStringCellEditor",
                 valueFormatter: (params) => params.value || "請輸入",
-                // valueParser: (params) => { },        // 處理輸入的數據格式
-                // valueGetter: (params) => { },        // 直接讀取 rowData
-                // valueSetter: (params) => { },        // 直接寫入 rowData
                 cellClass: "cellInput",
                 // cellStyle: { textAlign: "right" }
             },
             {
-                field: "array",
                 headerName: "選單 Array",
+                field: "array",
+                // flex" 1,
                 // minWidth: 120,
                 // maxWidth: 120,
                 editable: true,
@@ -292,8 +313,9 @@ const detailCellRendererParams = {
                 // cellStyle: { textAlign: "right" }
             },
             {
-                field: "object",
                 headerName: "選單 Object",
+                field: "object",
+                // flex" 1,
                 // minWidth: 120,
                 // maxWidth: 120,
                 editable: true,
@@ -324,8 +346,9 @@ const detailCellRendererParams = {
                 // cellStyle: { textAlign: "right" }
             },
             {
-                field: "objectArray",
                 headerName: "選單 Object Array",
+                field: "objectArray",
+                // flex" 1,
                 // minWidth: 120,
                 // maxWidth: 120,
                 editable: true,
@@ -356,8 +379,8 @@ const detailCellRendererParams = {
             },
             {
                 headerName: "按鈕",
-                minWidth: 270,
-                maxWidth: 270,
+                minWidth: 350,
+                maxWidth: 350,
                 pinned: "right",
                 lockPosition: true,
                 headerComponent: "AgGridButton",
@@ -365,6 +388,9 @@ const detailCellRendererParams = {
                     btn1: {
                         label: "Add Detail Row", type: "primary", show: true, disabled: false, func: (params) => {
                             addDetailrRow(gridApi, params, {
+                                /* 
+                                    註 : 在文件內 search "!!!"
+                                */
                                 cell: "New Detail Row",
                                 date: null,
                                 input: "",
@@ -373,18 +399,13 @@ const detailCellRendererParams = {
                                 objectArray: "A",
                             })
                         }
-                    },
-                    btn2: {
-                        label: "Get Detail", type: "success", show: false, disabled: false, func: (params) => {
-                            console.log(getDetailData(gridApi, params))
-                        }
-                    },
+                    }
                 },
                 cellRenderer: "AgGridButton",
                 cellRendererParams:
                 {
                     btn1: { label: "Get Detail Row", type: "success", show: true, disabled: false, func: (params) => console.log(getDetailRow(gridApi, params.data.masterRowIndex, params.data.detailRowIndex)) },
-                    btn4: { label: "Delete Detail Row", type: "danger", show: true, disabled: false, func: (params) => deleteDetailRow(gridApi, params.data) },
+                    btn2: { label: "Delete Detail Row", type: "danger", show: true, disabled: false, func: (params) => deleteDetailRow(gridApi, params.data) },
                     // btn1: { label: "1", type: "primary", show: true, disabled: false, func: (params) => console.log(params) },
                     // btn2: { label: "2", type: "success", show: true, disabled: false, func: (params) => console.log(params) },
                     // btn3: { label: "3", type: "warning", show: true, disabled: false, func: (params) => console.log(params) },
@@ -508,6 +529,7 @@ const rowData = ref([
         array: "C",
         object: "C",
         objectArray: "C",
+        details: []
     },
     {
         masterRowIndex: 3,
@@ -518,6 +540,7 @@ const rowData = ref([
         array: "D",
         object: "D",
         objectArray: "D",
+        details: []
     },
     {
         masterRowIndex: 4,
@@ -528,6 +551,7 @@ const rowData = ref([
         array: "E",
         object: "E",
         objectArray: "E",
+        details: []
     }
 ]);
 
@@ -535,7 +559,7 @@ const rowData = ref([
 
 <style lang="scss" scoped>
 .agGrid {
-    height: 40rem;
+    height: 100%;
 
     :deep(.cellInput) {
         border-radius: 0.25rem;
