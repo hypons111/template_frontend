@@ -10,10 +10,8 @@ import { arrayData, objectData, objectArrayData } from "@/utils/useQuery";
 import {
     addMaseterRow,
     getGridData,
-    getMasterRow,
     deleteMasterRow,
     addDetailrRow,
-    getDetailRow,
     deleteDetailRow
 } from "@/utils/agGrid"
 
@@ -169,27 +167,27 @@ const gridOptions = {
         },
         {
             headerName: "按鈕",
-            minWidth: 505,
-            maxWidth: 505,
+            minWidth: 347,
+            maxWidth: 347,
             pinned: "right",
             lockPosition: true,
             headerComponent: "AgGridButton",
             headerComponentParams: {
                 btn1: {
                     label: "Get Master", type: "success", show: true, disabled: false, func: (params) => {
-                        console.log(getGridData(gridApi))
+                        console.log(getGridData(gridApi.value))
                     }
                 },
                 btn2: {
                     label: "Add Master Row", type: "primary", show: true, disabled: false, func: (params) => {
-                        addMaseterRow(gridApi, params, {
+                        addMaseterRow(gridApi.value, params, {
                             cell: `New Master Row`,
                             date: null,
                             input: "",
                             array: "A",
                             object: "A",
                             objectArray: "A",
-                            details: []
+                            details: [],
                         })
                     }
                 },
@@ -197,9 +195,8 @@ const gridOptions = {
             cellRenderer: "AgGridButton",
             cellRendererParams:
             {
-                btn1: { label: "Get Master Row", type: "success", show: true, disabled: false, func: (params) => console.log(getMasterRow(gridApi, params.data.masterRowIndex)) },
-                btn2: {
-                    label: "Add Detail Row", type: "primary", show: true, disabled: false, func: (params) => addDetailrRow(gridApi, params, {
+                btn1: {
+                    label: "Add Detail Row", type: "primary", show: true, disabled: false, func: (params) => addDetailrRow(gridApi.value, params, {
                         /* 
                             註 : 在文件內 search "!!!"
                         */
@@ -209,9 +206,10 @@ const gridOptions = {
                         array: "A",
                         object: "A",
                         objectArray: "A",
+                        newRow: true
                     })
                 },
-                btn3: { label: "Delete Master Row", type: "danger", show: true, disabled: false, func: (params) => deleteMasterRow(gridApi, params.data) },
+                btn2: { label: "Delete Master Row", type: "danger", show: true, disabled: false, func: (params) => deleteMasterRow(gridApi.value, params.data) },
                 // btn1: { label: "1", type: "primary", show: true, disabled: false, func: (params) => console.log(params) },
                 // btn2: { label: "2", type: "success", show: true, disabled: false, func: (params) => console.log(params) },
                 // btn3: { label: "3", type: "warning", show: true, disabled: false, func: (params) => console.log(params) },
@@ -222,7 +220,7 @@ const gridOptions = {
             // cellClass: () => ""
         }
     ],
-    // /* 
+    /* 
     onRowGroupOpened: (event) => {
         // !!! 
         // 新增 detail row 按鈕放在 detail header 時 「使用」 這個 onRowGroupOpened Event
@@ -238,8 +236,9 @@ const gridOptions = {
             })
         }
     },
-    // */
-    onCellEditingStopped: (params) => { },
+    */
+    // onCellEditingStopped: (params) => {},
+    // onCellValueChanged: (params) => {},
 }
 
 const detailCellRendererParams = {
@@ -387,7 +386,7 @@ const detailCellRendererParams = {
                 headerComponentParams: {
                     btn1: {
                         label: "Add Detail Row", type: "primary", show: true, disabled: false, func: (params) => {
-                            addDetailrRow(gridApi, params, {
+                            addDetailrRow(gridApi.value, params, {
                                 /* 
                                     註 : 在文件內 search "!!!"
                                 */
@@ -404,8 +403,7 @@ const detailCellRendererParams = {
                 cellRenderer: "AgGridButton",
                 cellRendererParams:
                 {
-                    btn1: { label: "Get Detail Row", type: "success", show: true, disabled: false, func: (params) => console.log(getDetailRow(gridApi, params.data.masterRowIndex, params.data.detailRowIndex)) },
-                    btn2: { label: "Delete Detail Row", type: "danger", show: true, disabled: false, func: (params) => deleteDetailRow(gridApi, params.data) },
+                    btn1: { label: "Delete Detail Row", type: "danger", show: true, disabled: false, func: (params) => deleteDetailRow(gridApi.value, params.data) },
                     // btn1: { label: "1", type: "primary", show: true, disabled: false, func: (params) => console.log(params) },
                     // btn2: { label: "2", type: "success", show: true, disabled: false, func: (params) => console.log(params) },
                     // btn3: { label: "3", type: "warning", show: true, disabled: false, func: (params) => console.log(params) },
@@ -434,42 +432,42 @@ const rowData = ref([
         object: "A",
         objectArray: "A",
         details: [
-            {
-                masterRowIndex: 0,
-                masterRowNumber: 1,
-                detailRowIndex: 0,
-                detailRowNumber: 1,
-                cell: "Detail a",
-                input: "",
-                date: null,
-                array: "A",
-                object: "A",
-                objectArray: "A",
-            },
-            {
-                masterRowIndex: 0,
-                masterRowNumber: 1,
-                detailRowIndex: 1,
-                detailRowNumber: 2,
-                cell: "Detail b",
-                input: "",
-                date: null,
-                array: "B",
-                object: "B",
-                objectArray: "B",
-            },
-            {
-                masterRowIndex: 0,
-                masterRowNumber: 1,
-                detailRowIndex: 2,
-                detailRowNumber: 3,
-                cell: "Detail c",
-                input: "",
-                date: null,
-                array: "C",
-                object: "C",
-                objectArray: "C",
-            }
+            // {
+            //     masterRowIndex: 0,
+            //     masterRowNumber: 1,
+            //     detailRowIndex: 0,
+            //     detailRowNumber: 1,
+            //     cell: "Detail a",
+            //     input: "",
+            //     date: null,
+            //     array: "A",
+            //     object: "A",
+            //     objectArray: "A",
+            // },
+            // {
+            //     masterRowIndex: 0,
+            //     masterRowNumber: 1,
+            //     detailRowIndex: 1,
+            //     detailRowNumber: 2,
+            //     cell: "Detail b",
+            //     input: "",
+            //     date: null,
+            //     array: "B",
+            //     object: "B",
+            //     objectArray: "B",
+            // },
+            // {
+            //     masterRowIndex: 0,
+            //     masterRowNumber: 1,
+            //     detailRowIndex: 2,
+            //     detailRowNumber: 3,
+            //     cell: "Detail c",
+            //     input: "",
+            //     date: null,
+            //     array: "C",
+            //     object: "C",
+            //     objectArray: "C",
+            // }
         ]
     },
     {
