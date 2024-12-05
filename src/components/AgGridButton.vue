@@ -33,6 +33,7 @@ const { params } = defineProps<{ params: ICellRendererParams }>()
 
 <style>
 .buttonCell {
+  width: 100%;
   display: flex;
   justify-content: flex-start;
 

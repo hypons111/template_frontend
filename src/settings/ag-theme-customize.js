@@ -1,13 +1,18 @@
 import { themeQuartz } from "@ag-grid-community/theming";
 
+const CYAN = "#00FFFF"
+const MAGENTA = "#FF00FF"
+const YELLOW = "#FFFF00"
+const LIME = "#00FF00"
+
 export const agGridThemeCustomize = themeQuartz.withParams({
   accentColor: "#00FF00",
   backgroundColor: "#21222C",
-  borderColor: "#429356",
+  borderColor: LIME,
   borderRadius: 0,
   browserColorScheme: "dark",
   cellHorizontalPaddingScale: 1,
-  cellTextColor: "#00FF00",
+  cellTextColor: LIME,
   columnBorder: true,
   fontFamily: {
     googleFont: "IBM Plex Mono",
@@ -17,7 +22,7 @@ export const agGridThemeCustomize = themeQuartz.withParams({
   headerBackgroundColor: "#21222C",
   headerFontSize: 14,
   headerFontWeight: 700,
-  headerTextColor: "#68FF8E",
+  headerTextColor: LIME,
   headerVerticalPaddingScale: 1.5,
   oddRowBackgroundColor: "#21222C",
   rangeSelectionBackgroundColor: "#FFFF0020",

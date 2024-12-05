@@ -27,7 +27,7 @@ body {
 }
 
 .el-container {
-  border: 2px solid magenta;
+  /* border: 2px solid magenta; */
 
   .el-form-item__label {
     color: lime;
@@ -35,7 +35,7 @@ body {
 
   .el-header,
   .el-main {
-    border: 2px solid cyan;
+    /* border: 2px solid cyan; */
   }
 
   SECTION {

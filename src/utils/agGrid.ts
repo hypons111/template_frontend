@@ -1,14 +1,19 @@
-function getNewRowIndex(params) {
-  let masterRowLength = 0; // 初始化行數
+/* 取得新 master rorIndex , rowNumber */
+export function getMasterLength(params) {
+  let length = 0; // 初始化行數
   params.api.forEachNode(node => {
     if (!node.detail) { // 如果是 Master 行
-      masterRowLength++; // 行數加 1
+      length++; // 行數加 1
     }
   });
-  return masterRowLength; // 返回 Master 行嘅總數
+  return { 
+    masterRowIndex: length , // 返回 Master index
+    masterRowNumber: length + 1// 返回 Master number
+  }
 }
 
-function stopEditing(gridApi) {
+/* 停止編輯 */
+export function stopEditing(gridApi) {
   gridApi.stopEditing(); // 停止 Master Grid 編輯模式
   gridApi.forEachNode((node, index) => {
     const detailGridInfo = gridApi.getDetailGridInfo(`detail_${node.id}`); // 取得 Detail node
@@ -35,11 +40,26 @@ export function getGridData(gridApi) {
   return gridData; // 返回全部 Master + Detail 資料
 }
 
+/* master 取得行資料 */
+export function getMasterRowData(gridApi, masterRowIndex) {
+  stopEditing(gridApi); // 停止編輯
+  const masterRowData = { ...gridApi.getDisplayedRowAtIndex(masterRowIndex).data }; // 取得指定 Master 行
+  const detailGridInfo = gridApi.getDetailGridInfo(`detail_${masterRowIndex}`); // 取得指定 Detail 資料
+  if (detailGridInfo) { // 如果有 detailGridInfo
+    const detailsData: any[] = []; // 初始化 Detail 資料
+    detailGridInfo.api.forEachNode((detailNode) => {
+      detailsData.push(detailNode.data); // 收集 Detail 行資料
+    });
+    masterRowData.details = detailsData; // 將 Detail 資料附加到 Master 行資料
+    return masterRowData; // 返回完整行資料
+  } else {
+    return masterRowData; // 如果無 Detail Grid，直接返回 Master 行資料
+  }
+}
 
 /* master 新增行  */
 export function addMaseterRow(gridApi, params, columns = {}) {
-  const masterRowIndex = getNewRowIndex(params); // 取得新行 index
-  const masterRowNumber = getNewRowIndex(params) + 1; // 取得新行 number
+  const { masterRowIndex, masterRowNumber } = getMasterLength(params)
   const newRecord = {
     ...columns, // 合併自定義資料
     ...{
@@ -69,8 +89,6 @@ export function deleteMasterRow(gridApi, paramsData) {
     force: true, // 強制刷新
   });
 }
-
-
 
 /* detail 新增行 */
 export function addDetailrRow(gridApi, params, columns = {}) {
@@ -107,7 +125,7 @@ export function addDetailrRow(gridApi, params, columns = {}) {
 
   const detailGridInfo = gridApi.getDetailGridInfo(`detail_${data.masterRowIndex}`); // 取得指定 Detail 資料
   detailGridInfo.api.applyTransaction({ add: [newRecord] }); // 添加新行到 Detail Grid
-  const masterNode = gridApi.getDisplayedRowAtIndex(data.masterRowIndex); // 取得指定 Master 行
+  const masterNode = gridApi.getRowNode(data.masterRowIndex); // 取得指定 Master 行
   if (masterNode && masterNode.data.details) {
     masterNode.data.details.push(newRecord); // 添加新 Detail 行到 Master 行資料
   } else if (masterNode) {
@@ -117,13 +135,15 @@ export function addDetailrRow(gridApi, params, columns = {}) {
 
 /* detail 刪除行 */
 export function deleteDetailRow(gridApi, paramsData) {
+  // console.log(paramsData)
+  // return
   const masterRowIndex = paramsData.masterRowIndex; // 取得 Master 行索引
   const detailGridInfo = gridApi.getDetailGridInfo(`detail_${masterRowIndex}`); // 取得對應 Detail Grid 信息
   detailGridInfo.api.applyTransaction({ remove: [paramsData] }); // 刪除 Detail 行
   const masterNode = gridApi.getDisplayedRowAtIndex(masterRowIndex); // 取得對應 Master 行
 
   if (masterNode && masterNode.data.details) {
-    masterNode.data.details = masterNode.data.details.filter((detail) => detail !== paramsData); // 更新 Master 行 Detail 資料
+    masterNode.data.details.splice(paramsData.detailRowIndex, 1); // 更新 Master 行 Detail 資料
   }
 
   const updatedNodes: any[] = [];
@@ -140,32 +160,29 @@ export function deleteDetailRow(gridApi, paramsData) {
   });
 }
 
-/* FORBIDDEN ---------- FORBIDDEN */
-/* master 取得行資料 */
-export function getMasterRow(gridApi, masterRowIndex) {
-  stopEditing(gridApi); // 停止編輯
-  const masterRowData = { ...gridApi.getDisplayedRowAtIndex(masterRowIndex).data }; // 取得指定 Master 行
-  const detailGridInfo = gridApi.getDetailGridInfo(`detail_${masterRowIndex}`); // 取得指定 Detail 資料
-  if (detailGridInfo) { // 如果有 detailGridInfo
+export function ensureSingleNodeExpended(gridApi, event) {
+  if (event.node && event.node.master && event.node.expanded) {
+    const rowId = event.node.id;
+    gridApi.forEachNode(node => {
+        if (node.id === rowId) {
+            node.setExpanded(true);
+        } else {
+            node.setExpanded(false);
+        }
+    })
+}
+}
+
+/* FORBIDDEN ---------- FORBIDDEN ---------- FORBIDDEN ---------- FORBIDDEN ---------- FORBIDDEN */
+/* detail 取得行的資料 */
+/* 
+  export function getDetailRow(gridApi, masterRowIndex) {
+    stopEditing(gridApi); // 停止編輯
+    const detailGridInfo = gridApi.getDetailGridInfo(`detail_${masterRowIndex}`); // 取得指定 Detail 資料
     const detailsData: any[] = []; // 初始化 Detail 資料
     detailGridInfo.api.forEachNode((detailNode) => {
       detailsData.push(detailNode.data); // 收集 Detail 行資料
     });
-    masterRowData.details = detailsData; // 將 Detail 資料附加到 Master 行資料
-    return masterRowData; // 返回完整行資料
-  } else {
-    return masterRowData; // 如果無 Detail Grid，直接返回 Master 行資料
+    return detailsData; // 返回指定 Detail 行資料
   }
-}
-
-/* detail 取得行的資料 */
-export function getDetailRow(gridApi, masterRowIndex) {
-  stopEditing(gridApi); // 停止編輯
-  const detailGridInfo = gridApi.getDetailGridInfo(`detail_${masterRowIndex}`); // 取得指定 Detail 資料
-  const detailsData: any[] = []; // 初始化 Detail 資料
-  detailGridInfo.api.forEachNode((detailNode) => {
-    detailsData.push(detailNode.data); // 收集 Detail 行資料
-  });
-  return detailsData; // 返回指定 Detail 行資料
-}
-/* FORBIDDEN ---------- FORBIDDEN */
+*/

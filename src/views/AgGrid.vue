@@ -8,23 +8,22 @@
 <script setup>import { useQuery } from "@tanstack/vue-query";
 import { arrayData, objectData, objectArrayData } from "@/utils/useQuery";
 import {
-    addMaseterRow,
     getGridData,
+    getMasterRowData,
+    addMaseterRow,
     deleteMasterRow,
     addDetailrRow,
-    deleteDetailRow
+    deleteDetailRow,
+    ensureSingleNodeExpended
 } from "@/utils/agGrid"
+import { nextTick } from "vue";
+const defaultGridOptions = inject("defaultGridOptions");
 
 const arrayOption = useQuery(arrayData);
 const objectOption = useQuery(objectData);
 const objectArrayOption = useQuery(objectArrayData);
 
 const gridApi = ref();
-const onGridReady = (params) => {
-    gridApi.value = params.api;
-};
-
-const defaultGridOptions = inject("defaultGridOptions");
 
 const gridOptions = {
     ...defaultGridOptions(), // 基本 gridOptions 設定
@@ -32,8 +31,8 @@ const gridOptions = {
         {
             headerName: "項次",
             field: "masterRowNumber",
-            minWidth: 70,
-            maxWidth: 70,
+            minWidth: 80,
+            maxWidth: 80,
             pinned: "left",
             headerCheckboxSelection: true, // 顯示全選框
             checkboxSelection: true, // 顯示選擇框
@@ -46,10 +45,10 @@ const gridOptions = {
             // flex" 1,
             // minWidth: 120,
             // maxWidth: 120,
-            hide: false, // 隱藏
-            editable: false, // 編輯
             pinned: null, // "left" 或 "right"
+            editable: false, // 編輯
             rowGroup: false, // 列作為分組鍵。
+            hide: false, // 隱藏
             // valueFormatter: (params) => { },     // 處理顯示的數據格式
             // valueParser: (params) => { },        // 處理輸入的數據格式
             // valueGetter: (params) => { },        // 直接讀取 rowData
@@ -167,14 +166,14 @@ const gridOptions = {
         },
         {
             headerName: "按鈕",
-            minWidth: 347,
-            maxWidth: 347,
+            minWidth: 430,
+            maxWidth: 430,
             pinned: "right",
             lockPosition: true,
             headerComponent: "AgGridButton",
             headerComponentParams: {
                 btn1: {
-                    label: "Get Master", type: "success", show: true, disabled: false, func: (params) => {
+                    label: "Get Grid Data", type: "success", show: true, disabled: false, func: (params) => {
                         console.log(getGridData(gridApi.value))
                     }
                 },
@@ -195,11 +194,10 @@ const gridOptions = {
             cellRenderer: "AgGridButton",
             cellRendererParams:
             {
-                btn1: {
+                btn1: { label: "Get Row Data", type: "success", show: true, disabled: false, func: (params) => console.log(getMasterRowData(gridApi.value, params.data.masterRowIndex)) },
+                btn2: {
+                    /*  註 : [Add Detail Row] 按鈕放在 master cell 時在 onRowGroupOpened() 「不使用」 ensureSingleNodeExpended() */
                     label: "Add Detail Row", type: "primary", show: true, disabled: false, func: (params) => addDetailrRow(gridApi.value, params, {
-                        /* 
-                            註 : 在文件內 search "!!!"
-                        */
                         cell: "New Detail Row",
                         date: null,
                         input: "",
@@ -209,7 +207,7 @@ const gridOptions = {
                         newRow: true
                     })
                 },
-                btn2: { label: "Delete Master Row", type: "danger", show: true, disabled: false, func: (params) => deleteMasterRow(gridApi.value, params.data) },
+                btn3: { label: "Delete Row", type: "danger", show: true, disabled: false, func: (params) => deleteMasterRow(gridApi.value, params.data) },
                 // btn1: { label: "1", type: "primary", show: true, disabled: false, func: (params) => console.log(params) },
                 // btn2: { label: "2", type: "success", show: true, disabled: false, func: (params) => console.log(params) },
                 // btn3: { label: "3", type: "warning", show: true, disabled: false, func: (params) => console.log(params) },
@@ -220,23 +218,12 @@ const gridOptions = {
             // cellClass: () => ""
         }
     ],
-    /* 
+    onGridReady: (params) => gridApi.value = params.api,
     onRowGroupOpened: (event) => {
-        // !!! 
-        // 新增 detail row 按鈕放在 detail header 時 「使用」 這個 onRowGroupOpened Event
-        // 新增 detail row 按鈕放在 master cell 時 「註解」 這個 onRowGroupOpened Event
-        if (event.node && event.node.master && event.node.expanded) {
-            const rowId = event.node.id;
-            gridApi.value.forEachNode(node => {
-                if (node.id === rowId) {
-                    node.setExpanded(true);
-                } else {
-                    node.setExpanded(false);
-                }
-            })
-        }
+        /*  註 : [Add Detail Row] 按鈕放在 detail header 時「使用」ensureSingleNodeExpended() */
+        /*  註 :  [Add Detail Row] 按鈕放在 master cell 時「不使用」ensureSingleNodeExpended() */
+        ensureSingleNodeExpended(gridApi.value, event)
     },
-    */
     // onCellEditingStopped: (params) => {},
     // onCellValueChanged: (params) => {},
 }
@@ -378,26 +365,22 @@ const detailCellRendererParams = {
             },
             {
                 headerName: "按鈕",
-                minWidth: 350,
-                maxWidth: 350,
+                minWidth: 190,
+                maxWidth: 190,
                 pinned: "right",
                 lockPosition: true,
                 headerComponent: "AgGridButton",
                 headerComponentParams: {
                     btn1: {
-                        label: "Add Detail Row", type: "primary", show: true, disabled: false, func: (params) => {
-                            addDetailrRow(gridApi.value, params, {
-                                /* 
-                                    註 : 在文件內 search "!!!"
-                                */
-                                cell: "New Detail Row",
-                                date: null,
-                                input: "",
-                                array: "A",
-                                object: "A",
-                                objectArray: "A",
-                            })
-                        }
+                        /*  註 : [Add Detail Row] 按鈕放在 detail header 時在 onRowGroupOpened() 「使用」 ensureSingleNodeExpended() */
+                        label: "Add Detail Row", type: "primary", show: true, disabled: false, func: (params) => addDetailrRow(gridApi.value, params, {
+                            cell: "New Detail Row",
+                            date: null,
+                            input: "",
+                            array: "A",
+                            object: "A",
+                            objectArray: "A",
+                        })
                     }
                 },
                 cellRenderer: "AgGridButton",
@@ -556,13 +539,13 @@ const rowData = ref([
 </script>
 
 <style lang="scss" scoped>
-.agGrid {
+:deep(.agGrid) {
     height: 100%;
 
-    :deep(.cellInput) {
+    .cellInput {
         border-radius: 0.25rem;
-        border: 1px solid lime;
         cursor: pointer;
+        border: 1px solid magenta;
     }
 }
 </style>
