@@ -11,6 +11,12 @@ const api = {
   objectArrayData: async () => await axios.get<IExample[]>("/json/objectArray.json").then(({data}) => data),
 };
 
+export const arrayData = { queryKey: ["arrayData"], queryFn: api.arrayData };
+export const objectData = { queryKey: ["objectData"], queryFn: api.objectData };
+export const objectArrayData = { queryKey: ["objectArrayData"], queryFn: api.objectArrayData };
+
+/*
+export const examplesMapQuery = { ...examplesObjArr, select: (data) => parser(data, "id") };
 const parser = <T>(data: T[], key: keyof T) => {
   const map = new Map<T[keyof T], T>();
   data.forEach((e) => {
@@ -20,10 +26,4 @@ const parser = <T>(data: T[], key: keyof T) => {
   });
   return map;
 };
-
-export const arrayData = { queryKey: ["arrayData"], queryFn: api.arrayData };
-export const objectData = { queryKey: ["objectData"], queryFn: api.objectData };
-export const objectArrayData = { queryKey: ["objectArrayData"], queryFn: api.objectArrayData };
-// export const examplesMapQuery = { ...examplesObjArr, select: (data) => parser(data, "id") };
-
-
+*/

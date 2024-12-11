@@ -16,8 +16,7 @@ import {
     deleteDetailRow,
     ensureSingleNodeExpended
 } from "@/utils/agGrid"
-import { nextTick } from "vue";
-const defaultGridOptions = inject("defaultGridOptions");
+const agGridOptions = inject("agGridOptions");
 
 const arrayOption = useQuery(arrayData);
 const objectOption = useQuery(objectData);
@@ -26,7 +25,7 @@ const objectArrayOption = useQuery(objectArrayData);
 const gridApi = ref();
 
 const gridOptions = {
-    ...defaultGridOptions(), // 基本 gridOptions 設定
+    ...agGridOptions, // 基本 gridOptions 設定
     columnDefs: [
         {
             headerName: "項次",
@@ -230,7 +229,7 @@ const gridOptions = {
 
 const detailCellRendererParams = {
     detailGridOptions: {
-        ...defaultGridOptions(), // 基本 gridOptions 設定
+        ...agGridOptions, // 基本 gridOptions 設定
         columnDefs: [
             {
                 headerName: "項次",

@@ -6,21 +6,21 @@
                     :multiple="false" :disabled="false" :span="6" :placeholder="'請選擇'" />
 
                 <!-- 注意 optionFilter -->
-                <SelectPassvie :label="'Passvie Select'" v-model="form.passvieModel" :options="options"
+                <SelectPassvie :label="'Passvie Select (filtered: name === A)'" v-model="form.passvieModel" :options="options"
                     prop="passvieModel" :optionFilter="(item) => item.filter(({ name }) => name === 'A')"
                     :optionParser="(item) => `[${item.id}]${item.name}`" :clearable="true" :multiple="false"
                     :disabled="false" :span="6" :placeholder="'請選擇'" />
 
-
                 <!-- 注意 optionFilter -->
-                <SelectApi :label="'API Select'" v-model="form.apiModel" apiUrl="/json/options.json" prop="apiModel"
+                <SelectApi :label="'API Select (filtered: name === A)'" v-model="form.apiModel" apiUrl="/json/options.json" prop="apiModel"
                     :optionFilter="(item) => item.filter(({ name }) => name === 'A')"
                     :optionParser="(item) => `[${item.id}]${item.name}`" :clearable="true" :multiple="false"
                     :disabled="false" :span="6" :placeholder="'請選擇'" />
 
                 <!-- 注意 optionFilter -->
-                <SelectSearch :label="'Search Select'" v-model="form.searchModel"
+                <SelectSearch :label="'Search Select (filtered: name === Rick Sanchez)'" v-model="form.searchModel"
                     apiUrl="https://api.sampleapis.com/rickandmorty/characters" prop="searchModel"
+                    :optionFilter="(item) => item.filter(({ name }) => name === 'Rick Sanchez')"
                     :optionParser="(item) => `[${item.species}] ${item.name}`" :clearable="true" :disabled="false"
                     :span="6" :placeholder="'請輸入關鍵字'" />
             </el-row>

@@ -1,7 +1,8 @@
 import { agGridThemeCustomize } from "@/settings/ag-theme-customize";
-import AgGridButton from "@/components/AgGridButton.vue";
+import AgGridButton from "@/components/agGridButton.vue";
+import { localeText } from "@/settings/localeText";
 
-export const defaultGridOptions = () => ({
+export const agGridOptions = {
   theme: agGridThemeCustomize, // 主題
   suppressRowClickSelection: true, // 只有點擊行內部的 Checkbox 才會觸發行選擇
   rowSelection: "multiple", // 允許勾選選擇框來選擇多行
@@ -11,6 +12,7 @@ export const defaultGridOptions = () => ({
   pagination: true, // 允許分頁
   paginationPageSize: 10, // 預設每頁行數
   paginationPageSizeSelector: [10, 20, 50], // 可選行數
+  localeText: localeText, // 中文化
   defaultColDef: {
       flex: 1, // 自動適應寬度
       resizable: false, // 調整列寬
@@ -24,4 +26,5 @@ export const defaultGridOptions = () => ({
   components: {
     AgGridButton: AgGridButton
   }
-});
+};
+// });

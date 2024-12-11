@@ -33,6 +33,7 @@ interface IProps {
   disabled?: boolean;
   prop?: string;
   remoteMethod: Function;
+  optionFilter?: Function;
   optionParser: Function;
 }
 
@@ -48,9 +49,9 @@ const props = withDefaults(defineProps<IProps>(), {
 const remoteMethod = async (query: string) => {
   if (query) {
     loading.value = true
-    // const response = await axios.get<any[]>(`${props.apiUrl}?name=${query}`)
     const response = await axios.get<any[]>(`${props.apiUrl}`)
-    const data = response.data.map((item: any) => ({
+    const filteredData = props.optionFilter ? props.optionFilter(response.data) : response.data// 篩選選單
+    const data = filteredData.map((item: any) => ({
       label: props.optionParser(item), // 選項
       value: item, // 回傳值
     }));

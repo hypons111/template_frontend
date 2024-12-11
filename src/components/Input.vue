@@ -22,9 +22,6 @@ interface IInput {
     inputType: "english" | "number" | "chinese" | "symbol" | "positive" | "integer" | "posInt" | "engNumChi" | "engNumSym" | "engNum" | "numSym" | ""
 }
 
-
-
-
 const props = withDefaults(defineProps<IInput>(), {
     placeholder: "請輸入",
     clearable: true,

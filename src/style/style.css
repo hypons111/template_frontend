@@ -27,19 +27,13 @@ body {
 }
 
 .el-container {
-  /* border: 2px solid magenta; */
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+
 
   .el-form-item__label {
     color: lime;
   }
 
-  .el-header,
-  .el-main {
-    /* border: 2px solid cyan; */
-  }
-
-  SECTION {
-    /* height: 100%; */
-    /* border: 2px solid gold; */
-  }
 }

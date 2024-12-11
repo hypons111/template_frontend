@@ -29,7 +29,6 @@ const modelValue = defineModel();
 interface IProps {
   label: string;
   apiUrl: string;
-  options: Function;
   span: number;
   placeholder?: string,
   clearable?: boolean;
