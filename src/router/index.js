@@ -43,6 +43,12 @@ const routes = [
         name: 'AgGrid',
         meta: { title: "AgGrid", affix: true },
         component: () => import('../views/templates/AgGrid.vue')
+      },
+      {
+        path: '/sample',
+        name: 'Sample',
+        meta: { title: "AgGrid", affix: true },
+        component: () => import('../views/templates/Sample.vue')
       }
     ]
   }

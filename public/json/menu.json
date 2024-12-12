@@ -7,6 +7,14 @@
     "available": false,
     "children": []
   },
+  "Sample_0": {
+    "index": "Sample_0",
+    "label": "Sample",
+    "path": "/sample",
+    "icon": "document",
+    "available": false,
+    "children": []
+  },
   "Template_0": {
     "index": "Template_0",
     "label": "Template",
