@@ -1,7 +1,12 @@
 :root {
+  --cyan: #00FFFF;
+  --magenta: #FF00FF;
+  --yellow: #FFFF00;
+  --lime: #00FF00;
+
   line-height: 1.5;
   font-weight: 400;
-  color: lime;
+  color: var(--lime);
   background-color: black;
   font-synthesis: none;
   text-rendering: optimizeLegibility;

@@ -1,4 +1,4 @@
-import { agGridThemeCustomize } from "@/settings/ag-theme-customize";
+import { agGridThemeCustomize } from "@/style/ag-theme-customize";
 import AgGridButton from "@/components/agGridButton.vue";
 import { localeText } from "@/settings/localeText";
 
@@ -15,7 +15,7 @@ export const agGridOptions = {
   localeText: localeText, // 中文化
   defaultColDef: {
       flex: 1, // 自動適應寬度
-      resizable: false, // 調整列寬
+      resizable: true, // 調整列寬
       lockPosition: true, // 鎖定位置
       lockPinned: true, // 鎖定 pinned 
       suppressMenu: true, // 禁用菜單

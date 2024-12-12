@@ -6,37 +6,43 @@ const routes = [
     path: '/',
     name: 'Login',
     meta: { title: "Login", affix: true },
-    component: () => import('../views/Login.vue')
+    component: () => import('../views/login/Login.vue')
   },
   {
-    path: '/home',
-    name: 'Home',
-    component: () => import('../views/Home.vue'),
-    meta: { title: "Home", affix: true },
+    path: '/layout',
+    name: 'Layout',
+    component: () => import('../views/layout/Layout.vue'),
+    meta: { title: "Layout", affix: true },
     children: [
+      {
+        path: '/home',
+        name: 'Home',
+        meta: { title: "Home", affix: true },
+        component: () => import('../views/templates/Home.vue')
+      },
       {
         path: '/buttons',
         name: 'Buttons',
         meta: { title: "Buttons", affix: true },
-        component: () => import('../views/Buttons.vue')
+        component: () => import('../views/templates/Buttons.vue')
       },
       {
         path: '/selects',
         name: 'Selects',
         meta: { title: "Selects", affix: true },
-        component: () => import('../views/Selects.vue')
+        component: () => import('../views/templates/Selects.vue')
       },
       {
         path: '/inputs',
         name: 'Inputs',
         meta: { title: "Inputs", affix: true },
-        component: () => import('../views/Inputs.vue')
+        component: () => import('../views/templates/Inputs.vue')
       },
       {
         path: '/agGrid',
         name: 'AgGrid',
         meta: { title: "AgGrid", affix: true },
-        component: () => import('../views/AgGrid.vue')
+        component: () => import('../views/templates/AgGrid.vue')
       }
     ]
   }

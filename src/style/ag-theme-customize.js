@@ -7,7 +7,7 @@ const LIME = "#00FF00"
 
 export const agGridThemeCustomize = themeQuartz.withParams({
   accentColor: "#00FF00",
-  backgroundColor: "#21222C",
+  backgroundColor: "black",
   borderColor: LIME,
   borderRadius: 0,
   browserColorScheme: "dark",

@@ -1,0 +1,27 @@
+[
+  {
+    "index": "Home_0",
+    "children": []
+  },
+  {
+    "index": "Template_0",
+    "children": [
+      {
+        "index": "Buttons_0"
+      },
+      {
+        "index": "Selects_0"
+      },
+      {
+        "index": "Inputs_0"
+      },
+      {
+        "index": "AgGrid_0"
+      }
+    ]
+  },
+  {
+    "index": "Extra_0",
+    "children": []
+  }
+]

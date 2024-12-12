@@ -1,6 +1,6 @@
 <template>
   <el-main>
-    <router-link :to="'/home'"><H1>LOGIN</H1></router-link>
+    <router-link :to="'/layout'"><H1>LOGIN</H1></router-link>
   </el-main>
 </template>
 
@@ -13,10 +13,10 @@
   align-items: center;
 
   a {
-    color: lime;
+    color: var(--lime);
     text-decoration: none;
   }
 
-  border: 1px solid gold;
+  // border: 1px solid gold;
 }
 </style>

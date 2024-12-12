@@ -1,11 +1,16 @@
 <template>
-    <section v-if="objectArrayOption.data.value">
-        <ag-grid-vue class="agGrid" :grid-options="gridOptions" :detailCellRendererParams="detailCellRendererParams"
-            :rowData="rowData" @grid-ready="onGridReady" />
-    </section>
+    <ag-grid-vue 
+        v-if="objectArrayOption.data.value" 
+        class="agGrid" 
+        :grid-options="gridOptions"
+        :detailCellRendererParams="detailCellRendererParams" 
+        :rowData="rowData" 
+        @grid-ready="onGridReady"
+    />
 </template>
 
-<script setup>import { useQuery } from "@tanstack/vue-query";
+<script setup>
+import { useQuery } from "@tanstack/vue-query";
 import { arrayData, objectData, objectArrayData } from "@/utils/useQuery";
 import {
     getGridData,
@@ -14,8 +19,8 @@ import {
     deleteMasterRow,
     addDetailrRow,
     deleteDetailRow,
-    ensureSingleNodeExpended
-} from "@/utils/agGrid"
+    ensureSingleNodeExpended,
+} from "@/utils/agGrid";
 const agGridOptions = inject("agGridOptions");
 
 const arrayOption = useQuery(arrayData);
@@ -108,7 +113,9 @@ const gridOptions = {
             cellEditor: "agRichSelectCellEditor",
             cellEditorParams: () => {
                 return {
-                    values: Object.values(objectOption.data.value).map(({ id, name }) => `[${id}] ${name}`),
+                    values: Object.values(objectOption.data.value).map(
+                        ({ id, name }) => `[${id}] ${name}`
+                    ),
                     searchType: "matchAny",
                     allowTyping: true,
                     filterList: true,
@@ -119,14 +126,14 @@ const gridOptions = {
             valueFormatter: (params) => {
                 for (let key in objectOption.data.value) {
                     if (objectOption.data.value[key].value === params.value) {
-                        const option = objectOption.data.value[key]
-                        return `[${option.id}] ${option.name}`
+                        const option = objectOption.data.value[key];
+                        return `[${option.id}] ${option.name}`;
                     }
                 }
             },
             valueSetter: (params) => {
-                const id = params.newValue.slice(1, 4)
-                params.data.object = objectOption.data.value[id].value
+                const id = params.newValue.slice(1, 4);
+                params.data.object = objectOption.data.value[id].value;
             },
             cellClass: "cellInput",
             // cellStyle: { textAlign: "right" }
@@ -141,7 +148,9 @@ const gridOptions = {
             cellEditor: "agRichSelectCellEditor",
             cellEditorParams: () => {
                 return {
-                    values: objectArrayOption.data.value.map(({ id, name }) => `[${id}] ${name}`),
+                    values: objectArrayOption.data.value.map(
+                        ({ id, name }) => `[${id}] ${name}`
+                    ),
                     searchType: "matchAny",
                     allowTyping: true,
                     filterList: true,
@@ -152,13 +161,15 @@ const gridOptions = {
             valueFormatter: (params) => {
                 for (let option of objectArrayOption.data.value) {
                     if (option.value === params.value) {
-                        return `[${option.id}] ${option.name}`
+                        return `[${option.id}] ${option.name}`;
                     }
                 }
             },
             valueSetter: (params) => {
-                const newValueId = params.newValue.slice(1, 4)
-                params.data.objectArray = objectArrayOption.data.value.find(({ id }) => id === newValueId).value
+                const newValueId = params.newValue.slice(1, 4);
+                params.data.objectArray = objectArrayOption.data.value.find(
+                    ({ id }) => id === newValueId
+                ).value;
             },
             cellClass: "cellInput",
             // cellStyle: { textAlign: "right" }
@@ -172,12 +183,20 @@ const gridOptions = {
             headerComponent: "AgGridButton",
             headerComponentParams: {
                 btn1: {
-                    label: "Get Grid Data", type: "success", show: true, disabled: false, func: (params) => {
-                        console.log(getGridData(gridApi.value))
-                    }
+                    label: "Get Grid Data",
+                    type: "success",
+                    show: true,
+                    disabled: false,
+                    func: (params) => {
+                        console.log(getGridData(gridApi.value));
+                    },
                 },
                 btn2: {
-                    label: "Add Master Row", type: "primary", show: true, disabled: false, func: (params) => {
+                    label: "Add Master Row",
+                    type: "primary",
+                    show: true,
+                    disabled: false,
+                    func: (params) => {
                         addMaseterRow(gridApi.value, params, {
                             cell: `New Master Row`,
                             date: null,
@@ -186,27 +205,46 @@ const gridOptions = {
                             object: "A",
                             objectArray: "A",
                             details: [],
-                        })
-                    }
+                        });
+                    },
                 },
             },
             cellRenderer: "AgGridButton",
-            cellRendererParams:
-            {
-                btn1: { label: "Get Row Data", type: "success", show: true, disabled: false, func: (params) => console.log(getMasterRowData(gridApi.value, params.data.masterRowIndex)) },
+            cellRendererParams: {
+                btn1: {
+                    label: "Get Row Data",
+                    type: "success",
+                    show: true,
+                    disabled: false,
+                    func: (params) =>
+                        console.log(
+                            getMasterRowData(gridApi.value, params.data.masterRowIndex)
+                        ),
+                },
                 btn2: {
                     /*  註 : [Add Detail Row] 按鈕放在 master cell 時在 onRowGroupOpened() 「不使用」 ensureSingleNodeExpended() */
-                    label: "Add Detail Row", type: "primary", show: true, disabled: false, func: (params) => addDetailrRow(gridApi.value, params, {
-                        cell: "New Detail Row",
-                        date: null,
-                        input: "",
-                        array: "A",
-                        object: "A",
-                        objectArray: "A",
-                        newRow: true
-                    })
+                    label: "Add Detail Row",
+                    type: "primary",
+                    show: true,
+                    disabled: false,
+                    func: (params) =>
+                        addDetailrRow(gridApi.value, params, {
+                            cell: "New Detail Row",
+                            date: null,
+                            input: "",
+                            array: "A",
+                            object: "A",
+                            objectArray: "A",
+                            newRow: true,
+                        }),
                 },
-                btn3: { label: "Delete Row", type: "danger", show: true, disabled: false, func: (params) => deleteMasterRow(gridApi.value, params.data) },
+                btn3: {
+                    label: "Delete Row",
+                    type: "danger",
+                    show: true,
+                    disabled: false,
+                    func: (params) => deleteMasterRow(gridApi.value, params.data),
+                },
                 // btn1: { label: "1", type: "primary", show: true, disabled: false, func: (params) => console.log(params) },
                 // btn2: { label: "2", type: "success", show: true, disabled: false, func: (params) => console.log(params) },
                 // btn3: { label: "3", type: "warning", show: true, disabled: false, func: (params) => console.log(params) },
@@ -215,17 +253,17 @@ const gridOptions = {
                 // btn6: { label: "6", type: "", show: true, disabled: false, func: (params) => console.log(params) },
             },
             // cellClass: () => ""
-        }
+        },
     ],
-    onGridReady: (params) => gridApi.value = params.api,
+    onGridReady: (params) => (gridApi.value = params.api),
     onRowGroupOpened: (event) => {
         /*  註 : [Add Detail Row] 按鈕放在 detail header 時「使用」ensureSingleNodeExpended() */
         /*  註 :  [Add Detail Row] 按鈕放在 master cell 時「不使用」ensureSingleNodeExpended() */
-        ensureSingleNodeExpended(gridApi.value, event)
+        ensureSingleNodeExpended(gridApi.value, event);
     },
     // onCellEditingStopped: (params) => {},
     // onCellValueChanged: (params) => {},
-}
+};
 
 const detailCellRendererParams = {
     detailGridOptions: {
@@ -307,7 +345,9 @@ const detailCellRendererParams = {
                 cellEditor: "agRichSelectCellEditor",
                 cellEditorParams: () => {
                     return {
-                        values: Object.values(objectOption.data.value).map(({ id, name }) => `[${id}] ${name}`),
+                        values: Object.values(objectOption.data.value).map(
+                            ({ id, name }) => `[${id}] ${name}`
+                        ),
                         searchType: "matchAny",
                         allowTyping: true,
                         filterList: true,
@@ -318,14 +358,14 @@ const detailCellRendererParams = {
                 valueFormatter: (params) => {
                     for (let key in objectOption.data.value) {
                         if (objectOption.data.value[key].value === params.value) {
-                            const option = objectOption.data.value[key]
-                            return `[${option.id}] ${option.name}`
+                            const option = objectOption.data.value[key];
+                            return `[${option.id}] ${option.name}`;
                         }
                     }
                 },
                 valueSetter: (params) => {
-                    const id = params.newValue.slice(1, 4)
-                    params.data.object = objectOption.data.value[id].value
+                    const id = params.newValue.slice(1, 4);
+                    params.data.object = objectOption.data.value[id].value;
                 },
                 cellClass: "cellInput",
                 // cellStyle: { textAlign: "right" }
@@ -340,7 +380,9 @@ const detailCellRendererParams = {
                 cellEditor: "agRichSelectCellEditor",
                 cellEditorParams: () => {
                     return {
-                        values: objectArrayOption.data.value.map(({ id, name }) => `[${id}] ${name}`),
+                        values: objectArrayOption.data.value.map(
+                            ({ id, name }) => `[${id}] ${name}`
+                        ),
                         searchType: "matchAny",
                         allowTyping: true,
                         filterList: true,
@@ -351,13 +393,15 @@ const detailCellRendererParams = {
                 valueFormatter: (params) => {
                     for (let option of objectArrayOption.data.value) {
                         if (option.value === params.value) {
-                            return `[${option.id}] ${option.name}`
+                            return `[${option.id}] ${option.name}`;
                         }
                     }
                 },
                 valueSetter: (params) => {
-                    const newValueId = params.newValue.slice(1, 4)
-                    params.data.objectArray = objectArrayOption.data.value.find(({ id }) => id === newValueId).value
+                    const newValueId = params.newValue.slice(1, 4);
+                    params.data.objectArray = objectArrayOption.data.value.find(
+                        ({ id }) => id === newValueId
+                    ).value;
                 },
                 cellClass: "cellInput",
                 // cellStyle: { textAlign: "right" }
@@ -372,20 +416,30 @@ const detailCellRendererParams = {
                 headerComponentParams: {
                     btn1: {
                         /*  註 : [Add Detail Row] 按鈕放在 detail header 時在 onRowGroupOpened() 「使用」 ensureSingleNodeExpended() */
-                        label: "Add Detail Row", type: "primary", show: true, disabled: false, func: (params) => addDetailrRow(gridApi.value, params, {
-                            cell: "New Detail Row",
-                            date: null,
-                            input: "",
-                            array: "A",
-                            object: "A",
-                            objectArray: "A",
-                        })
-                    }
+                        label: "Add Detail Row",
+                        type: "primary",
+                        show: true,
+                        disabled: false,
+                        func: (params) =>
+                            addDetailrRow(gridApi.value, params, {
+                                cell: "New Detail Row",
+                                date: null,
+                                input: "",
+                                array: "A",
+                                object: "A",
+                                objectArray: "A",
+                            }),
+                    },
                 },
                 cellRenderer: "AgGridButton",
-                cellRendererParams:
-                {
-                    btn1: { label: "Delete Detail Row", type: "danger", show: true, disabled: false, func: (params) => deleteDetailRow(gridApi.value, params.data) },
+                cellRendererParams: {
+                    btn1: {
+                        label: "Delete Detail Row",
+                        type: "danger",
+                        show: true,
+                        disabled: false,
+                        func: (params) => deleteDetailRow(gridApi.value, params.data),
+                    },
                     // btn1: { label: "1", type: "primary", show: true, disabled: false, func: (params) => console.log(params) },
                     // btn2: { label: "2", type: "success", show: true, disabled: false, func: (params) => console.log(params) },
                     // btn3: { label: "3", type: "warning", show: true, disabled: false, func: (params) => console.log(params) },
@@ -394,14 +448,14 @@ const detailCellRendererParams = {
                     // btn6: { label: "6", type: "", show: true, disabled: false, func: (params) => console.log(params) },
                 },
                 // cellClass: () => ""
-            }
+            },
         ],
     },
     getDetailRowData: (params) => {
         params.successCallback(params.data.details); //  動態數據
     },
     onCellEditingStopped: (params) => { },
-}
+};
 
 const rowData = ref([
     {
@@ -450,7 +504,7 @@ const rowData = ref([
             //     object: "C",
             //     objectArray: "C",
             // }
-        ]
+        ],
     },
     {
         masterRowIndex: 1,
@@ -497,8 +551,8 @@ const rowData = ref([
                 array: "C",
                 object: "C",
                 objectArray: "C",
-            }
-        ]
+            },
+        ],
     },
     {
         masterRowIndex: 2,
@@ -509,7 +563,7 @@ const rowData = ref([
         array: "C",
         object: "C",
         objectArray: "C",
-        details: []
+        details: [],
     },
     {
         masterRowIndex: 3,
@@ -520,7 +574,7 @@ const rowData = ref([
         array: "D",
         object: "D",
         objectArray: "D",
-        details: []
+        details: [],
     },
     {
         masterRowIndex: 4,
@@ -531,20 +585,19 @@ const rowData = ref([
         array: "E",
         object: "E",
         objectArray: "E",
-        details: []
-    }
+        details: [],
+    },
 ]);
-
 </script>
 
 <style lang="scss" scoped>
-:deep(.agGrid) {
+.agGrid {
     height: 100%;
 
-    .cellInput {
+    :deep(.cellInput) {
         border-radius: 0.25rem;
         cursor: pointer;
-        border: 1px solid magenta;
+        border: 1px solid var(--magenta)
     }
 }
 </style>

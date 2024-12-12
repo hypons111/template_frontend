@@ -1,13 +1,13 @@
 <template>
   <el-container>
-    <el-aside><Aside :collapse="collapse" /></el-aside>
-    <el-main><Main /></el-main>
+    <el-aside><Menu :collapse="collapse" /></el-aside>
+    <el-main><View /></el-main>
   </el-container>
 </template>
 
 <script setup>
-import Aside from "@/views/Aside.vue";
-import Main from "@/views/Main.vue";
+import Menu from "@/views/layout/Menu.vue";
+import View from "@/views/layout/View.vue";
 </script>
 
 <style lang="scss" scoped>
@@ -16,12 +16,10 @@ import Main from "@/views/Main.vue";
   display: flex;
   flex-direction: column;
   align-items: center;
-  border: 1px solid gold;
 }
 
 .el-main {
   height: 100%;
   padding: 0;
-  border: 1px solid gold;
 }
 </style>

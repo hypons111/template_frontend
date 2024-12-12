@@ -46,6 +46,8 @@ declare module 'vue' {
     ElSelectV2: typeof import('element-plus/es')['ElSelectV2']
     ElSkeleton: typeof import('element-plus/es')['ElSkeleton']
     ElSubMenu: typeof import('element-plus/es')['ElSubMenu']
+    ElTabPane: typeof import('element-plus/es')['ElTabPane']
+    ElTabs: typeof import('element-plus/es')['ElTabs']
     Input: typeof import('./components/Input.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

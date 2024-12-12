@@ -11,7 +11,7 @@ const { visitedViews, getVisitedViews } = storeToRefs(basicStore);
 const frontPage = computed(() => useBasicStore().getUserLastName === "2" ? "/vo/search" : "/dashboard")
 
 const state = reactive({
-  visible: false,
+  available: false,
   top: 0,
   left: 0,
   x: 0,
@@ -32,7 +32,7 @@ watch(
   () => route.name,
   (val) => {
     nextTick(() => {
-      state.visible = false;
+      state.available = false;
       const lastView = visitedViews.value.at(-1);
       if (lastView.name == val) {
         toCurrentView();
@@ -84,7 +84,7 @@ const toLastView = (view: any | undefined) => {
 };
 
 const click = (event: any) => {
-  state.visible = false;
+  state.available = false;
   if (event == "CANAEL") {
     return;
   }
@@ -108,7 +108,7 @@ const openMenu = (event: any, tag: any) => {
   state.left = event.x - 160;
   state.x = event.clientX;
   state.y = event.clientY;
-  state.visible = true;
+  state.available = true;
   state.selectedTag = tag;
 };
 
@@ -153,7 +153,7 @@ const scroll = ({ scrollLeft }: { scrollLeft: any }) => {
       
     -->
     <ul
-      v-show="state.visible"
+      v-show="state.available"
       :style="{ left: state.left + 'px', top: state.top + 'px' }"
       class="contextmenu"
     >

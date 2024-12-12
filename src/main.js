@@ -12,7 +12,7 @@ import { agGridOptions } from "@/settings/agGridOptions";
 
 /* 樣式 */
 import "element-plus/dist/index.css";
-import "./style/style.css";
+import "./style/style.scss";
 
 /*  vue-query 配置 */
 const vueQueryPluginOptions = {
