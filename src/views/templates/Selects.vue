@@ -33,7 +33,7 @@
 </template>
 
 <script setup>
-import axios from "axios";
+import service from "@/api/service.ts";
 import { onBeforeMount } from "vue";
 
 const form = reactive({
@@ -54,9 +54,9 @@ const rules = reactive({
 
 const options = ref([])
 async function fetchOption() {
-    try {
-        options.value = await axios.get("/json/options.json").then(({ data }) => data)
-    } catch (error) { console.log(error) }
+    const { success, error, data } = await service.getSample("")
+    if(success) options.value = data
+    else console.log(error)
 }
 
 function consoleLog() {
