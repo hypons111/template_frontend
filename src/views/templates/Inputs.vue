@@ -4,47 +4,37 @@
             <el-scrollbar>
 
                 <el-row :gutter="30">
-                    <Input :label="'正常'" v-model="form.englishModel" prop="englishModel"
-                         :span="6" :clearable="true" :multiple="false" :disabled="false" :placeholder="'請輸入'" />
-                </el-row>
-                
-                <el-row :gutter="30">
-                    <Input :label="'只允許英文'" v-model="form.englishModel" prop="englishModel" :inputType="'english'"
-                         :span="6" :clearable="true" :multiple="false" :disabled="false" :placeholder="'請輸入'" />
-
-                     <Input :label="'只允許數字'" v-model="form.numberModel" prop="numberModel" :inputType="'number'"
-                         :span="6" :clearable="true" :multiple="false" :disabled="false" :placeholder="'請輸入'" />
-
-                    <Input :label="'只允許中文'" v-model="form.chineseModel" prop="chineseModel" :inputType="'chinese'"
-                         :span="6" :clearable="true" :multiple="false" :disabled="false" :placeholder="'請輸入'" />
-
-                    <Input :label="'只允許符號'" v-model="form.symbolModel" prop="symbolModel" :inputType="'symbol'" 
-                         :span="6" :clearable="true" :multiple="false" :disabled="false" :placeholder="'請輸入'" />
+                    <Input 
+                        :label="'不限輸入 (全屬性)'" 
+                        :class="'text-align-right'" 
+                        :span="4"
+                        :prop="'normalModel'" 
+                        :placeholder="'自定義 placeholder'" 
+                        :clearable="true" 
+                        :disabled="false" 
+                        :inputType="''"
+                        v-model="form.normalModel"
+                        />
                 </el-row>
 
                 <el-row :gutter="30">
-                    <Input :label="'只允許正數'" v-model="form.positiveModel" prop="positiveModel" :inputType="'positive'"
-                         :span="6" :clearable="true" :multiple="false" :disabled="false" :placeholder="'請輸入'" />
-    
-                    <Input :label="'只允許整數'" v-model="form.integerModel" prop="integerModel" :inputType="'integer'"
-                         :span="6" :clearable="true" :multiple="false" :disabled="false" :placeholder="'請輸入'" />
-                   
-                    <Input :label="'只允許正整數'" v-model="form.posIntModel" prop="posIntModel" :inputType="'posInt'"
-                         :span="6" :clearable="true" :multiple="false" :disabled="false" :placeholder="'請輸入'" />
+                    <Input :label="'只允許英文'" :inputType="'english'" v-model="form.englishModel" />
+                    <Input :label="'只允許數字'" :inputType="'number'" v-model="form.numberModel" />
+                    <Input :label="'只允許中文'" :inputType="'chinese'" v-model="form.chineseModel" />
+                    <Input :label="'只允許符號'" :inputType="'symbol'" v-model="form.symbolModel" />
                 </el-row>
 
                 <el-row :gutter="30">
-                    <Input :label="'只允許字母、數字、中文'" v-model="form.engNumChiModel" prop="engNumChiModel" :inputType="'engNumChi'"
-                         :span="6" :clearable="true" :multiple="false" :disabled="false" :placeholder="'請輸入'" />
+                    <Input :label="'只允許正數'" :inputType="'positive'" v-model="form.positiveModel" />
+                    <Input :label="'只允許整數'" :inputType="'integer'" v-model="form.integerModel" />
+                    <Input :label="'只允許正整數'" :inputType="'posInt'" v-model="form.posIntModel" />
+                </el-row>
 
-                    <Input :label="'只允許英文、數字、符號'" v-model="form.engNumSymModel" prop="engNumSymModel" :inputType="'engNumSym'"
-                         :span="6" :clearable="true" :multiple="false" :disabled="false" :placeholder="'請輸入'" />
-
-                    <Input :label="'只允許英文、數字'" v-model="form.engNumModel" prop="engNumModel" :inputType="'engNum'"
-                         :span="6" :clearable="true" :multiple="false" :disabled="false" :placeholder="'請輸入'" />
-
-                    <Input :label="'只允許數字、符號'" v-model="form.numSymModel" prop="numSymModel" :inputType="'numSym'"
-                         :span="6" :clearable="true" :multiple="false" :disabled="false" :placeholder="'請輸入'" />
+                <el-row :gutter="30">
+                    <Input :label="'只允許字母、數字、中文'" :inputType="'engNumChi'" v-model="form.engNumChiModel" />
+                    <Input :label="'只允許英文、數字、符號'" :inputType="'engNumSym'" v-model="form.engNumSymModel" />
+                    <Input :label="'只允許英文、數字'" :inputType="'engNum'" v-model="form.engNumModel" />
+                    <Input :label="'只允許數字、符號'" :inputType="'numSym'" v-model="form.numSymModel" />
                 </el-row>
 
             </el-scrollbar>
@@ -73,12 +63,7 @@ const form = reactive({
 
 const ruleFormRef = ref();
 const rules = reactive({
-    // numberModel: [{ required: true, message: "請輸入", trigger: "blur" }],
-    // integerModel: [{ required: true, message: "請輸入", trigger: "blur" }],
-    // englishModel: [{ required: true, message: "請輸入", trigger: "blur" }],
-    // chineseModel: [{ required: true, message: "請輸入", trigger: "blur" }],
-    // symbolModel: [{ required: true, message: "請輸入", trigger: "blur" }],
-    // engNumChiModel: [{ required: true, message: "請輸入", trigger: "blur" }],
+    normalModel: [{ required: true, message: "請輸入", trigger: "change" }],
 });
 
 function consoleLog() {

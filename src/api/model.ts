@@ -1,4 +1,3 @@
-/* interface 封裝 */
 /* 
   管理 interface
 */

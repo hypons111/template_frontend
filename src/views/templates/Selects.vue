@@ -2,8 +2,17 @@
     <section>
         <el-form :model="form" :rules="rules" ref="ruleFormRef" label-position="top">
             <el-row :gutter="30">
-                <SelectStatic :label="'StaticSelect'" v-model="form.staticModel" prop="staticModel" :clearable="true"
-                    :multiple="false" :disabled="false" :span="6" :placeholder="'請選擇'" />
+                <SelectStatic 
+                    :label="'StaticSelect'"
+                    :class="'hahaha'" 
+                    :span="4" 
+                    :prop="'staticModel'" 
+                    :placeholder="'自定義 placeholder'"
+                    :clearable="true"
+                    :multiple="false" 
+                    :disabled="false" 
+                    v-model="form.staticModel"
+                />
 
                 <!-- 注意 optionFilter -->
                 <SelectPassvie :label="'Passvie Select (filtered: name === A)'" v-model="form.passvieModel" :options="options"

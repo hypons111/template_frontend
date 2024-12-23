@@ -3,11 +3,12 @@
     <el-form-item :prop="prop" :label="labelObj[label]">
       
       <el-select 
-        v-model="modelValue" 
-        :clearable="clearable" 
-        :multiple="multiple" 
-        :disabled="disabled"
+        :class="class"
         :placeholder="placeholder"
+        :clearable="clearable" 
+        :disabled="disabled"
+        :multiple="multiple" 
+        v-model="modelValue"
       >
         <el-option v-for="item in options[label]" :key="item.value" :label="item.label" :value="item.value" />
       </el-select>
@@ -21,12 +22,13 @@ const modelValue = defineModel<string>();
 
 interface IProps {
   label: string,
+  class: string,
   span: number
+  prop?: string,
   placeholder?: string,
   clearable?: boolean,
   multiple?: boolean;
   disabled?: boolean,
-  prop?: string,
 }
 
 const props = withDefaults(defineProps<IProps>(), {
@@ -80,3 +82,9 @@ const options = {
 }
 
 </script>
+
+<style lang="scss" scoped>
+:deep(.hahaha) {
+  border: 1px solid red;
+}
+</style>

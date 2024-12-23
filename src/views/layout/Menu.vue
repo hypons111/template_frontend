@@ -51,7 +51,7 @@
 <script setup>
 import { onBeforeMount, ref } from "vue";
 import { useTabStore } from "@/store";
-import { request } from "@/utils/request";
+import service from "@/api/service";
 import { Expand, Fold, Setting } from "@element-plus/icons-vue";
 
 /* status */
@@ -62,32 +62,38 @@ const currentView = ref("Home_0"); // 目前頁面
 
 function menuHander(event) {
   currentView.value = event.index;
-  tabStore.addTab(event)
+  tabStore.addTab(event);
 }
 
 onBeforeMount(async () => {
   /* 全部 menu */
-  menu.value = await request
-    .getRequest("/json/menu.json", "")
-    .then(({ data }) => data);
-
   /* 有權限的 menu */
-  const permittedMenu = await request
-    .getRequest("/json/permittedMenu.json", "")
-    .then(({ data }) => data);
 
-  /* 將有權限的頁面設為 available === true */
-  permittedMenu.forEach((item) => {
-    const availableItem = menu.value[item.index];
-    if (availableItem) {
-      availableItem.available = true;
+  // const response = await service.getMenu();
+  const { jsonMenu, permittedMenu } = await service.getMenu();
+  console.log(jsonMenu);
+  console.log(permittedMenu);
 
-      /* 將有權限的子頁面設為 available === true */
-      item.children.forEach((child) => {
-        availableItem.children[child.index].available = true;
-      });
-    }
-  });
+  if (jsonMenu.success && permittedMenu.success) {
+    // menu.value = menu.data;
+
+    permittedMenu.data.forEach((item) => {
+      /* 將有權限的頁面設為 available === true */
+      const availableItem = jsonMenu.data[item.index];
+      if (availableItem) {
+        availableItem.available = true;
+        /* 將有權限的子頁面設為 available === true */
+        item.children.forEach((child) => {
+          availableItem.children[child.index].available = true;
+        });
+      }
+    });
+
+    menu.value = jsonMenu.data;
+  } else {
+    console.log(`[ERROR] menu : ${response.menu.error}`);
+    console.log(`[ERROR] permittedMenu : ${response.permittedMenu.error}`);
+  }
 });
 </script>
 
