@@ -2,36 +2,63 @@
     <section>
         <el-form :model="form" :rules="rules" ref="ruleFormRef" label-position="top">
             <el-row :gutter="30">
+
                 <SelectStatic 
                     :label="'StaticSelect'"
-                    :class="'hahaha'" 
-                    :span="4" 
+                    :class="'text-align-right'" 
+                    :span="6" 
                     :prop="'staticModel'" 
                     :placeholder="'自定義 placeholder'"
                     :clearable="true"
-                    :multiple="false" 
                     :disabled="false" 
+                    :multiple="false" 
                     v-model="form.staticModel"
                 />
 
-                <!-- 注意 optionFilter -->
-                <SelectPassvie :label="'Passvie Select (filtered: name === A)'" v-model="form.passvieModel" :options="options"
-                    prop="passvieModel" :optionFilter="(item) => item.filter(({ name }) => name === 'A')"
-                    :optionParser="(item) => `[${item.id}]${item.name}`" :clearable="true" :multiple="false"
-                    :disabled="false" :span="6" :placeholder="'請選擇'" />
+                <SelectPassvie 
+                    :label="'Passvie Select (optionFilter)'"
+                    :class="''"
+                    :span="6" 
+                    :prop="'passvieModel'"
+                    :placeholder="'請選擇'" 
+                    :clearable="true" 
+                    :disabled="false" 
+                    :multiple="false"
+                    :options="options"
+                    :optionFilter="(item) => item.filter(({ name }) => name.includes('Smith'))"
+                    :optionParser="(item) => `[${item.species}]${item.name}`" 
+                    v-model="form.passvieModel" 
+                />
 
-                <!-- 注意 optionFilter -->
-                <SelectApi :label="'API Select (filtered: name === A)'" v-model="form.apiModel" apiUrl="/json/options.json" prop="apiModel"
-                    :optionFilter="(item) => item.filter(({ name }) => name === 'A')"
-                    :optionParser="(item) => `[${item.id}]${item.name}`" :clearable="true" :multiple="false"
-                    :disabled="false" :span="6" :placeholder="'請選擇'" />
+                <SelectApi 
+                    :label="'API Select (optionFilter)'" 
+                    :class="''"
+                    :span="6"
+                    :prop="'apiModel'"
+                    :placeholder="'請選擇'"
+                    :clearable="true" 
+                    :disabled="false"
+                    :multiple="false"
+                    :apiUrl="'https://api.sampleapis.com/rickandmorty/characters'" 
+                    :optionFilter="(item) => item.filter(({ name }) => name.includes('Rick'))"
+                    :optionParser="(item) => `[${item.id}]${item.name}`" 
+                    v-model="form.apiModel"
+                />
 
-                <!-- 注意 optionFilter -->
-                <SelectSearch :label="'Search Select (filtered: name === Rick Sanchez)'" v-model="form.searchModel"
-                    apiUrl="https://api.sampleapis.com/rickandmorty/characters" prop="searchModel"
-                    :optionFilter="(item) => item.filter(({ name }) => name === 'Rick Sanchez')"
-                    :optionParser="(item) => `[${item.species}] ${item.name}`" :clearable="true" :disabled="false"
-                    :span="6" :placeholder="'請輸入關鍵字'" />
+                <SelectSearch 
+                    :label="'Search Select (optionFilter)'" 
+                    :class="''"
+                    :span="6" 
+                    :prop="'searchModel'"
+                    :placeholder="'請輸入關鍵字'"
+                    :clearable="true" 
+                    :disabled="false"
+                    :apiUrl="'https://api.sampleapis.com/rickandmorty/characters'" 
+                    :optionFilter="(item) => item.filter(({ name }) => name.includes('Rick'))"
+                    :optionParser="(item) => `[${item.species}] ${item.name}`" 
+                    v-model="form.searchModel"
+                />
+                    
             </el-row>
         </el-form>
 
@@ -55,7 +82,6 @@ const form = reactive({
 const ruleFormRef = ref();
 const rules = reactive({
     staticModel: [{ required: true, message: "請選擇 Static", trigger: "blur" }],
-    staticModel: [{ required: true, message: "請選擇 Static", trigger: "blur" }],
     passvieModel: [{ required: true, message: "請選擇 passvie", trigger: "blur" }],
     apiModel: [{ required: true, message: "請選擇 passvie", trigger: "blur" }],
     searchModel: [{ required: true, message: "請選擇 search", trigger: "blur" }],
@@ -63,7 +89,7 @@ const rules = reactive({
 
 const options = ref([])
 async function fetchOption() {
-    const { success, error, data } = await service.getSample("")
+    const { success, error, data } = await service.getRickAndMorty()
     if(success) options.value = data
     else console.log(error)
 }

@@ -10,12 +10,7 @@
     <el-scrollbar>
       <el-menu default-active="1" :collapse="collapse">
         <div v-for="(item, index) in menu" :index="index">
-          <el-menu-item
-            v-if="item.children.length === 0 && item.available"
-            :class="{ on: currentView === item.index }"
-            :index="item.label"
-            @click="menuHander(item)"
-          >
+          <el-menu-item v-if="item.children.length === 0 && item.available" :class="{ on: currentView === item.index }" :index="item.label" @click="menuHander(item)">
             <router-link :to="item.path">
               <el-icon><setting /></el-icon>
               <span v-if="!collapse">{{ item.label }}</span>
@@ -29,12 +24,7 @@
             </template>
 
             <div v-for="child in item.children">
-              <el-menu-item
-                v-if="child.available"
-                :class="{ on: currentView === child.index }"
-                :index="child.label"
-                @click="menuHander(child)"
-              >
+              <el-menu-item v-if="child.available" :class="{ on: currentView === child.index }" :index="child.label" @click="menuHander(child)">
                 <router-link :to="child.path">
                   <el-icon><setting /></el-icon>
                   <span v-if="!collapse">{{ child.label }}</span>
@@ -71,8 +61,6 @@ onBeforeMount(async () => {
 
   // const response = await service.getMenu();
   const { jsonMenu, permittedMenu } = await service.getMenu();
-  console.log(jsonMenu);
-  console.log(permittedMenu);
 
   if (jsonMenu.success && permittedMenu.success) {
     // menu.value = menu.data;
@@ -117,7 +105,7 @@ onBeforeMount(async () => {
   .el-menu {
     border-width: 0;
 
-    & > DIV {
+    &>DIV {
       width: 15rem;
     }
 

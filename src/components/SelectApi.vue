@@ -8,12 +8,13 @@
 
     <el-form-item v-else-if="data" :prop="prop" :label="label">
       <el-select-v2 
-        v-model="modelValue" 
-        :clearable="clearable" 
-        :multiple="multiple" 
-        :disabled="disabled"
+        :class="class"
         :placeholder="placeholder" 
-        :options="options" 
+        :clearable="clearable" 
+        :disabled="disabled"
+        :multiple="multiple" 
+        :options="parsedOptions" 
+        v-model="modelValue" 
       />
     </el-form-item>
   </el-col>
@@ -27,37 +28,49 @@ import { useQuery } from "@tanstack/vue-query";
 const modelValue = defineModel();
 
 interface IProps {
-  label: string;
+  label: string,
+  class: string,
+  span: number,
+  prop: string,
+  placeholder: string,
+  clearable: boolean,
+  disabled: boolean,
+  multiple: boolean;
   apiUrl: string;
-  span: number;
-  placeholder?: string,
-  clearable?: boolean;
-  multiple?: boolean;
-  disabled?: boolean;
-  prop?: string;
-  optionParser: Function;
   optionFilter?: Function;
+  optionParser?: Function;
 }
 
 const props = withDefaults(defineProps<IProps>(), {
+  class: "",
+  span: 24,
+  prop: "",
   placeholder: "請選擇",
   clearable: true,
   multiple: false,
   disabled: false,
-  optionLabelFilter: (data) => data
 });
 
-const options = computed(() => {
-  const filteredData = props.optionFilter ? props.optionFilter(data.value) : data.value// 篩選選單
-  return filteredData.map((item: any) => ({
-    label: props.optionParser(item), // 選項
-    value: item, // 回傳值
-  }));
-});
-
-/* fetch data */
+/* fetch */
 const { isPending, isError, data, error } = useQuery({
   queryKey: [props.apiUrl],
   queryFn: async () => await axios.get(props.apiUrl).then(({data}) => data)
 });
+
+/* parse & filter */
+const parsedOptions = computed(() => {
+  const filteredData = props.optionFilter ? props.optionFilter(data.value) : data.value// 篩選選單
+  return filteredData.map((item: any) => ({
+    label: props.optionParser!(item), // 選項
+    value: item, // 回傳值
+  }));
+});
 </script>
+
+<style lang="scss" scoped>
+:deep(.text-align-right) {
+  & > DIV  {
+    text-align: right;
+  }
+}
+</style>

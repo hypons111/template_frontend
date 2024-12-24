@@ -26,7 +26,7 @@ export function setResponseInterceptors() {
 }
 
 export const request = {
-  async getRequest(apiurl: string, requestData: string) {
+  async getRequest(apiurl: string, requestData: string = "") {
     try {
       const { data } = await Axios.get(`${apiurl}${requestData}`); // apiurl 和 requestData 會合拼成字串。
       return { success: true, data };

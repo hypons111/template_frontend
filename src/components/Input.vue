@@ -81,6 +81,7 @@ function onInputChange(value: string) {
 
 <style lang="scss" scoped>
 :deep(.text-align-right) {
+  border: 1px solid red;
   INPUT {
     text-align: right;
   }

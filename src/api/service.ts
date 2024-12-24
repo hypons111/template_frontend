@@ -16,15 +16,7 @@ export default {
     return await request.postRequest("https://api.sampleapis.com/rickandmorty/characters", requestData)
   },
 
-  getMenuXXXXXXX: async (requestData: string = "") => {
-    return await request.getRequest("/json/menu.json", requestData)
-  },
-
-  getPermittedMenu: async (requestData: string = "") => {
-    return await request.getRequest("/json/permittedMenu.json", requestData)
-  },
-
-  getMenu: async (requestData: string = "") => {
+  getMenu: async (requestData: string) => {
     try {
       const [jsonMenu, permittedMenu] = await Promise.all([
         request.getRequest("/json/menu.json", requestData),
@@ -34,5 +26,13 @@ export default {
     } catch (error) {
       console.error('請求失敗:', error.message);
     }
+  },
+
+  getPermittedMenu: async (requestData: string) => {
+    return await request.getRequest("/json/permittedMenu.json", requestData)
+  },
+
+  getRickAndMorty: async (requestData: string) => {
+    return await request.getRequest("https://api.sampleapis.com/rickandmorty/characters", requestData)
   }
 };

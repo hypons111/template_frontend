@@ -1,18 +1,21 @@
 <template>
   <el-col :span="span" :xs="24">
     <el-form-item :prop="prop" :label="labelObj[label]">
-      
-      <el-select 
+      <el-select
         :class="class"
         :placeholder="placeholder"
-        :clearable="clearable" 
+        :clearable="clearable"
         :disabled="disabled"
-        :multiple="multiple" 
+        :multiple="multiple"
         v-model="modelValue"
       >
-        <el-option v-for="item in options[label]" :key="item.value" :label="item.label" :value="item.value" />
+        <el-option
+          v-for="item in options[label]"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value"
+        />
       </el-select>
-
     </el-form-item>
   </el-col>
 </template>
@@ -21,70 +24,93 @@
 const modelValue = defineModel<string>();
 
 interface IProps {
-  label: string,
-  class: string,
-  span: number
-  prop?: string,
-  placeholder?: string,
-  clearable?: boolean,
-  multiple?: boolean;
-  disabled?: boolean,
+  label: string;
+  class: string;
+  span: number;
+  prop: string;
+  placeholder: string;
+  clearable: boolean;
+  disabled: boolean;
+  multiple: boolean;
 }
 
 const props = withDefaults(defineProps<IProps>(), {
+  class: "",
+  span: 24,
+  prop: "",
   placeholder: "請選擇",
   clearable: true,
+  disabled: false,
   multiple: false,
-  disabled: false
-})
+});
 
 const labelObj = {
   StaticSelect: "Static Select",
   staticModel2: "Multiple",
-  staticModel3: "validator",
-}
+};
 
 const options = {
   StaticSelect: [
     {
-      "id": "001",
-      "name": "A",
-      "value": "ONE"
+      id: 1,
+      label: "Rick Sanchez",
+      value: {"id":1,"name":"Rick Sanchez","status":"Alive","species":"Human","type":"Human","gender":"Male","origin":"Earth (C-137)","image":"https://rickandmortyapi.com/api/character/avatar/1.jpeg"},
     },
     {
-      "id": "002",
-      "name": "B",
-      "value": "TWO"
-    }, {
-      "id": "003",
-      "name": "C",
-      "value": "THREE"
-    }, {
-      "id": "004",
-      "name": "D",
-      "value": "FOUR"
-    }, {
-      "id": "005",
-      "name": "E",
-      "value": "FIVE"
-    }
+      id: 2,
+      label: "Morty Smith",
+      value: {"id":2,"name":"Morty Smith","status":"Alive","species":"Human","type":"Human","gender":"Male","origin":"Earth (C-137)","image":"https://rickandmortyapi.com/api/character/avatar/2.jpeg"},
+    },
+    {
+      id: 3,
+      label: "Summer Smith",
+      value: {"id":3,"name":"Summer Smith","status":"Alive","species":"Human","type":"Human","gender":"Female","origin":"Earth (Replacement Dimension)","image":"https://rickandmortyapi.com/api/character/avatar/3.jpeg"},
+    },
+    {
+      id: 4,
+      label: "Beth Smith",
+      value: {"id":4,"name":"Beth Smith","status":"Alive","species":"Human","type":"Human","gender":"Female","origin":"Earth (Replacement Dimension)","image":"https://rickandmortyapi.com/api/character/avatar/4.jpeg"},
+    },
+    {
+      id: 5,
+      label: "Jerry Smith",
+      value: {"id":5,"name":"Jerry Smith","status":"Alive","species":"Human","type":"Human","gender":"Male","origin":"Earth (Replacement Dimension)","image":"https://rickandmortyapi.com/api/character/avatar/5.jpeg"},
+    },
   ],
-  staticModel2: [
-    { label: "選項 1", value: "A" },
-    { label: "選項 2", value: "B" },
-    { label: "選項 3", value: "C" }
+  StaticSelect1: [
+    {
+      id: "001",
+      label: "A",
+      value: "ONE",
+    },
+    {
+      id: "002",
+      label: "B",
+      value: "TWO",
+    },
+    {
+      id: "003",
+      label: "C",
+      value: "THREE",
+    },
+    {
+      id: "004",
+      label: "D",
+      value: "FOUR",
+    },
+    {
+      id: "005",
+      label: "E",
+      value: "FIVE",
+    },
   ],
-  staticModel3: [
-    { label: "選項 1", value: "A" },
-    { label: "選項 2", value: "B" },
-    { label: "選項 3", value: "C" }
-  ]
-}
-
+};
 </script>
 
 <style lang="scss" scoped>
-:deep(.hahaha) {
-  border: 1px solid red;
+:deep(.text-align-right) {
+  & DIV {
+    text-align: right;
+  }
 }
 </style>
