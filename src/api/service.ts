@@ -3,17 +3,17 @@
 */
 
 import { request } from "./axios";
-import { ISample } from "./model";
+import { IExample } from "./model";
 
 export default {
   /* get request 例子 */
-  getSample: async (requestData: string) => {
-    return await request.getRequest("https://api.sampleapis.com/rickandmorty/characters", requestData)
+  getExample: async (requestData: string) => {
+    return await request.getRequest("", requestData)
   },
 
   /* post request 例子 */
-  postSample: async (requestData: ISample) => {
-    return await request.postRequest("https://api.sampleapis.com/rickandmorty/characters", requestData)
+  postExample: async (requestData: IExample) => {
+    return await request.postRequest("", requestData)
   },
 
   getMenu: async (requestData: string) => {

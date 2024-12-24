@@ -1,8 +1,12 @@
 <template>
   <el-row :gutter="0">
     <el-col :span="12">
-      <el-button v-for="(btn, index) in buttons" :key="index" :class="{ 'hidden': !btn.show, 'disabled': btn.disabled }"
-        :type="btn.type" :disabled=btn.disabled @click="btn.func(param)">
+      <el-button v-for="(btn, index) in buttons" :key="index" 
+        :class="{ 'hidden': !btn.show, 'disabled': btn.disabled }"
+        :type="btn.type" 
+        :disabled=btn.disabled 
+        @click="btn.func(parameter)"
+      >
         {{ btn.label }}
       </el-button>
     </el-col>
@@ -17,7 +21,7 @@ interface IButton {
     type: string;
     show: boolean;
     disabled: boolean;
-    func: (param?: string) => void
+    func: Function
   }[]
 }
 const props = withDefaults(defineProps<IButton>(), {})

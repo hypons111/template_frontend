@@ -2,7 +2,7 @@
   管理 interface
 */
 
-export interface ISample {
+export interface IExample {
   id: string;
   name: string;
 }

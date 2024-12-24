@@ -7,10 +7,10 @@
     "available": false,
     "children": []
   },
-  "Sample_0": {
-    "index": "Sample_0",
-    "label": "Sample",
-    "path": "/sample",
+  "Example_0": {
+    "index": "Example_0",
+    "label": "Example",
+    "path": "/example",
     "icon": "document",
     "available": false,
     "children": []
