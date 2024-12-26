@@ -164,13 +164,13 @@ export function ensureSingleNodeExpended(gridApi, event) {
   if (event.node && event.node.master && event.node.expanded) {
     const rowId = event.node.id;
     gridApi.forEachNode(node => {
-        if (node.id === rowId) {
-            node.setExpanded(true);
-        } else {
-            node.setExpanded(false);
-        }
+      if (node.id === rowId) {
+        node.setExpanded(true);
+      } else {
+        node.setExpanded(false);
+      }
     })
-}
+  }
 }
 
 /* FORBIDDEN ---------- FORBIDDEN ---------- FORBIDDEN ---------- FORBIDDEN ---------- FORBIDDEN */

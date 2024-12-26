@@ -109,7 +109,8 @@ const options = {
 
 <style lang="scss" scoped>
 :deep(.text-align-right) {
-  & DIV {
+  border: 1px solid red;
+  DIV {
     text-align: right;
   }
 }

@@ -59,7 +59,6 @@ const { isPending, isError, data, error } = useQuery({
 
 /* parse & filter */
 const parsedOptions = computed(() => {
-  console.log(data.value)
   const filteredData = props.optionFilter ? props.optionFilter(data.value) : data.value// 篩選選單
   return filteredData.map((item: any) => ({
     label: props.optionParser!(item), // 選項
