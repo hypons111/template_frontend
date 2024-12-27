@@ -27,15 +27,14 @@ import { useTabStore } from "@/store";
 import { Close } from "@element-plus/icons-vue";
 
 const tabStore = useTabStore();
-const activeTabLabel = ref("Home");
+const router = useRouter();
 
 function tabHandler(tabLabel) {
-  tabStore.setActiveTab(tabLabel);
-  activeTabLabel.value = tabLabel;
+  tabStore.setActiveTab(tabLabel); // activate 指定 tab
 }
 
 function removeTag(tabLabel) {
-  tabStore.removeTab(tabLabel);
+  tabStore.removeTab(tabLabel); // 移除 tab
 }
 </script>
 

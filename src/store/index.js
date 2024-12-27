@@ -28,7 +28,6 @@ export const useTabStore = defineStore("tab", {
     removeTab(tabLabel) {
       delete this.tabs[tabLabel];
     },
-
     /* 內部 function  */
     /* deactivate 全部 tabs  */
     deactivateAllTabs() {

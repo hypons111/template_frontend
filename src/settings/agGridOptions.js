@@ -14,17 +14,44 @@ export const agGridOptions = {
   paginationPageSizeSelector: [10, 20, 50], // 可選行數
   localeText: localeText, // 中文化
   defaultColDef: {
-      flex: 1, // 自動適應寬度
-      resizable: true, // 調整列寬
-      lockPosition: true, // 鎖定位置
-      lockPinned: true, // 鎖定 pinned 
-      suppressMenu: true, // 禁用菜單
-      floatingFilter: false, // 啟用浮動篩選器
-      sortable: false, // 啟用排序
-      filter: false, // 啟用篩選
+    flex: 1, // 自動適應寬度
+    resizable: true, // 調整列寬
+    lockPosition: true, // 鎖定位置
+    lockPinned: true, // 鎖定 pinned
+    suppressMenu: true, // 禁用菜單
+    floatingFilter: false, // 啟用浮動篩選器
+    sortable: false, // 啟用排序
+    filter: false, // 啟用篩選
   },
   components: {
-    AgGridButton: AgGridButton
-  }
+    AgGridButton: AgGridButton,
+  },
+  columnTypes: {
+    input: {
+      editable: true,
+      cellClass: "cellInput",
+      valueFormatter: (params) => params.value || "請輸入",
+    },
+    number: {
+      editable: true,
+      cellClass: "cellInput",
+      valueFormatter: (params) => (params.value === null || params.value === undefined) ? "請輸入" : params.value,
+      valueParser: (params) => {
+        const newValue = params.newValue.toString().replace(/[^0-9]+/g, "")
+        return newValue === "" ? undefined : Number(newValue)
+      },
+      cellStyle: { textAlign: "right" },
+    },
+    date: {
+      editable: true,
+      cellClass: "cellInput",
+      cellEditor: "agDateStringCellEditor",
+      valueFormatter: (params) => params.value || "請輸入",
+    },
+    option: {
+      editable: true,
+      cellClass: "cellInput",
+      cellEditor: "agRichSelectCellEditor",
+    }
+  },
 };
-// });
