@@ -14,14 +14,13 @@
 </template>
 
 <script setup lang="ts">
-
 interface IButton {
   buttons: {
     label: string;
     type: string;
     show: boolean;
     disabled: boolean;
-    func: Function
+    func: Function;
   }[]
 }
 const props = withDefaults(defineProps<IButton>(), {})

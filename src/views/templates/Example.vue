@@ -638,7 +638,7 @@ const rowData = ref([
     :deep(.cellInput) {
         border-radius: 0.25rem;
         cursor: pointer;
-        border: 1px solid var(--magenta)
+        border: 1px solid var(--MAGENTA)
     }
 }
 }

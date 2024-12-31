@@ -17,18 +17,21 @@ import Tab from "@/views/layout/Tab.vue";
 .el-container {
   display: flex;
   flex-direction: column;
-  border-left: 1px solid var(--lime);
+  border-left: 1px solid var(--LIME);
 
   .el-header {
     height: 3.5rem;
-    border-bottom: 1px solid var(--lime);
+    border-bottom: 1px solid var(--LIME);
   }
 
-  .el-main {}
+  .el-main {
+    display: flex;
+    flex-direction: column;
+  }
 
   .el-footer {
     height: 3.5rem;
-    border-top: 1px solid var(--lime);
+    border-top: 1px solid var(--LIME);
   }
 }
 </style>

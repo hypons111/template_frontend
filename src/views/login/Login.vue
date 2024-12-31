@@ -43,7 +43,7 @@ function setCookie() {
   align-items: center;
 
   a {
-    color: var(--lime);
+    color: var(--LIME);
     text-decoration: none;
   }
 

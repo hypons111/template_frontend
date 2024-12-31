@@ -59,6 +59,7 @@ declare module 'vue' {
     SelectQuery: typeof import('./components/SelectQuery.vue')['default']
     SelectSearch: typeof import('./components/SelectSearch.vue')['default']
     SelectStatic: typeof import('./components/SelectStatic.vue')['default']
+    Test: typeof import('./components/Test.vue')['default']
   }
   export interface ComponentCustomProperties {
     vLoading: typeof import('element-plus/es')['ElLoadingDirective']

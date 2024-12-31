@@ -123,14 +123,14 @@ onBeforeMount(async () => {
       &:hover {
         * {
           font-weight: bold;
-          color: var(--lime);
+          color: var(--LIME);
         }
       }
 
       &.on {
         * {
           font-weight: bold;
-          color: var(--lime);
+          color: var(--LIME);
         }
       }
     }

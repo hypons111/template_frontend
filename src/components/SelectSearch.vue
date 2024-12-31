@@ -36,7 +36,7 @@ interface IProps {
   apiUrl: string;
   optionFilter?: Function;
   optionParser?: Function;
-  remoteMethod: Function;
+  // remoteMethod: Function;
 }
 
 const props = withDefaults(defineProps<IProps>(), {

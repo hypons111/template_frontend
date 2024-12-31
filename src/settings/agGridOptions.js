@@ -1,12 +1,14 @@
 import { agGridThemeCustomize } from "@/style/ag-theme-customize";
 import AgGridButton from "@/components/agGridButton.vue";
 import { localeText } from "@/settings/localeText";
+import { messageBoxHandler } from "@/utils/utility";
 
 export const agGridOptions = {
   theme: agGridThemeCustomize, // 主題
   suppressRowClickSelection: true, // 只有點擊行內部的 Checkbox 才會觸發行選擇
   rowSelection: "multiple", // 允許勾選選擇框來選擇多行
   singleClickEdit: true, // 單擊可編輯單元格時直接進入編輯狀態
+  stopEditingWhenCellsLoseFocus: true, // 當失去焦點時自動結束編輯
   masterDetail: true, // 允許 detail grid
   enableRowGroup: true, // 允許分組
   pagination: true, // 允許分頁
@@ -24,7 +26,7 @@ export const agGridOptions = {
     filter: false, // 啟用篩選
   },
   components: {
-    AgGridButton: AgGridButton,
+    AgGridButton: AgGridButton
   },
   columnTypes: {
     input: {
@@ -38,7 +40,17 @@ export const agGridOptions = {
       valueFormatter: (params) => (params.value === null || params.value === undefined) ? "請輸入" : params.value,
       valueParser: (params) => {
         const newValue = params.newValue.toString().replace(/[^0-9]+/g, "")
-        return newValue === "" ? undefined : Number(newValue)
+        if(newValue === "") {
+          return undefined
+        } else if(params.colDef.minInput && params.newValue < params.colDef.minInput) {
+          setTimeout(() => messageBoxHandler(`輸入數值不可小於${params.colDef.minInput}`), 0); // setTimeout 保証觸發 messageBoxHandler
+          return params.oldValue
+        } else if(params.colDef.maxInput && params.newValue > params.colDef.maxInput) {
+          setTimeout(() => messageBoxHandler(`輸入數值不可大於${params.colDef.maxInput}`), 0); // setTimeout 保証觸發 messageBoxHandler
+          return params.oldValue
+        } else {
+          return Number(newValue)
+        }
       },
       cellStyle: { textAlign: "right" },
     },

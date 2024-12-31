@@ -41,7 +41,7 @@ function removeTag(tabLabel) {
 <style lang="scss" scoped>
 .el-scrollbar {
   height: fit-content;
-  border-bottom: 1px solid var(--lime);
+  border-bottom: 1px solid var(--LIME);
   margin-bottom: 1rem;
 
   .scrollbar-content {
@@ -52,10 +52,10 @@ function removeTag(tabLabel) {
     width: fit-content;
     display: flex;
     align-items: center;
-    color: var(--lime);
+    color: var(--LIME);
     padding: 0 0.25rem;
     margin: 0;
-    border: 1px solid var(--lime);
+    border: 1px solid var(--LIME);
     border-bottom-width: 0;
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
@@ -64,7 +64,7 @@ function removeTag(tabLabel) {
     
     &.active {
       color: black;
-      background-color: var(--lime);
+      background-color: var(--LIME);
     }
 
     .scrollbar-item-label {
