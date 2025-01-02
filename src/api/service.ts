@@ -34,5 +34,13 @@ export default {
 
   getRickAndMorty: async (requestData: string) => {
     return await request.getRequest("https://api.sampleapis.com/rickandmorty/characters", requestData)
+  },
+
+  getCountries: async (requestData: string) => {
+    return await request.getRequest("/json/countries.json", requestData)
+  },
+ 
+  getCats: async (requestData: string) => {
+    return await request.getRequest("https://api.thecatapi.com/v1/images/search?", requestData)
   }
 };

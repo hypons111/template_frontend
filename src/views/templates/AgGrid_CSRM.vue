@@ -1,6 +1,12 @@
 <template>
-  <ag-grid-vue v-if="objectArrayOption.data.value" class="agGrid" :grid-options="gridOptions"
-    :detailCellRendererParams="detailCellRendererParams" :rowData="rowData" @grid-ready="onGridReady" />
+  <ag-grid-vue 
+    v-if="objectArrayOption.data.value" 
+    class="agGrid" 
+    :gridOptions="gridOptions"
+    :detailCellRendererParams="detailCellRendererParams" 
+    :rowData="rowData" 
+    @grid-ready="onGridReady"
+  />
 </template>
 
 <script setup>
@@ -500,7 +506,7 @@ const rowData = ref([
   :deep(.cellInput) {
     border-radius: 0.25rem;
     cursor: pointer;
-    border: 1px solid var(--LIME);
+    border: 1px solid var(--MAGENTA);
   }
 }
 </style>
