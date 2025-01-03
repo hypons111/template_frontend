@@ -45,18 +45,18 @@
         "available": false,
         "children": []
       },
-      "AgGrid_CSRM": {
-        "index": "AgGrid_CSRM",
-        "label": "CSRM",
-        "path": "/csrm",
+      "AgGrid_CSR": {
+        "index": "AgGrid_CSR",
+        "label": "AgGrid CSR",
+        "path": "/CSR",
         "icon": "",
         "available": false,
         "children": []
       },
-      "AgGrid_SSRM": {
-        "index": "AgGrid_SSRM",
-        "label": "SSRM",
-        "path": "/ssrm",
+      "AgGrid_SSR": {
+        "index": "AgGrid_SSR",
+        "label": "AgGrid SSR",
+        "path": "/SSR",
         "icon": "",
         "available": false,
         "children": []

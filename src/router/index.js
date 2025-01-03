@@ -39,16 +39,16 @@ const routes = [
         component: () => import('../views/templates/Inputs.vue')
       },
       {
-        path: '/csrm',
-        name: 'CSRM',
-        meta: { title: "AgGrid CSRM", affix: true },
-        component: () => import('../views/templates/AgGrid_CSRM.vue')
+        path: '/CSR',
+        name: 'CSR',
+        meta: { title: "AgGrid CSR", affix: true },
+        component: () => import('../views/templates/AgGrid_CSR.vue')
       },
       {
-        path: '/ssrm',
-        name: 'SSRM',
-        meta: { title: "AgGrid SSRM", affix: true },
-        component: () => import('../views/templates/AgGrid_SSRM.vue')
+        path: '/SSR',
+        name: 'SSR',
+        meta: { title: "AgGrid SSR", affix: true },
+        component: () => import('../views/templates/AgGrid_SSR.vue')
       },
       {
         path: '/example',

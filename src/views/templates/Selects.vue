@@ -25,8 +25,8 @@
                     :disabled="false" 
                     :multiple="false"
                     :options="options"
-                    :optionFilter="(item) => item.filter(({ name }) => name.includes('Smith'))"
-                    :optionParser="(item) => `[${item.species}]${item.name}`" 
+                    :optionFilter="(item) => item.filter(({ name }) => name.startsWith('A'))"
+                    :optionParser="(item) => `[${item.id}]${item.name}`" 
                     v-model="form.passvieModel" 
                 />
 
@@ -39,8 +39,8 @@
                     :clearable="true" 
                     :disabled="false"
                     :multiple="false"
-                    :apiUrl="'https://api.sampleapis.com/rickandmorty/characters'" 
-                    :optionFilter="(item) => item.filter(({ name }) => name.includes('Rick'))"
+                    :apiUrl="'/json/countries.json'" 
+                    :optionFilter="(item) => item.filter(({ name }) => name.startsWith('B'))"
                     :optionParser="(item) => `[${item.id}]${item.name}`" 
                     v-model="form.apiModel"
                 />
@@ -53,9 +53,11 @@
                     :placeholder="'請輸入關鍵字'"
                     :clearable="true" 
                     :disabled="false"
-                    :apiUrl="'https://api.sampleapis.com/rickandmorty/characters'" 
-                    :optionFilter="(item) => item.filter(({ name }) => name.includes('Rick'))"
-                    :optionParser="(item) => `[${item.species}] ${item.name}`" 
+                    :apiUrl="'/json/countries.json'"
+                    :searchTextField= "'name'"
+                    :searchNumberField= "'id'"
+                    :optionFilter="(item) => item.filter(({ abbreviation }) => abbreviation.startsWith('C'))"
+                    :optionParser="(item) => `[${item.id}]${item.name}`"
                     v-model="form.searchModel"
                 />
                     
@@ -89,7 +91,7 @@ const rules = reactive({
 
 const options = ref([])
 async function fetchOption() {
-    const { success, error, data } = await service.getRickAndMorty()
+    const { success, error, data } = await service.getCountries()
     if(success) options.value = data
     else console.log(error)
 }

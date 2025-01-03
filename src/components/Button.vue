@@ -1,7 +1,8 @@
 <template>
   <el-row :gutter="0">
     <el-col :span="12">
-      <el-button v-for="(btn, index) in buttons" :key="index" 
+      <el-button v-for="(btn, index) in buttons" :key="index"
+        class="button"
         :class="{ 'hidden': !btn.show, 'disabled': btn.disabled }"
         :type="btn.type" 
         :disabled=btn.disabled 
@@ -27,9 +28,10 @@ const props = withDefaults(defineProps<IButton>(), {})
 </script>
 
 <style lang="scss" scoped>
-#buttonGroup {
-  padding: 0.5rem;
-
+  .el-button {
+    margin-bottom: 1rem;
+  }
+  
   .hidden {
     display: none;
   }
@@ -39,5 +41,4 @@ const props = withDefaults(defineProps<IButton>(), {})
     background-color: lightgray !important;
     border: 1px solid lightgray !important;
   }
-}
 </style>

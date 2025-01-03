@@ -8,9 +8,7 @@
         class="scrollbar-item"
         :class="{ active: tab.isActive }"
       >
-        <p class="scrollbar-item-label" @click="tabHandler(tab.label)">
-          {{ tab.label }}
-        </p>
+        <p class="scrollbar-item-label" @click="tabHandler(tab.label)">{{ tab.label }}</p>
         <Close
           v-if="tab.label !== 'Home'"
           class="scrollbar-item-icon"
@@ -19,7 +17,7 @@
       </router-link>
     </div>
   </el-scrollbar>
-  <h1>{{ tabStore.activeTab }}</h1>
+  <h1 id="">{{ tabStore.activeTab }}</h1>
 </template>
 
 <script setup>
@@ -50,6 +48,7 @@ function removeTag(tabLabel) {
 
   .scrollbar-item {
     width: fit-content;
+    height: 3rem;
     display: flex;
     align-items: center;
     color: var(--LIME);
@@ -80,7 +79,6 @@ function removeTag(tabLabel) {
 }
 
 h1 {
-  // margin: 0;
-  // border: 1px solid red;
+  margin: 0 1rem;
 }
 </style>

@@ -22,21 +22,22 @@ import { ref } from "vue";
 import axios from "axios";
 
 const modelValue = defineModel();
-const loading = ref(false)
-const options = ref<any[]>([])
+const loading = ref(false);
+const options = ref<any[]>([]);
 
 interface IProps {
   label: string;
-  class: string,
+  class: string;
   span: number;
   prop: string;
-  placeholder: string,
+  placeholder: string;
   clearable: boolean;
   disabled: boolean;
   apiUrl: string;
-  optionFilter?: Function;
-  optionParser?: Function;
-  // remoteMethod: Function;
+  searchTextField: string;
+  searchNumberField: string;
+  optionFilter: Function | false;
+  optionParser: Function ;
 }
 
 const props = withDefaults(defineProps<IProps>(), {
@@ -46,24 +47,35 @@ const props = withDefaults(defineProps<IProps>(), {
   placeholder: "請輸入關鍵字",
   clearable: true,
   disabled: false,
+  optionFilter: false,
+  searchTextField: "name",
+  searchNumberField: "id"
 });
 
-/* fetch & parse & filter */
+
 const remoteMethod = async (query: string) => {
   if (query) {
-    loading.value = true
-    const response = await axios.get<any[]>(`${props.apiUrl}`)
-    const filteredData = props.optionFilter ? props.optionFilter(response.data) : response.data// 篩選選單
+    loading.value = true;
+    let response = undefined as any
+    if (isNaN(Number(query))) {
+      response = await axios.get(`${props.apiUrl}?${props.searchTextField}.contains=${query}`)
+    } else if (query.length > 2) {
+      response = await axios.get(`${props.apiUrl}?${props.searchNumberField}.contains=${query}`)
+    } else {
+      options.value = []
+      return
+    }
+    const filteredData = props.optionFilter ? props.optionFilter(response.data) : response.data;
     const data = filteredData.map((item: any) => ({
-      label: props.optionParser!(item), // 選項
-      value: item, // 回傳值
+      label: props.optionParser!(item),
+      value: item,
     }));
-    options.value = data
-    loading.value = false
+    options.value = data;
+    loading.value = false;
   } else {
-    options.value = []
+    options.value = [];
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

@@ -16,10 +16,10 @@
         "index": "Inputs_0"
       },
       {
-        "index": "AgGrid_CSRM"
+        "index": "AgGrid_CSR"
       },
       {
-        "index": "AgGrid_SSRM"
+        "index": "AgGrid_SSR"
       }
     ]
   },
