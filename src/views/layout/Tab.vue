@@ -1,23 +1,16 @@
 <template>
-  <el-scrollbar>
-    <div class="scrollbar-content">
-      <router-link
-        :to="tab.path"
-        v-for="tab in tabStore.tabs"
-        :key="tab.label"
-        class="scrollbar-item"
-        :class="{ active: tab.isActive }"
-      >
-        <p class="scrollbar-item-label" @click="tabHandler(tab.label)">{{ tab.label }}</p>
-        <Close
-          v-if="tab.label !== 'Home'"
-          class="scrollbar-item-icon"
-          @click.prevent.stop="removeTag(tab.label)"
-        />
-      </router-link>
-    </div>
-  </el-scrollbar>
-  <h1 id="">{{ tabStore.activeTab }}</h1>
+  <div class="tabGroup">
+    <router-link v-for="tab in tabStore.tabs"
+      :key="tab.label"
+      :to="tab.path"
+      class="tab"
+      :class="{ active: tab.isActive }"
+    >
+      <p class="tab-label" @click="tabHandler(tab.label)">{{ tab.label }}</p>
+      <Close v-if="tab.label !== 'Home'" class="tab-icon" @click.prevent.stop="removeTag(tab.label)" />
+    </router-link>
+  </div>
+  <p id="view-label">{{ tabStore.activeTab }}</p>
 </template>
 
 <script setup>
@@ -31,29 +24,30 @@ function tabHandler(tabLabel) {
   tabStore.setActiveTab(tabLabel); // activate 指定 tab
 }
 
-function removeTag(tabLabel) {
-  tabStore.removeTab(tabLabel); // 移除 tab
+function removeTag(removeTabLabel) {
+  const currentTabLabel = tabStore.getCurrentTab().label
+  if(removeTabLabel === currentTabLabel) { // 判斷是否移除 active 的 tab
+    tabHandler("Home")
+    router.push("/home")
+  }
+  tabStore.removeTab(removeTabLabel); // 移除 tab
 }
 </script>
 
 <style lang="scss" scoped>
-.el-scrollbar {
-  height: fit-content;
+.tabGroup {
+  display: flex;
   border-bottom: 1px solid var(--LIME);
   margin-bottom: 1rem;
 
-  .scrollbar-content {
-    display: flex;
-  }
-
-  .scrollbar-item {
+  .tab {
     width: fit-content;
     height: 2rem;
     display: flex;
     align-items: center;
     color: var(--LIME);
     padding: 0 0.25rem;
-    margin: 0;
+    margin: 0px 2px 0 0;
     border: 1px solid var(--LIME);
     border-bottom-width: 0;
     border-top-left-radius: 4px;
@@ -66,19 +60,22 @@ function removeTag(tabLabel) {
       background-color: var(--LIME);
     }
 
-    .scrollbar-item-label {
+    .tab-label {
       display: inline-block;
       margin: 0;
 
     }
-    .scrollbar-item-icon {
+    .tab-icon {
       width: 1rem;
       margin: 0 0 0 0.5rem;
     }
   }
 }
 
-h1 {
-  margin: 0 1rem;
+#view-label {
+  font-size: 2rem;
+  font-weight: 900;
+  padding: 0 0.5rem;
+  margin: 0 0 1rem 0;
 }
 </style>

@@ -35,6 +35,10 @@ export const useTabStore = defineStore("tab", {
         this.tabs[key].isActive = false;
       }
     },
+
+    getCurrentTab() {
+      return Object.values(this.tabs).filter(item => item.isActive)[0];
+    }
   },
 });
 

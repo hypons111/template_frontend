@@ -3,7 +3,7 @@
     <el-header><p>Header</p></el-header>
     <el-main>
       <Tab />
-      <router-view />
+      <router-view id="view-container"/>
     </el-main>
     <el-footer><p>Footer</p></el-footer>
   </el-container>
@@ -27,6 +27,12 @@ import Tab from "@/views/layout/Tab.vue";
   .el-main {
     display: flex;
     flex-direction: column;
+    
+    #view-container {
+      flex-grow: 1;
+      overflow-x: hidden;      
+      overflow-y: auto;      
+    }
   }
 
   .el-footer {

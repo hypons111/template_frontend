@@ -55,7 +55,7 @@
       },
       "AgGrid_SSR": {
         "index": "AgGrid_SSR",
-        "label": "AgGrid SSR",
+        "label": "X_AgGrid SSR_X",
         "path": "/SSR",
         "icon": "",
         "available": false,

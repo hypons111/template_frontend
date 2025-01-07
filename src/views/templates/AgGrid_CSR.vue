@@ -496,13 +496,9 @@ const rowData = ref([
 </script>
 
 <style lang="scss" scoped>
-.agGrid {
-  height: 100%;
-
   :deep(.cellInput) {
     border-radius: 0.25rem;
     cursor: pointer;
     border: 1px solid var(--MAGENTA);
   }
-}
 </style>
