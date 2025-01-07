@@ -31,9 +31,9 @@ const gridOptions = {
       minWidth: 80,
       maxWidth: 80,
       pinned: "left",
-      headerCheckboxSelection: true, // 顯示全選框
-      checkboxSelection: true, // 顯示選擇框
-      cellRenderer: "agGroupCellRenderer", // 顯示 detail grid 按鈕
+      headerCheckboxSelection: true, // 全選框
+      checkboxSelection: true, // 選擇框
+      cellRenderer: "agGroupCellRenderer", // detail grid
       cellStyle: { textAlign: "center" },
     },
     {
@@ -44,8 +44,8 @@ const gridOptions = {
       // minWidth: 120,
       // maxWidth: 120,
       // pinned: "left", // "left" 或 "right"
-      editable: false, // 編輯
-      rowGroup: false, // 列作為分組鍵。
+      // editable: false, // 編輯
+      // rowGroup: false, // 分組
       // hide: false, // 隱藏
       // valueFormatter: (params) => { },     // 處理顯示的數據格式
       // valueParser: (params) => { },        // 處理輸入的數據格式
@@ -138,7 +138,7 @@ const gridOptions = {
       maxWidth: 200,
       pinned: "right",
       lockPosition: true,
-      headerComponent: "AgGridButton",
+      headerComponent: "AgGridButtonGroup",
       headerComponentParams: {
         buttons: [
           {
@@ -153,21 +153,19 @@ const gridOptions = {
             type: "primary",
             show: true,
             disabled: false,
-            func: (params) => {
-              agGrid.addMaseterRow(gridApi.value, params, {
-                cell: `New Master Row`,
-                date: null,
-                input: "",
-                array: "A",
-                object: "A",
-                objectArray: "A",
-                details: [],
-              });
-            },
-          },
+            func: (params) =>  agGrid.addMaseterRow(gridApi.value, params, {
+              cell: `New Master Row`,
+              date: null,
+              input: "",
+              array: "A",
+              object: "A",
+              objectArray: "A",
+              details: [],
+            })
+          }
         ]
       },
-      cellRenderer: "AgGridButton",
+      cellRenderer: "AgGridButtonGroup",
       cellRendererParams: {
         buttons: [
           {
@@ -204,8 +202,8 @@ const detailCellRendererParams = {
         minWidth: 70,
         maxWidth: 70,
         pinned: "left",
-        headerCheckboxSelection: true, // 顯示全選框
-        checkboxSelection: true, // 顯示選擇框
+        headerCheckboxSelection: true, // 全選框
+        checkboxSelection: true, // 選擇框
         cellStyle: { textAlign: "center" },
       },
       {
@@ -216,8 +214,8 @@ const detailCellRendererParams = {
         // minWidth: 120,
         // maxWidth: 120,
         // pinned: "left", // "left" 或 "right"
-        editable: false, // 編輯
-        rowGroup: false, // 列作為分組鍵。
+        // editable: false, // 編輯
+        // rowGroup: false, // 分組
         // hide: false, // 隱藏
         // valueFormatter: (params) => { },     // 處理顯示的數據格式
         // valueParser: (params) => { },        // 處理輸入的數據格式
@@ -312,28 +310,26 @@ const detailCellRendererParams = {
         maxWidth: 142,
         pinned: "right",
         lockPosition: true,
-        headerComponent: "AgGridButton",
+        headerComponent: "AgGridButtonGroup",
         headerComponentParams: {
           buttons: [
             {
-              /*  註 : [Add Detail Row] 按鈕放在 detail header 時在 onRowGroupOpened() 「使用」 agGrid.ensureSingleNodeExpended() */
               label: "新增",
               type: "primary",
               show: true,
               disabled: false,
-              func: (params) =>
-                agGrid.addDetailrRow(gridApi.value, params, {
-                  cell: "New Detail Row",
-                  date: null,
-                  input: "",
-                  array: "A",
-                  object: "A",
-                  objectArray: "A",
-                }),
+              func: (params) => agGrid.addDetailrRow(gridApi.value, params, {
+                cell: "New Detail Row",
+                date: null,
+                input: "",
+                array: "A",
+                object: "A",
+                objectArray: "A",
+              })
             }
           ]
         },
-        cellRenderer: "AgGridButton",
+        cellRenderer: "AgGridButtonGroup",
         cellRendererParams: {
           buttons:[
             {

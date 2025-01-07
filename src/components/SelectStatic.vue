@@ -34,7 +34,7 @@ interface IProps {
   multiple: boolean;
 }
 
-const props = withDefaults(defineProps<IProps>(), {
+withDefaults(defineProps<IProps>(), {
   class: "",
   span: 24,
   prop: "",

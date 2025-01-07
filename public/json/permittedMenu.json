@@ -1,19 +1,19 @@
 [
   {
-    "index": "Home_0",
+    "index": "Home",
     "children": []
   },
   {
-    "index": "Template_0",
+    "index": "Template",
     "children": [
       {
-        "index": "Buttons_0"
+        "index": "Buttons"
       },
       {
-        "index": "Selects_0"
+        "index": "Selects"
       },
       {
-        "index": "Inputs_0"
+        "index": "Inputs"
       },
       {
         "index": "AgGrid_CSR"
@@ -24,11 +24,11 @@
     ]
   },
   {
-    "index": "Example_0",
+    "index": "Example",
     "children": []
   },
   {
-    "index": "Extra_0",
+    "index": "Extra",
     "children": []
   }
 ]

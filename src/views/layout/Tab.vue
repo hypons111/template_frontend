@@ -48,7 +48,7 @@ function removeTag(tabLabel) {
 
   .scrollbar-item {
     width: fit-content;
-    height: 3rem;
+    height: 2rem;
     display: flex;
     align-items: center;
     color: var(--LIME);

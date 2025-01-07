@@ -35,7 +35,7 @@ const routes = [
       {
         path: '/inputs',
         name: 'Inputs',
-        meta: { title: "Inputs", affix: true },
+        meta: { title: "Input", affix: true },
         component: () => import('../views/templates/Inputs.vue')
       },
       {

@@ -1,12 +1,12 @@
 <template>
     <section>
-        <Button :buttons="[
-            { label: 'primary', type: 'primary', func: () => example('Primary'), show: true, disabled: false },
-            { label: 'success', type: 'success', func: () => example('Success'), show: true, disabled: false },
-            { label: 'warning', type: 'warning', func: () => example('Warning'), show: true, disabled: false },
-            { label: 'danger', type: 'danger', func: () => example('Danger'), show: true, disabled: false },
-            { label: 'info', type: 'info', func: () => example('Info'), show: true, disabled: false },
-            { label: 'none', type: '', func: () => example('None'), show: true, disabled: false }
+        <ButtonGroup :buttons="[
+            { label: 'primary', type: 'primary', show: true, disabled: false, func: () => example('Primary') },
+            { label: 'success', type: 'success', show: true, disabled: false, func: () => example('Success') },
+            { label: 'warning', type: 'warning', show: true, disabled: false, func: () => example('Warning') },
+            { label: 'danger', type: 'danger', show: true, disabled: false, func: () => example('Danger') },
+            { label: 'info', type: 'info', show: true, disabled: false, func: () => example('Info') },
+            { label: 'none', type: '', show: true, disabled: false, func: () => example('None') }
         ]" />
     </section>
 </template>

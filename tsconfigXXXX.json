@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "esnext",              // 目標 JavaScript 版本
+    "module": "esnext",              // 使用的模組系統
+    "moduleResolution": "node",      // 模組解析方式
+    "baseUrl": "./",                 // 基礎路徑，指向專案根目錄
+    "paths": {
+      "@/*": ["src/*"]               // 路徑別名配置
+    },
+    "strict": true,                  // 啟用嚴格模式
+    "esModuleInterop": true,         // 允許 CommonJS 和 ES 模組互操作
+    "skipLibCheck": true,            // 跳過庫型別檢查（可選）
+    "forceConsistentCasingInFileNames": true // 文件名區分大小寫
+  },
+  "include": ["src"],                // 包括要編譯的檔案或目錄
+  "exclude": ["node_modules"]        // 排除目錄
+}

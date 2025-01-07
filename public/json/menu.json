@@ -1,44 +1,44 @@
 {
-  "Home_0": {
-    "index": "Home_0",
+  "Home": {
+    "index": "Home",
     "label": "Home",
     "path": "/home",
     "icon": "document",
     "available": false,
     "children": []
   },
-  "Example_0": {
-    "index": "Example_0",
+  "Example": {
+    "index": "Example",
     "label": "Example",
     "path": "/example",
     "icon": "document",
     "available": false,
     "children": []
   },
-  "Template_0": {
-    "index": "Template_0",
+  "Template": {
+    "index": "Template",
     "label": "Template",
     "icon": "document",
     "available": false,
     "children": {
-      "Buttons_0": {
-        "index": "Buttons_0",
+      "Buttons": {
+        "index": "Buttons",
         "label": "Buttons",
         "path": "/buttons",
         "icon": "",
         "available": false,
         "children": []
       },
-      "Selects_0": {
-        "index": "Selects_0",
+      "Selects": {
+        "index": "Selects",
         "label": "Selects",
         "path": "/selects",
         "icon": "",
         "available": false,
         "children": []
       },
-      "Inputs_0": {
-        "index": "Inputs_0",
+      "Inputs": {
+        "index": "Inputs",
         "label": "Inputs",
         "path": "/inputs",
         "icon": "",
@@ -61,8 +61,8 @@
         "available": false,
         "children": []
       },
-      "noPermition_0": {
-        "index": "noPermition_0",
+      "noPermition": {
+        "index": "noPermition",
         "label": "No Permition",
         "path": "/noPermition",
         "icon": "document",
@@ -71,8 +71,8 @@
       }
     }
   },
-  "noPermition_0": {
-    "index": "noPermition_0",
+  "noPermition": {
+    "index": "noPermition",
     "label": "No Permition",
     "path": "/noPermition",
     "icon": "document",

@@ -2,43 +2,41 @@
     <section>
         <el-form :model="form" :rules="rules" ref="ruleFormRef" label-position="top">
             <el-scrollbar>
-
                 <el-row :gutter="30">
-                    <Input 
+                    <Input
                         :label="'不限輸入 (全屬性)'" 
                         :class="'text-align-right'" 
-                        :span="4"
-                        :prop="'normalModel'" 
                         :placeholder="'自定義 placeholder'" 
                         :clearable="true" 
                         :disabled="false" 
                         :inputType="''"
-                        v-model="form.normalModel"
+                        :span="6"
+                        :prop="'normal'" 
+                        v-model="form.normal"
                         />
                 </el-row>
 
                 <el-row :gutter="30">
-                    <Input :label="'只允許英文'" :inputType="'english'" v-model="form.englishModel" />
-                    <Input :label="'只允許數字'" :inputType="'number'" v-model="form.numberModel" />
-                    <Input :label="'只允許中文'" :inputType="'chinese'" v-model="form.chineseModel" />
-                    <Input :label="'只允許符號'" :inputType="'symbol'" v-model="form.symbolModel" />
+                    <Input :label="'只允許英文'" :inputType="'english'" v-model="form.english" :prop="'english'" />
+                    <Input :label="'只允許數字'" :inputType="'number'" v-model="form.number" :prop="'number'" />
+                    <Input :label="'只允許中文'" :inputType="'chinese'" v-model="form.chinese" :prop="'chinese'" />
+                    <Input :label="'只允許符號'" :inputType="'symbol'" v-model="form.symbol" :prop="'symbol'" />
                 </el-row>
 
                 <el-row :gutter="30">
-                    <Input :label="'只允許正數'" :inputType="'positive'" v-model="form.positiveModel" />
-                    <Input :label="'只允許整數'" :inputType="'integer'" v-model="form.integerModel" />
-                    <Input :label="'只允許正整數'" :inputType="'posInt'" v-model="form.posIntModel" />
+                    <Input :label="'只允許正數'" :inputType="'positive'" v-model="form.positive" :prop="'positive'" />
+                    <Input :label="'只允許整數'" :inputType="'integer'" v-model="form.integer" :prop="'integer'" />
+                    <Input :label="'只允許正整數'" :inputType="'posInt'" v-model="form.posInt" :prop="'posInt'" />
                 </el-row>
 
                 <el-row :gutter="30">
-                    <Input :label="'只允許字母、數字、中文'" :inputType="'engNumChi'" v-model="form.engNumChiModel" />
-                    <Input :label="'只允許英文、數字、符號'" :inputType="'engNumSym'" v-model="form.engNumSymModel" />
-                    <Input :label="'只允許英文、數字'" :inputType="'engNum'" v-model="form.engNumModel" />
-                    <Input :label="'只允許數字、符號'" :inputType="'numSym'" v-model="form.numSymModel" />
+                    <Input :label="'只允許字母、數字、中文'" :inputType="'engNumChi'" v-model="form.engNumChi" :prop="'engNumChi'" />
+                    <Input :label="'只允許英文、數字、符號'" :inputType="'engNumSym'" v-model="form.engNumSym" :prop="'engNumSym'" />
+                    <Input :label="'只允許英文、數字'" :inputType="'engNum'" v-model="form.engNum" :prop="'engNum'" />
+                    <Input :label="'只允許數字、符號'" :inputType="'numSym'" v-model="form.numSym" :prop="'numSym'" />
                 </el-row>
 
             </el-scrollbar>
-
         </el-form>
 
         <button @click="consoleLog()">Console Log</button>
@@ -48,38 +46,40 @@
 
 <script setup>
 const form = reactive({
-    englishModel: undefined,
-    numberModel: undefined,
-    chineseModel: undefined,
-    symbolModel: undefined,
-    positiveModel: undefined,
-    integerModel: undefined,
-    posIntModel: undefined,
-    engNumChiModel: undefined,
-    engNumSymModel: undefined,
-    engNumModel: undefined,
-    numSymModel: undefined,
+    normal: '',
+    english: '',
+    number: '',
+    chinese: '',
+    symbol: '',
+    positive: 0,
+    integer: 0,
+    posInt: 0,
+    engNumChi: '',
+    engNumSym: '',
+    engNum: '',
+    numSym: '',
 });
 
 const ruleFormRef = ref();
 const rules = reactive({
-    normalModel: [{ required: true, message: "請輸入", trigger: "change" }],
+    normal: [{ required: true, message: "請輸入", trigger: "change" }],
 });
 
 function consoleLog() {
     ruleFormRef.value?.validate((valid, fields) => {
         if (valid) {
-            console.log(form.englishModel.trim())
-            console.log(form.numberModel.trim())
-            console.log(form.chineseModel.trim())
-            console.log(form.symbolModel.trim())
-            console.log(Number(form.positiveModel))
-            console.log(Number(form.integerModel))
-            console.log(Number(form.posIntModel))
-            console.log(form.engNumChiModel.trim())
-            console.log(form.engNumSymModel.trim())
-            console.log(form.engNumModel.trim())
-            console.log(form.numSymModel.trim())
+            console.log(form.normal.trim())
+            console.log(form.english.trim())
+            console.log(form.number.trim())
+            console.log(form.chinese.trim())
+            console.log(form.symbol.trim())
+            console.log(Number(form.positive))
+            console.log(Number(form.integer))
+            console.log(Number(form.posInt))
+            console.log(form.engNumChi.trim())
+            console.log(form.engNumSym.trim())
+            console.log(form.engNum.trim())
+            console.log(form.numSym.trim())
         }
     });
 }

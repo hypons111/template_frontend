@@ -14,36 +14,33 @@
 </template>
 
 <script lang="ts" setup>
-import { Ref } from "vue";
-
-const modelValue = defineModel() as Ref<any>;
-
 interface IInput {
   label: string;
   class: string;
-  span: number;
-  prop: string;
   placeholder: string;
   clearable: boolean;
   disabled: boolean;
   inputType:
-    | "english"
-    | "number"
-    | "chinese"
-    | "symbol"
-    | "positive"
-    | "integer"
-    | "posInt"
-    | "engNumChi"
-    | "engNumSym"
-    | "engNum"
-    | "numSym"
-    | "";
+  | "english"
+  | "number"
+  | "chinese"
+  | "symbol"
+  | "positive"
+  | "integer"
+  | "posInt"
+  | "engNumChi"
+  | "engNumSym"
+  | "engNum"
+  | "numSym"
+  | "";
+  span: number;
+  prop: string;
 }
 
+const modelValue = defineModel() as any;
 const props = withDefaults(defineProps<IInput>(), {
   class: "",
-  span: 24,
+  span: 6,
   prop: "",
   placeholder: "請輸入",
   clearable: true,

@@ -1,5 +1,5 @@
 import { agGridThemeCustomize } from "@/style/ag-theme-customize";
-import AgGridButton from "@/components/agGridButton.vue";
+import AgGridButtonGroup from "@/components/AgGridButtonGroup.vue";
 import { localeText } from "@/settings/localeText";
 import { messageBoxHandler } from "@/utils/utility";
 
@@ -26,7 +26,7 @@ export const agGridOptions = {
     filter: false, // 啟用篩選
   },
   components: {
-    AgGridButton: AgGridButton
+    AgGridButtonGroup: AgGridButtonGroup
   },
   columnTypes: {
     input: {

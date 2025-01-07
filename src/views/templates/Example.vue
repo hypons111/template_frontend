@@ -2,15 +2,36 @@
     <el-main>
         <el-form :model="form" :rules="rules" ref="ruleFormRef" label-position="top">
             <el-row :gutter="30">
-                <Input :label="'名稱'" v-model="form.name" prop="" :span="6" :clearable="true" :multiple="false" :disabled="false" :placeholder="'請輸入名稱'" />
-                
-                <SelectStatic :label="'StaticSelect'" v-model="form.staticModel" prop="staticModel" :clearable="true" :multiple="false" :disabled="false" :span="6" :placeholder="'請選擇'" />
+                <Input 
+                  :label="'名稱'"
+                  :class="''"
+                  :inputType="''"
+                  :prop="''" 
+                  :span="6" 
+                  :clearable="true" 
+                  :multiple="false" 
+                  :disabled="false" 
+                  :placeholder="'請輸入名稱'"
+                  v-model="form.name" 
+                />
+                  
+                <SelectStatic 
+                  :label="'StaticSelect'" 
+                  :class="''"
+                  :prop="'staticModel'" 
+                  :clearable="true" 
+                  :multiple="false" 
+                  :disabled="false" 
+                  :span="6" 
+                  :placeholder="'請選擇'"
+                  v-model="form.staticModel" 
+                />
             </el-row>
         </el-form>
 
         <Button :buttons="[
-            { label: '查詢', type: 'primary', func: () => test('Primary'), show: true, disabled: false },
-            { label: '消除', type: 'danger', func: () => test('Danger'), show: true, disabled: false },
+            { label: '查詢', type: 'primary', show: true, disabled: false, func: () => test('Primary') },
+            { label: '消除', type: 'danger', show: true, disabled: false, func: () => test('Danger') },
         ]" />
 
         <ag-grid-vue 
@@ -19,17 +40,18 @@
             :gridOptions="gridOptions"
             :detailCellRendererParams="detailCellRendererParams" 
             :rowData="rowData" 
-            @grid-ready="onGridReady"
+            @grid-ready="gridOptions.onGridReady"
         />
 
     </el-main>
 </template>
 
 <script setup>
-import { reactive, ref } from 'vue';
+import { inject, reactive, ref } from 'vue';
 import { useQuery } from "@tanstack/vue-query";
 import { arrayData, objectData, objectArrayData } from "@/utils/useQuery";
 import { agGrid } from "@/utils/agGrid";
+
 const agGridOptions = inject("agGridOptions");
 
 const form = reactive({
@@ -44,6 +66,12 @@ const rules = reactive({
 const arrayOption = useQuery(arrayData);
 const objectOption = useQuery(objectData);
 const objectArrayOption = useQuery(objectArrayData);
+
+
+function test(string) {
+  console.log(string)
+}
+
 
 const gridApi = ref();
 
@@ -113,7 +141,7 @@ const gridOptions = {
       field: "object",
       type: "option",
       cellEditorParams: () => ({
-        values: Object.values(objectOption.data.value).map(({ id, name }) => `[${id}] ${name}`),
+        values: (Object.values(objectOption.data.value)).map(({ id, name }) => `[${id}] ${name}`),
         searchType: "matchAny",
         allowTyping: true,
         filterList: true,
@@ -155,6 +183,7 @@ const gridOptions = {
       valueSetter: (params) => {
         const newValueId = params.newValue.slice(1, 4);
         params.data.objectArray = objectArrayOption.data.value.find(({ id }) => id === newValueId).value;
+
       },
     },
     {
@@ -163,13 +192,13 @@ const gridOptions = {
       maxWidth: 200,
       pinned: "right",
       lockPosition: true,
-      headerComponent: "AgGridButton",
+      headerComponent: "AgGridButtonGroup",
       headerComponentParams: {
         buttons: [
           {
             label: "Grid 資料",
             type: "success",
-            show: true,
+            show: false,
             disabled: false,
             func: () => console.log(agGrid.getGridData(gridApi.value))
           },
@@ -192,7 +221,7 @@ const gridOptions = {
           },
         ]
       },
-      cellRenderer: "AgGridButton",
+      cellRenderer: "AgGridButtonGroup",
       cellRendererParams: {
         buttons: [
           {
@@ -337,7 +366,7 @@ const detailCellRendererParams = {
         maxWidth: 142,
         pinned: "right",
         lockPosition: true,
-        headerComponent: "AgGridButton",
+        headerComponent: "AgGridButtonGroup",
         headerComponentParams: {
           buttons: [
             {
@@ -358,7 +387,7 @@ const detailCellRendererParams = {
             }
           ]
         },
-        cellRenderer: "AgGridButton",
+        cellRenderer: "AgGridButtonGroup",
         cellRendererParams: {
           buttons:[
             {
