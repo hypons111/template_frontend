@@ -1,8 +1,7 @@
 <template>
     <section>
         <el-form :model="form" :rules="rules" ref="ruleFormRef" label-position="top">
-            <el-row :gutter="30">
-
+            <el-row :gutter="0">
                 <SelectStatic 
                     :label="'StaticSelect'"
                     :class="'text-align-right'" 
@@ -14,7 +13,9 @@
                     :multiple="false" 
                     v-model="form.staticModel"
                 />
+            </el-row>
 
+            <el-row :gutter="0">
                 <SelectPassvie 
                     :label="'Passvie Select (optionFilter)'"
                     :class="''"
@@ -29,7 +30,9 @@
                     :optionParser="(item) => `[${item.id}]${item.name}`" 
                     v-model="form.passvieModel" 
                 />
+            </el-row>
 
+            <el-row :gutter="0">
                 <SelectApi 
                     :label="'API Select (optionFilter)'" 
                     :class="''"
@@ -44,7 +47,9 @@
                     :optionParser="(item) => `[${item.id}]${item.name}`" 
                     v-model="form.apiModel"
                 />
-
+            </el-row>
+            
+            <el-row :gutter="0">
                 <SelectSearch 
                     :label="'Search Select (optionFilter)'" 
                     :class="''"
@@ -60,12 +65,13 @@
                     :optionParser="(item) => `[${item.id}]${item.name}`"
                     v-model="form.searchModel"
                 />
-                    
             </el-row>
         </el-form>
 
-        <button @click="consoleLog()">Console Log</button>
-        <button @click="clear()">Clear Inputs</button>
+        <el-row :gutter="0">
+            <button @click="consoleLog()">Console Log</button>
+            <button @click="clear()">Clear Inputs</button>
+        </el-row>
 
     </section>
 </template>

@@ -1,42 +1,40 @@
 <template>
     <section>
         <el-form :model="form" :rules="rules" ref="ruleFormRef" label-position="top">
-            <el-scrollbar>
-                <el-row :gutter="30">
-                    <Input
-                        :label="'不限輸入 (全屬性)'" 
-                        :class="'text-align-right'" 
-                        :placeholder="'自定義 placeholder'" 
-                        :clearable="true" 
-                        :disabled="false" 
-                        :inputType="''"
-                        :span="6"
-                        :prop="'normal'" 
-                        v-model="form.normal"
-                        />
-                </el-row>
+            <el-row :gutter="30">
+                <Input
+                    :label="'不限輸入 (全屬性)'" 
+                    :class="'text-align-right'" 
+                    :placeholder="'自定義 placeholder'" 
+                    :clearable="true" 
+                    :disabled="false" 
+                    :inputType="''"
+                    :span="6"
+                    :prop="'normal'" 
+                    v-model="form.normal"
+                />
+            </el-row>
 
-                <el-row :gutter="30">
-                    <Input :label="'只允許英文'" :inputType="'english'" v-model="form.english" :prop="'english'" />
-                    <Input :label="'只允許數字'" :inputType="'number'" v-model="form.number" :prop="'number'" />
-                    <Input :label="'只允許中文'" :inputType="'chinese'" v-model="form.chinese" :prop="'chinese'" />
-                    <Input :label="'只允許符號'" :inputType="'symbol'" v-model="form.symbol" :prop="'symbol'" />
-                </el-row>
+            <el-row :gutter="30">
+                <Input :label="'只允許英文'" :inputType="'english'" v-model="form.english" :prop="'english'" />
+                <Input :label="'只允許數字'" :inputType="'number'" v-model="form.number" :prop="'number'" />
+                <Input :label="'只允許中文'" :inputType="'chinese'" v-model="form.chinese" :prop="'chinese'" />
+                <Input :label="'只允許符號'" :inputType="'symbol'" v-model="form.symbol" :prop="'symbol'" />
+            </el-row>
 
-                <el-row :gutter="30">
-                    <Input :label="'只允許正數'" :inputType="'positive'" v-model="form.positive" :prop="'positive'" />
-                    <Input :label="'只允許整數'" :inputType="'integer'" v-model="form.integer" :prop="'integer'" />
-                    <Input :label="'只允許正整數'" :inputType="'posInt'" v-model="form.posInt" :prop="'posInt'" />
-                </el-row>
+            <el-row :gutter="30">
+                <Input :label="'只允許正數'" :inputType="'positive'" v-model="form.positive" :prop="'positive'" />
+                <Input :label="'只允許整數'" :inputType="'integer'" v-model="form.integer" :prop="'integer'" />
+                <Input :label="'只允許正整數'" :inputType="'posInt'" v-model="form.posInt" :prop="'posInt'" />
+            </el-row>
 
-                <el-row :gutter="30">
-                    <Input :label="'只允許字母、數字、中文'" :inputType="'engNumChi'" v-model="form.engNumChi" :prop="'engNumChi'" />
-                    <Input :label="'只允許英文、數字、符號'" :inputType="'engNumSym'" v-model="form.engNumSym" :prop="'engNumSym'" />
-                    <Input :label="'只允許英文、數字'" :inputType="'engNum'" v-model="form.engNum" :prop="'engNum'" />
-                    <Input :label="'只允許數字、符號'" :inputType="'numSym'" v-model="form.numSym" :prop="'numSym'" />
-                </el-row>
+            <el-row :gutter="30">
+                <Input :label="'只允許字母、數字、中文'" :inputType="'engNumChi'" v-model="form.engNumChi" :prop="'engNumChi'" />
+                <Input :label="'只允許英文、數字、符號'" :inputType="'engNumSym'" v-model="form.engNumSym" :prop="'engNumSym'" />
+                <Input :label="'只允許英文、數字'" :inputType="'engNum'" v-model="form.engNum" :prop="'engNum'" />
+                <Input :label="'只允許數字、符號'" :inputType="'numSym'" v-model="form.numSym" :prop="'numSym'" />
+            </el-row>
 
-            </el-scrollbar>
         </el-form>
 
         <button @click="consoleLog()">Console Log</button>

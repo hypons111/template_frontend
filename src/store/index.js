@@ -1,6 +1,6 @@
 import { createPinia } from "pinia";
 
-/* 創建 Pinia 實例 */
+/* 創建全局 Pinia 實例 */
 const pinia = createPinia();
 
 /* 定義 Tab store */
@@ -20,6 +20,7 @@ export const useTabStore = defineStore("tab", {
     },
     /* 添加 tab */
     addTab(tab) {
+      console.log(tab)
       this.deactivateAllTabs()
       this.tabs[tab.label] = { label: tab.label, isActive: true, path: tab.path };
       this.activeTab = tab.label;

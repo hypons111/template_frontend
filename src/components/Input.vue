@@ -40,7 +40,7 @@ interface IInput {
 const modelValue = defineModel() as any;
 const props = withDefaults(defineProps<IInput>(), {
   class: "",
-  span: 24,
+  span: 6,
   prop: "",
   placeholder: "請輸入",
   clearable: true,

@@ -8,11 +8,8 @@
     </div>
 
     <el-scrollbar>
-      <el-menu default-active="2" :collapse="collapse"
-        popper-class="menu-popper"
-      >
+      <el-menu default-active="2" :collapse="collapse">
         <div v-for="(item, index) in menu" :index="index">
-          
           <el-menu-item v-if="item.children.length === 0 && item.available" :class="{ on: currentView === item.index }" :index="item.label" @click="menuHander(item)">
             <router-link :to="item.path">
               <el-icon><setting /></el-icon>
@@ -109,7 +106,7 @@ onBeforeMount(async () => {
     border-width: 0;
 
     &>DIV {
-      width: 100%;
+      width: 15rem;
     }
 
     DIV * {
@@ -136,25 +133,6 @@ onBeforeMount(async () => {
           color: var(--LIME);
         }
       }
-    }
-
-    &.el-menu--collapse .el-sub-menu :deep(.el-sub-menu__icon-arrow) {
-      display: none;
-    }
-  }
-}
-</style>
-
-<style lang="scss">
-.menu-popper {
-  border: 1px solid var(--LIME) !important;
-
-  .el-menu--popup {
-    background-color: black;
-    
-    .el-menu-item > A {
-      color: var(--LIME);
-      text-decoration: none;
     }
   }
 }

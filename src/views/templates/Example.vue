@@ -1,53 +1,54 @@
 <template>
-    <el-main>
-        <el-form :model="form" :rules="rules" ref="ruleFormRef" label-position="top">
-            <el-row :gutter="30">
-                <Input 
-                  :label="'名稱'"
-                  :class="''"
-                  :inputType="''"
-                  :prop="''" 
-                  :span="6" 
-                  :clearable="true" 
-                  :multiple="false" 
-                  :disabled="false" 
-                  :placeholder="'請輸入名稱'"
-                  v-model="form.name" 
-                />
-                  
-                <SelectStatic 
-                  :label="'StaticSelect'" 
-                  :class="''"
-                  :prop="'staticModel'" 
-                  :clearable="true" 
-                  :multiple="false" 
-                  :disabled="false" 
-                  :span="6" 
-                  :placeholder="'請選擇'"
-                  v-model="form.staticModel" 
-                />
-            </el-row>
-        </el-form>
-
-        <Button :buttons="[
-            { label: '查詢', type: 'primary', show: true, disabled: false, func: () => test('Primary') },
-            { label: '消除', type: 'danger', show: true, disabled: false, func: () => test('Danger') },
-        ]" />
-
-        <ag-grid-vue 
-            v-if="objectArrayOption.data.value" 
-            class="agGrid" 
-            :gridOptions="gridOptions"
-            :detailCellRendererParams="detailCellRendererParams" 
-            :rowData="rowData" 
-            @grid-ready="gridOptions.onGridReady"
+    <el-form :model="form" :rules="rules" ref="ruleFormRef" label-position="top">
+      <el-row :gutter="30">
+        <Input
+          :label="'名稱'"
+          :class="''"
+          :inputType="''"
+          :prop="''"
+          :span="6"
+          :clearable="true"
+          :multiple="false"
+          :disabled="false"
+          :placeholder="'請輸入名稱'"
+          v-model="form.name"
         />
 
-    </el-main>
+        <SelectStatic
+          :label="'StaticSelect'"
+          :class="''"
+          :prop="'staticModel'"
+          :clearable="true"
+          :multiple="false"
+          :disabled="false"
+          :span="6"
+          :placeholder="'請選擇'"
+          v-model="form.staticModel"
+        />
+      </el-row>
+    </el-form>
+
+    <el-row>
+      <ButtonGroup
+        :buttons="[
+          { label: '查詢', type: 'primary', show: true, disabled: false, func: () => example('Primary') },
+          { label: '消除', type: 'danger', show: true, disabled: false, func: () => example('Danger') }
+        ]"
+      />
+    </el-row>
+
+    <ag-grid-vue
+      v-if="objectArrayOption.data.value"
+      class="agGrid"
+      :gridOptions="gridOptions"
+      :detailCellRendererParams="detailCellRendererParams"
+      :rowData="rowData"
+      @grid-ready="gridOptions.onGridReady"
+    />
 </template>
 
 <script setup>
-import { inject, reactive, ref } from 'vue';
+import { inject, reactive, ref } from "vue";
 import { useQuery } from "@tanstack/vue-query";
 import { arrayData, objectData, objectArrayData } from "@/utils/useQuery";
 import { agGrid } from "@/utils/agGrid";
@@ -55,23 +56,21 @@ import { agGrid } from "@/utils/agGrid";
 const agGridOptions = inject("agGridOptions");
 
 const form = reactive({
-    name: undefined
+  name: undefined,
 });
 
 const ruleFormRef = ref();
 const rules = reactive({
-    // numberModel: [{ required: true, message: "請輸入", trigger: "blur" }],
+  // numberModel: [{ required: true, message: "請輸入", trigger: "blur" }],
 });
 
 const arrayOption = useQuery(arrayData);
 const objectOption = useQuery(objectData);
 const objectArrayOption = useQuery(objectArrayData);
 
-
 function test(string) {
-  console.log(string)
+  console.log(string);
 }
-
 
 const gridApi = ref();
 
@@ -115,8 +114,8 @@ const gridOptions = {
       headerName: "Number",
       field: "number",
       type: "number",
-      minInput: 1,    // 最少數值
-      maxInput: 100,  // 最大數值
+      minInput: 1, // 最少數值
+      maxInput: 100, // 最大數值
     },
     {
       headerName: "Date",
@@ -141,7 +140,9 @@ const gridOptions = {
       field: "object",
       type: "option",
       cellEditorParams: () => ({
-        values: (Object.values(objectOption.data.value)).map(({ id, name }) => `[${id}] ${name}`),
+        values: Object.values(objectOption.data.value).map(
+          ({ id, name }) => `[${id}] ${name}`
+        ),
         searchType: "matchAny",
         allowTyping: true,
         filterList: true,
@@ -166,7 +167,9 @@ const gridOptions = {
       field: "objectArray",
       type: "option",
       cellEditorParams: () => ({
-        values: objectArrayOption.data.value.map(({ id, name }) => `[${id}] ${name}`),
+        values: objectArrayOption.data.value.map(
+          ({ id, name }) => `[${id}] ${name}`
+        ),
         searchType: "matchAny",
         allowTyping: true,
         filterList: true,
@@ -182,8 +185,9 @@ const gridOptions = {
       },
       valueSetter: (params) => {
         const newValueId = params.newValue.slice(1, 4);
-        params.data.objectArray = objectArrayOption.data.value.find(({ id }) => id === newValueId).value;
-
+        params.data.objectArray = objectArrayOption.data.value.find(
+          ({ id }) => id === newValueId
+        ).value;
       },
     },
     {
@@ -200,7 +204,7 @@ const gridOptions = {
             type: "success",
             show: false,
             disabled: false,
-            func: () => console.log(agGrid.getGridData(gridApi.value))
+            func: () => console.log(agGrid.getGridData(gridApi.value)),
           },
           {
             label: "新增",
@@ -219,7 +223,7 @@ const gridOptions = {
               });
             },
           },
-        ]
+        ],
       },
       cellRenderer: "AgGridButtonGroup",
       cellRendererParams: {
@@ -229,21 +233,32 @@ const gridOptions = {
             type: "success",
             show: true,
             disabled: false,
-            func: (params) => console.log(agGrid.getMasterRowData(gridApi.value, params.data.masterRowIndex)),
+            func: (params) =>
+              console.log(
+                agGrid.getMasterRowData(
+                  gridApi.value,
+                  params.data.masterRowIndex
+                )
+              ),
           },
           {
             label: "刪除",
             type: "danger",
             show: true,
             disabled: false,
-            func: (params) => agGrid.deleteMasterRow(gridApi.value, params.data),
-          }
-        ]
+            func: (params) =>
+              agGrid.deleteMasterRow(gridApi.value, params.data),
+          },
+        ],
       },
     },
   ],
-  onGridReady: (params) => { gridApi.value = params.api },
-  onRowGroupOpened: (event) => { agGrid.ensureSingleNodeExpended(gridApi.value, event) },
+  onGridReady: (params) => {
+    gridApi.value = params.api;
+  },
+  onRowGroupOpened: (event) => {
+    agGrid.ensureSingleNodeExpended(gridApi.value, event);
+  },
   // onCellEditingStopped: (params) => {},
   // onCellValueChanged: (params) => {},
 };
@@ -288,8 +303,8 @@ const detailCellRendererParams = {
         headerName: "Number",
         field: "number",
         type: "number",
-        minInput: 1,    // 最少數值
-        maxInput: 100,  // 最大數值
+        minInput: 1, // 最少數值
+        maxInput: 100, // 最大數值
       },
       {
         headerName: "Date",
@@ -315,7 +330,9 @@ const detailCellRendererParams = {
         type: "option",
         cellEditorParams: () => {
           return {
-            values: Object.values(objectOption.data.value).map(({ id, name }) => `[${id}] ${name}`),
+            values: Object.values(objectOption.data.value).map(
+              ({ id, name }) => `[${id}] ${name}`
+            ),
             searchType: "matchAny",
             allowTyping: true,
             filterList: true,
@@ -341,7 +358,9 @@ const detailCellRendererParams = {
         field: "objectArray",
         type: "option",
         cellEditorParams: () => ({
-          values: objectArrayOption.data.value.map(({ id, name }) => `[${id}] ${name}`),
+          values: objectArrayOption.data.value.map(
+            ({ id, name }) => `[${id}] ${name}`
+          ),
           searchType: "matchAny",
           allowTyping: true,
           filterList: true,
@@ -357,7 +376,9 @@ const detailCellRendererParams = {
         },
         valueSetter: (params) => {
           const newValueId = params.newValue.slice(1, 4);
-          params.data.objectArray = objectArrayOption.data.value.find(({ id }) => id === newValueId).value;
+          params.data.objectArray = objectArrayOption.data.value.find(
+            ({ id }) => id === newValueId
+          ).value;
         },
       },
       {
@@ -384,27 +405,31 @@ const detailCellRendererParams = {
                   object: "A",
                   objectArray: "A",
                 }),
-            }
-          ]
+            },
+          ],
         },
         cellRenderer: "AgGridButtonGroup",
         cellRendererParams: {
-          buttons:[
+          buttons: [
             {
               label: "資料",
               type: "success",
               show: true,
               disabled: false,
-              func: (params) => console.log(agGrid.getDetailRowData(gridApi.value, params.data)),
+              func: (params) =>
+                console.log(
+                  agGrid.getDetailRowData(gridApi.value, params.data)
+                ),
             },
             {
               label: "刪除",
               type: "danger",
               show: true,
               disabled: false,
-              func: (params) => agGrid.deleteDetailRow(gridApi.value, params.data),
-            }
-          ]
+              func: (params) =>
+                agGrid.deleteDetailRow(gridApi.value, params.data),
+            },
+          ],
         },
       },
     ],
@@ -412,7 +437,7 @@ const detailCellRendererParams = {
   getDetailRowData: (params) => {
     params.successCallback(params.data.details); //  動態數據
   },
-  onCellEditingStopped: (params) => { },
+  onCellEditingStopped: (params) => {},
 };
 
 const rowData = ref([
@@ -462,7 +487,7 @@ const rowData = ref([
         array: "C",
         object: "C",
         objectArray: "C",
-      }
+      },
     ],
   },
   {
@@ -555,19 +580,19 @@ const rowData = ref([
 
 <style lang="scss" scoped>
 .el-main {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  .agGrid {
+    flex-grow: 1;
     height: 100%;
-    display: flex;
-    flex-direction: column;
 
-    .agGrid {
-        flex-grow: 1;
-        height: 100%;
-
-        :deep(.cellInput) {
-            border-radius: 0.25rem;
-            cursor: pointer;
-            border: 1px solid var(--MAGENTA)
-        }
+    :deep(.cellInput) {
+      border-radius: 0.25rem;
+      cursor: pointer;
+      border: 1px solid var(--MAGENTA);
     }
+  }
 }
 </style>

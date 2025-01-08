@@ -1,14 +1,14 @@
 <template>
   <el-col :span="24" :xs="24">
     <el-button v-for="(btn, index) in buttons" :key="index"
+      :icon="btn.icon"
       :type="btn.type"
       :plain="btn.plain"
-      :round="btn.round"
+      :circle="true"
       :class="{ 'hidden': !btn.show, 'disabled': btn.disabled }"
       :disabled="btn.disabled"
       @click="btn.func(parameter)"
     >
-    {{ btn.label }}
     </el-button>
   </el-col>
 </template>
@@ -16,10 +16,9 @@
 <script lang="ts" setup>
 interface IProps {
   buttons: {
-    label: string;
+    icon:   any;
     type: "primary" | "success" | "warning" | "danger" | "info" | "";
     plain: boolean;
-    round: boolean;
     show: boolean;
     disabled: boolean;
     func: Function;
