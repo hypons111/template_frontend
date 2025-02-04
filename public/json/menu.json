@@ -61,6 +61,14 @@
         "available": false,
         "children": []
       },
+      "OpenStreetMap": {
+        "index": "OpenStreetMap",
+        "label": "Open Street Map",
+        "path": "/openStreetMap",
+        "icon": "",
+        "available": false,
+        "children": []
+      },
       "noPermition": {
         "index": "noPermition",
         "label": "No Permition",

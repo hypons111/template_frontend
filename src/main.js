@@ -13,6 +13,7 @@ import { agGridOptions } from "@/settings/agGridOptions";
 /* 樣式 */
 import "element-plus/dist/index.css";
 import "./style/style.scss";
+import "leaflet/dist/leaflet.css";
 
 /*  vue-query 配置 */
 const vueQueryPluginOptions = {

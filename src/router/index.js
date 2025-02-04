@@ -58,14 +58,14 @@ const routes = [
         component: () => import('../views/templates/Inputs.vue')
       },
       {
-        path: '/CSR',
+        path: '/csr',
         name: 'CSR',
         meta: { title: "AgGrid CSR", affix: true },
         beforeEnter: guard,
         component: () => import('../views/templates/AgGrid_CSR.vue')
       },
       {
-        path: '/SSR',
+        path: '/ssr',
         name: 'SSR',
         meta: { title: "AgGrid SSR", affix: true },
         beforeEnter: guard,
@@ -77,6 +77,13 @@ const routes = [
         meta: { title: "AgGrid", affix: true },
         beforeEnter: guard,
         component: () => import('../views/templates/Example.vue')
+      },
+      {
+        path: '/openStreetMap',
+        name: 'OpenStreetMap',
+        meta: { title: "Open Street Map", affix: true },
+        beforeEnter: guard,
+        component: () => import('../views/templates/OpenStreetMap.vue')
       }
     ]
   }

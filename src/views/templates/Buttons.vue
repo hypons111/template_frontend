@@ -2,22 +2,22 @@
     <section>
         <el-row :gutter="30">
             <ButtonGroup :buttons="[
-                { label: 'primary', type: 'primary', plain: false, shape: '', show: true, disabled: false, func: () => example('Primary') },
-                { label: 'success', type: 'success', plain: false, shape: '', show: true, disabled: false, func: () => example('Success') },
-                { label: 'warning', type: 'warning', plain: false, shape: '', show: true, disabled: false, func: () => example('Warning') },
-                { label: 'danger', type: 'danger', plain: false, shape: '', show: true, disabled: false, func: () => example('Danger') },
-                { label: 'info', type: 'info', plain: false, shape: '', show: true, disabled: false, func: () => example('Info') },
-                { label: 'none', type: '', plain: false, shape: '', show: true, disabled: false, func: () => example('None') }
+                { label: 'primary', type: 'primary', plain: false, round: false, show: true, disabled: false, func: () => example('Primary') },
+                { label: 'success', type: 'success', plain: false, round: false, show: true, disabled: false, func: () => example('Success') },
+                { label: 'warning', type: 'warning', plain: false, round: false, show: true, disabled: false, func: () => example('Warning') },
+                { label: 'danger', type: 'danger', plain: false, round: false, show: true, disabled: false, func: () => example('Danger') },
+                { label: 'info', type: 'info', plain: false, round: false, show: true, disabled: false, func: () => example('Info') },
+                { label: 'none', type: '', plain: false, round: false, show: true, disabled: false, func: () => example('None') }
             ]" />
         </el-row>
         <el-row :gutter="30">
             <ButtonGroup :buttons="[
-                { label: 'primary', type: 'primary', plain: true, shape: '', show: true, disabled: false, func: () => example('Plain Primary') },
-                { label: 'success', type: 'success', plain: true, shape: '', show: true, disabled: false, func: () => example('Plain Success') },
-                { label: 'warning', type: 'warning', plain: true, shape: '', show: true, disabled: false, func: () => example('Plain Warning') },
-                { label: 'danger', type: 'danger', plain: true, shape: '', show: true, disabled: false, func: () => example('Plain Danger') },
-                { label: 'info', type: 'info', plain: true, shape: '', show: true, disabled: false, func: () => example('Plain Info') },
-                { label: 'none', type: '', plain: true, shape: '', show: true, disabled: false, func: () => example('Plain None') }
+                { label: 'primary', type: 'primary', plain: true, round: false, show: true, disabled: false, func: () => example('Plain Primary') },
+                { label: 'success', type: 'success', plain: true, round: false, show: true, disabled: false, func: () => example('Plain Success') },
+                { label: 'warning', type: 'warning', plain: true, round: false, show: true, disabled: false, func: () => example('Plain Warning') },
+                { label: 'danger', type: 'danger', plain: true, round: false, show: true, disabled: false, func: () => example('Plain Danger') },
+                { label: 'info', type: 'info', plain: true, round: false, show: true, disabled: false, func: () => example('Plain Info') },
+                { label: 'none', type: '', plain: true, round: false, show: true, disabled: false, func: () => example('Plain None') }
             ]" />
         </el-row>
         <el-row :gutter="30">

@@ -20,6 +20,9 @@
       },
       {
         "index": "AgGrid_SSR"
+      },
+      {
+        "index": "OpenStreetMap"
       }
     ]
   },
