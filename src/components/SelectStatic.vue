@@ -1,5 +1,5 @@
 <template>
-  <el-col :span="span" :xs="24">
+  <el-col class="selectSeries" :span="span" :xs="24">
     <el-form-item :prop="prop" :label="labelObj[label]">
       <el-select
         :class="class"
@@ -8,6 +8,7 @@
         :disabled="disabled"
         :multiple="multiple"
         v-model="modelValue"
+        :teleported="false"
       >
         <el-option
           v-for="item in options[label]"
@@ -36,7 +37,7 @@ interface IProps {
 
 withDefaults(defineProps<IProps>(), {
   class: "",
-  span: 24,
+  span: 4,
   prop: "",
   placeholder: "請選擇",
   clearable: true,
@@ -108,10 +109,5 @@ const options = {
 </script>
 
 <style lang="scss" scoped>
-:deep(.text-align-right) {
-  border: 1px solid red;
-  DIV {
-    text-align: right;
-  }
-}
+@import '@/style/select_style.scss';
 </style>

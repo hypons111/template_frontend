@@ -1,7 +1,7 @@
 <template>
     <section>
         <el-form :model="form" :rules="rules" ref="ruleFormRef" label-position="top">
-            <el-row :gutter="0">
+            <el-row :gutter="20">
                 <SelectStatic 
                     :label="'StaticSelect'"
                     :class="'text-align-right'" 
@@ -13,12 +13,10 @@
                     :multiple="false" 
                     v-model="form.staticModel"
                 />
-            </el-row>
 
-            <el-row :gutter="0">
                 <SelectPassvie 
                     :label="'Passvie Select (optionFilter)'"
-                    :class="''"
+                    :class="'text-align-right'" 
                     :span="6" 
                     :prop="'passvieModel'"
                     :placeholder="'請選擇'" 
@@ -30,12 +28,10 @@
                     :optionParser="(item) => `[${item.id}]${item.name}`" 
                     v-model="form.passvieModel" 
                 />
-            </el-row>
 
-            <el-row :gutter="0">
                 <SelectApi 
                     :label="'API Select (optionFilter)'" 
-                    :class="''"
+                    :class="'text-align-right'" 
                     :span="6"
                     :prop="'apiModel'"
                     :placeholder="'請選擇'"
@@ -47,12 +43,10 @@
                     :optionParser="(item) => `[${item.id}]${item.name}`" 
                     v-model="form.apiModel"
                 />
-            </el-row>
-            
-            <el-row :gutter="0">
+
                 <SelectSearch 
                     :label="'Search Select (optionFilter)'" 
-                    :class="''"
+                    :class="'text-align-right'" 
                     :span="6" 
                     :prop="'searchModel'"
                     :placeholder="'請輸入關鍵字'"
@@ -123,9 +117,9 @@ onBeforeMount(() => {
 </script>
 
 <style lang="scss" scoped>
-SECTION {
-    height: 20%;
-}
+// SECTION {
+//     height: 20%;
+// }
 </style>
 
 

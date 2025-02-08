@@ -1,5 +1,5 @@
 <template>
-  <el-col :span="span" :xs="24">
+  <el-col class="selectSeries" :span="span" :xs="24">
     <el-skeleton v-if="isPending" :rows="1" animated />
 
     <el-form-item v-else-if="isError" :label="label">
@@ -14,7 +14,8 @@
         :disabled="disabled"
         :multiple="multiple" 
         :options="parsedOptions" 
-        v-model="modelValue" 
+        v-model="modelValue"
+        :teleported="false"
       />
     </el-form-item>
   </el-col>
@@ -43,7 +44,7 @@ interface IProps {
 
 const props = withDefaults(defineProps<IProps>(), {
   class: "",
-  span: 24,
+  span: 4,
   prop: "",
   placeholder: "請選擇",
   clearable: true,
@@ -68,9 +69,5 @@ const parsedOptions = computed(() => {
 </script>
 
 <style lang="scss" scoped>
-:deep(.text-align-right) {
-  & > DIV  {
-    text-align: right;
-  }
-}
+@import '@/style/select_style.scss';
 </style>

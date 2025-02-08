@@ -14,7 +14,8 @@ import { useQuery } from "@tanstack/vue-query";
 import { arrayData, objectData, objectArrayData } from "@/utils/useQuery";
 import { agGrid } from "@/utils/agGrid";
 
-const agGridOptions = inject("agGridOptions"); // gridOptions 預設設定
+/* gridOptions 預設設定 */
+const agGridOptions = inject("agGridOptions"); 
 
 const arrayOption = useQuery(arrayData);
 const objectOption = useQuery(objectData);
@@ -23,7 +24,7 @@ const objectArrayOption = useQuery(objectArrayData);
 const gridApi = ref();
 
 const gridOptions = {
-  ...agGridOptions, // 基本 gridOptions 設定
+  ...agGridOptions,
   columnDefs: [
     {
       headerName: "項次",
@@ -96,12 +97,8 @@ const gridOptions = {
         valueListMaxHeight: 200,
       }),
       valueFormatter: (params) => {
-        for (let key in objectOption.data.value) {
-          if (objectOption.data.value[key].value === params.value) {
-            const option = objectOption.data.value[key];
-            return `[${option.id}] ${option.name}`;
-          }
-        }
+        const option = Object.values(objectOption.data.value).find(({ value }) => value === params.value)
+        if(option) return `[${option.id}] ${option.name}`
       },
       valueSetter: (params) => {
         const id = params.newValue.slice(1, 4);
@@ -121,11 +118,8 @@ const gridOptions = {
         valueListMaxHeight: 200,
       }),
       valueFormatter: (params) => {
-        for (let option of objectArrayOption.data.value) {
-          if (option.value === params.value) {
-            return `[${option.id}] ${option.name}`;
-          }
-        }
+        const option = Object.values(objectArrayOption.data.value).find(({ value }) => value === params.value)
+        if(option) return `[${option.id}] ${option.name}`
       },
       valueSetter: (params) => {
         const newValueId = params.newValue.slice(1, 4);

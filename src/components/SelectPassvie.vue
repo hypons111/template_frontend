@@ -1,5 +1,5 @@
 <template>
-  <el-col :span="span" :xs="24">
+  <el-col class="selectSeries" :span="span" :xs="24">
     <el-form-item :prop="prop" :label="label">
       <el-select-v2 
         :class="class"
@@ -9,6 +9,7 @@
         :multiple="multiple"
         :options="parsedOptions"
         v-model="modelValue"
+        :teleported="false"
       />
     </el-form-item>
   </el-col>
@@ -35,7 +36,7 @@ interface IProps {
 
 const props = withDefaults(defineProps<IProps>(), {
   class: "",
-  span: 24,
+  span: 4,
   prop: "",
   placeholder: "請選擇",
   clearable: true,
@@ -54,9 +55,5 @@ const parsedOptions = computed(() => {
 </script>
 
 <style lang="scss" scoped>
-:deep(.text-align-right) {
-  & > DIV {
-    text-align: right;
-  }
-}
+@import '@/style/select_style.scss';
 </style>

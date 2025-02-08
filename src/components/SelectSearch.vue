@@ -1,5 +1,5 @@
 <template>
-  <el-col :span="span" :xs="24">
+  <el-col class="selectSeries" :span="span" :xs="24">
     <el-form-item :prop="prop" :label="label">
       <el-select-v2
         :class="class"
@@ -12,6 +12,7 @@
         remote
         :remote-method="remoteMethod"
         :loading="loading"
+        :teleported="false"
       />
     </el-form-item>
   </el-col>
@@ -42,7 +43,7 @@ interface IProps {
 
 const props = withDefaults(defineProps<IProps>(), {
   class: "",
-  span: 24,
+  span: 4,
   prop: "",
   placeholder: "請輸入關鍵字",
   clearable: true,
@@ -79,9 +80,5 @@ const remoteMethod = async (query: string) => {
 </script>
 
 <style lang="scss" scoped>
-:deep(.text-align-right) {
-  & > DIV {
-    text-align: right;
-  }
-}
+@import '@/style/select_style.scss';
 </style>
