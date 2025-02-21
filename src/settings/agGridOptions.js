@@ -62,7 +62,7 @@ export const agGridOptions = {
     },
     option: {
       editable: true,
-      cellClass: "cellInput",
+      cellClass: "cellOption",
       cellEditor: "agRichSelectCellEditor",
     }
   },
