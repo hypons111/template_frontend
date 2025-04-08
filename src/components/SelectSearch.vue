@@ -2,7 +2,7 @@
   <el-col class="selectSeries" :span="span" :xs="24">
     <el-form-item :prop="prop" :label="label">
       <el-select-v2
-        :class="class"
+        :class="classList"
         :placeholder="placeholder"
         :clearable="clearable"
         :disabled="disabled"
@@ -12,7 +12,6 @@
         remote
         :remote-method="remoteMethod"
         :loading="loading"
-        :teleported="false"
       />
     </el-form-item>
   </el-col>
@@ -26,9 +25,9 @@ const modelValue = defineModel();
 const loading = ref(false);
 const options = ref<any[]>([]);
 
-interface IProps {
+interface Interface {
   label: string;
-  class: string;
+  classList: string;
   span: number;
   prop: string;
   placeholder: string;
@@ -41,8 +40,8 @@ interface IProps {
   optionParser: Function ;
 }
 
-const props = withDefaults(defineProps<IProps>(), {
-  class: "",
+const props = withDefaults(defineProps<Interface>(), {
+  classList: "",
   span: 4,
   prop: "",
   placeholder: "請輸入關鍵字",
@@ -52,7 +51,6 @@ const props = withDefaults(defineProps<IProps>(), {
   searchTextField: "name",
   searchNumberField: "id"
 });
-
 
 const remoteMethod = async (query: string) => {
   if (query) {
@@ -79,6 +77,7 @@ const remoteMethod = async (query: string) => {
 };
 </script>
 
-<style lang="scss" scoped>
-@import '@/style/select_style.scss';
+<style lang="scss">
+@import '@/style/selectStyle.scss';
 </style>
+

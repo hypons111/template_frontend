@@ -3,11 +3,11 @@
         <el-form :model="form" :rules="rules" ref="ruleFormRef" label-position="top">
             <el-row :gutter="20">
                 <SelectStatic 
-                    :label="'StaticSelect'"
-                    :class="'text-align-right'" 
-                    :span="6" 
+                    :label="'staticSelect'"
+                    :classList="''" 
+                    :span="4" 
                     :prop="'staticModel'" 
-                    :placeholder="'自定義 placeholder'"
+                    :placeholder="'請選擇'"
                     :clearable="true"
                     :disabled="false" 
                     :multiple="false" 
@@ -15,9 +15,9 @@
                 />
 
                 <SelectPassvie 
-                    :label="'Passvie Select (optionFilter)'"
-                    :class="'text-align-right'" 
-                    :span="6" 
+                    :label="'Passvie Select'"
+                    :classList="''" 
+                    :span="4" 
                     :prop="'passvieModel'"
                     :placeholder="'請選擇'" 
                     :clearable="true" 
@@ -30,9 +30,9 @@
                 />
 
                 <SelectApi 
-                    :label="'API Select (optionFilter)'" 
-                    :class="'text-align-right'" 
-                    :span="6"
+                    :label="'API Select'" 
+                    :classList="''" 
+                    :span="4"
                     :prop="'apiModel'"
                     :placeholder="'請選擇'"
                     :clearable="true" 
@@ -45,9 +45,9 @@
                 />
 
                 <SelectSearch 
-                    :label="'Search Select (optionFilter)'" 
-                    :class="'text-align-right'" 
-                    :span="6" 
+                    :label="'Search Select'" 
+                    :classList="''" 
+                    :span="4" 
                     :prop="'searchModel'"
                     :placeholder="'請輸入關鍵字'"
                     :clearable="true" 

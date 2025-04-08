@@ -26,7 +26,7 @@ interface IProps {
 
 const props = defineProps<IProps>();
 const buttons = props.params.buttons; // ag grid 會將 buttons 參數放入 props.params
-const params = props.params;
+const params = props.params; 
 </script>
 
 <style lang="scss">
@@ -34,9 +34,9 @@ const params = props.params;
   width: 100%;
   height: 100%;
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
-
+  
   .el-button+.el-button {
     margin-left: 0.5rem;
   }
@@ -55,9 +55,16 @@ const params = props.params;
     background-color: lightgray !important;
     border: 1px solid lightgray !important;
   }
+}
 
-  &,.center {
-    justify-content: center;
+.left {
+  .AgGridButtonGroup {
+    justify-content: left;
+  }
+}
+.right {
+  .AgGridButtonGroup {
+    justify-content: right;
   }
 }
 </style>

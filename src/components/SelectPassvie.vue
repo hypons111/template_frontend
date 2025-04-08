@@ -2,7 +2,7 @@
   <el-col class="selectSeries" :span="span" :xs="24">
     <el-form-item :prop="prop" :label="label">
       <el-select-v2 
-        :class="class"
+        :class="classList"
         :placeholder="placeholder"
         :clearable="clearable"
         :disabled="disabled"
@@ -20,9 +20,9 @@ import { computed } from 'vue';
 
 const modelValue = defineModel();
 
-interface IProps {
+interface Interface {
   label: string,
-  class: string,
+  classList: string,
   span: number
   prop: string,
   placeholder: string,
@@ -34,8 +34,8 @@ interface IProps {
   optionParser?: Function;
 }
 
-const props = withDefaults(defineProps<IProps>(), {
-  class: "",
+const props = withDefaults(defineProps<Interface>(), {
+  classList: "",
   span: 4,
   prop: "",
   placeholder: "請選擇",
@@ -55,5 +55,5 @@ const parsedOptions = computed(() => {
 </script>
 
 <style lang="scss" scoped>
-@import '@/style/select_style.scss';
+@import '@/style/selectStyle.scss';
 </style>

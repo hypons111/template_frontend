@@ -128,8 +128,8 @@ const gridOptions = {
     },
     {
       headerName: "按鈕",
-      minWidth: 200,
-      maxWidth: 200,
+      minWidth: 185,
+      maxWidth: 185,
       pinned: "right",
       lockPosition: true,
       headerComponent: "AgGridButtonGroup",
@@ -159,6 +159,7 @@ const gridOptions = {
           }
         ]
       },
+      // headerClass: "left", // default: "center",
       cellRenderer: "AgGridButtonGroup",
       cellRendererParams: {
         buttons: [
@@ -178,6 +179,7 @@ const gridOptions = {
           }
         ]
       },
+      cellClass: "left",
     },
   ],
   onGridReady: (params) => { gridApi.value = params.api },

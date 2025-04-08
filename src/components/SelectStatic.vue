@@ -1,8 +1,8 @@
 <template>
   <el-col class="selectSeries" :span="span" :xs="24">
-    <el-form-item :prop="prop" :label="labelObj[label]">
+    <el-form-item :prop="prop" :label="labelOptions">
       <el-select
-        :class="class"
+        :class="classList"
         :placeholder="placeholder"
         :clearable="clearable"
         :disabled="disabled"
@@ -11,7 +11,7 @@
         :teleported="false"
       >
         <el-option
-          v-for="item in options[label]"
+          v-for="item in valueOptions"
           :key="item.value"
           :label="item.label"
           :value="item.value"
@@ -22,11 +22,13 @@
 </template>
 
 <script lang="ts" setup>
-const modelValue = defineModel<string>();
+import { useQuery } from "@tanstack/vue-query";
+import { getStaticData } from "../utils/useQuery";
+import { computed } from "vue";
 
-interface IProps {
+interface Interface {
   label: string;
-  class: string;
+  classList: string;
   span: number;
   prop: string;
   placeholder: string;
@@ -35,8 +37,8 @@ interface IProps {
   multiple: boolean;
 }
 
-withDefaults(defineProps<IProps>(), {
-  class: "",
+const props = withDefaults(defineProps<Interface>(), {
+  classList: "",
   span: 4,
   prop: "",
   placeholder: "請選擇",
@@ -45,69 +47,24 @@ withDefaults(defineProps<IProps>(), {
   multiple: false,
 });
 
-const labelObj = {
-  StaticSelect: "Static Select",
-  staticModel2: "Multiple",
-};
+const modelValue = defineModel<string>();
 
-const options = {
-  StaticSelect: [
-    {
-      id: 1,
-      label: "Rick Sanchez",
-      value: {"id":1,"name":"Rick Sanchez","status":"Alive","species":"Human","type":"Human","gender":"Male","origin":"Earth (C-137)","image":"https://rickandmortyapi.com/api/character/avatar/1.jpeg"},
-    },
-    {
-      id: 2,
-      label: "Morty Smith",
-      value: {"id":2,"name":"Morty Smith","status":"Alive","species":"Human","type":"Human","gender":"Male","origin":"Earth (C-137)","image":"https://rickandmortyapi.com/api/character/avatar/2.jpeg"},
-    },
-    {
-      id: 3,
-      label: "Summer Smith",
-      value: {"id":3,"name":"Summer Smith","status":"Alive","species":"Human","type":"Human","gender":"Female","origin":"Earth (Replacement Dimension)","image":"https://rickandmortyapi.com/api/character/avatar/3.jpeg"},
-    },
-    {
-      id: 4,
-      label: "Beth Smith",
-      value: {"id":4,"name":"Beth Smith","status":"Alive","species":"Human","type":"Human","gender":"Female","origin":"Earth (Replacement Dimension)","image":"https://rickandmortyapi.com/api/character/avatar/4.jpeg"},
-    },
-    {
-      id: 5,
-      label: "Jerry Smith",
-      value: {"id":5,"name":"Jerry Smith","status":"Alive","species":"Human","type":"Human","gender":"Male","origin":"Earth (Replacement Dimension)","image":"https://rickandmortyapi.com/api/character/avatar/5.jpeg"},
-    },
-  ],
-  StaticSelect1: [
-    {
-      id: "001",
-      label: "A",
-      value: "ONE",
-    },
-    {
-      id: "002",
-      label: "B",
-      value: "TWO",
-    },
-    {
-      id: "003",
-      label: "C",
-      value: "THREE",
-    },
-    {
-      id: "004",
-      label: "D",
-      value: "FOUR",
-    },
-    {
-      id: "005",
-      label: "E",
-      value: "FIVE",
-    },
-  ],
-};
+/* useQuery 從 staticData.json 取得資料 */
+const staticData = useQuery(getStaticData) as any;
+
+/* <el-select> 名稱 */
+const labelOptions = computed(() => {
+  const data = staticData.data.value
+  return data ? data.labelOptions[props.label] : {} // 防止 fetchStaticMapsData 請求未返回時報錯
+})
+
+/* <el-select> 選單 */
+  const valueOptions = computed(() => {
+    const data = staticData.data.value
+    return data ? data[props.label] : [] // 防止 fetchStaticMapsData 請求未返回時報錯
+  })
 </script>
 
 <style lang="scss" scoped>
-@import '@/style/select_style.scss';
+@import '@/style/selectStyle.scss';
 </style>

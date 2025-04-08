@@ -20,7 +20,6 @@ export const useTabStore = defineStore("tab", {
     },
     /* 添加 tab */
     addTab(tab) {
-      console.log(tab)
       this.deactivateAllTabs()
       this.tabs[tab.label] = { label: tab.label, isActive: true, path: tab.path };
       this.activeTab = tab.label;

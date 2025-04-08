@@ -42,7 +42,7 @@ const parameter: any = undefined;
 
   .el-button,
   .hidden+.el-button {
-    margin-left: 0;
+    margin-left: 0.5rem;
   }
 
   .hidden {

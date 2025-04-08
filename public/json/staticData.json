@@ -1,0 +1,22 @@
+{
+  "labelOptions" : {
+    "isOn": "開關",
+    "has": "有無",
+    "staticSelect": "Static Select"
+  },
+  "isOn": [
+    { "label": "啟用", "value": true },
+    { "label": "停用", "value": false }
+  ],
+  "has": [
+    { "label": "有", "value": true },
+    { "label": "無", "value": false }
+  ],
+  "staticSelect": [
+    { "label": "Aa", "value": 1 },
+    { "label": "Bb", "value": 2 },
+    { "label": "Cc", "value": 3 },
+    { "label": "Dd", "value": 4 },
+    { "label": "Ee", "value": 5 }
+  ]
+}

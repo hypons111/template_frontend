@@ -6,11 +6,13 @@ interface IExample {
 }
 
 const api = {
+  getStaticData: async () => await axios.get<any[]>("/json/staticData.json").then(({data}) => data),
   arrayData: async () => await axios.get<IExample[]>("/json/array.json").then(({data}) => data),
   objectData: async () => await axios.get<IExample[]>("/json/object.json").then(({data}) => data),
   objectArrayData: async () => await axios.get<IExample[]>("/json/objectArray.json").then(({data}) => data),
 };
 
+export const getStaticData = { queryKey: ["getStaticData"], queryFn: api.getStaticData };
 export const arrayData = { queryKey: ["arrayData"], queryFn: api.arrayData };
 export const objectData = { queryKey: ["objectData"], queryFn: api.objectData };
 export const objectArrayData = { queryKey: ["objectArrayData"], queryFn: api.objectArrayData };
