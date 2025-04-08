@@ -41,4 +41,7 @@ declare module 'vue' {
     SelectSearch: typeof import('./components/SelectSearch.vue')['default']
     SelectStatic: typeof import('./components/SelectStatic.vue')['default']
   }
+  export interface ComponentCustomProperties {
+    vLoading: typeof import('element-plus/es')['ElLoadingDirective']
+  }
 }

@@ -23,7 +23,7 @@
 
 <script lang="ts" setup>
 import { useQuery } from "@tanstack/vue-query";
-import { getStaticData } from "../utils/useQuery";
+import { getStaticData } from "@/utils/useQuery";
 import { computed } from "vue";
 
 interface Interface {

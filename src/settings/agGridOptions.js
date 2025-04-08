@@ -1,7 +1,7 @@
 import { agGridThemeCustomize } from "@/style/ag-theme-customize";
 import AgGridButtonGroup from "@/components/AgGridButtonGroup.vue";
 import { localeText } from "@/settings/localeText";
-import { messageBoxHandler } from "@/utils/utility";
+import { showMessageBox } from "@/utils/utility";
 
 export const agGridOptions = {
   theme: agGridThemeCustomize, // 主題
@@ -43,10 +43,10 @@ export const agGridOptions = {
         if(newValue === "") {
           return undefined
         } else if(params.colDef.minInput && params.newValue < params.colDef.minInput) {
-          setTimeout(() => messageBoxHandler(`輸入數值不可小於${params.colDef.minInput}`), 0); // setTimeout 保証觸發 messageBoxHandler
+          setTimeout(() => showMessageBox(`輸入數值不可小於${params.colDef.minInput}`), 0); // setTimeout 保証觸發 showMessageBox
           return params.oldValue
         } else if(params.colDef.maxInput && params.newValue > params.colDef.maxInput) {
-          setTimeout(() => messageBoxHandler(`輸入數值不可大於${params.colDef.maxInput}`), 0); // setTimeout 保証觸發 messageBoxHandler
+          setTimeout(() => showMessageBox(`輸入數值不可大於${params.colDef.maxInput}`), 0); // setTimeout 保証觸發 showMessageBox
           return params.oldValue
         } else {
           return Number(newValue)

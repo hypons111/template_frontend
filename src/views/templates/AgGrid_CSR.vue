@@ -1,192 +1,199 @@
 <template>
   <ag-grid-vue 
-    v-if="objectArrayOption.data.value" 
+    v-loading="isGridLoading"
+    v-if="isShowGrid"
     class="agGrid" 
     :gridOptions="gridOptions"
+    :columnDefs="(columnDefs as any)[operationMode]"
     :detailCellRendererParams="detailCellRendererParams" 
     :rowData="rowData" 
-    @grid-ready="onGridReady"
+    @grid-ready="gridOptions.onGridReady"
   />
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useQuery } from "@tanstack/vue-query";
 import { arrayData, objectData, objectArrayData } from "@/utils/useQuery";
 import { agGrid } from "@/utils/agGrid";
+import { inject, ref } from "vue";
+
+const operationMode = ref("master");
+const isShowGrid = ref(true);
+const isGridLoading = ref(false);
 
 /* gridOptions 預設設定 */
-const agGridOptions = inject("agGridOptions"); 
+const agGridOptions = inject("agGridOptions") as any; 
 
 const arrayOption = useQuery(arrayData);
 const objectOption = useQuery(objectData);
 const objectArrayOption = useQuery(objectArrayData);
 
-const gridApi = ref();
-
+const gridApi = ref()
 const gridOptions = {
   ...agGridOptions,
-  columnDefs: [
-    {
-      headerName: "項次",
-      field: "masterRowNumber",
-      minWidth: 80,
-      maxWidth: 80,
-      pinned: "left",
-      headerCheckboxSelection: true, // 全選框
-      checkboxSelection: true, // 選擇框
-      cellRenderer: "agGroupCellRenderer", // detail grid
-      cellStyle: { textAlign: "center" },
-    },
-    {
-      headerName: "Cell",
-      field: "cell",
-      type: "",
-      flex: 1,
-      // minWidth: 120,
-      // maxWidth: 120,
-      // pinned: "left", // "left" 或 "right"
-      // editable: false, // 編輯
-      // rowGroup: false, // 分組
-      // hide: false, // 隱藏
-      // valueFormatter: (params) => { },     // 處理顯示的數據格式
-      // valueParser: (params) => { },        // 處理輸入的數據格式
-      // valueGetter: (params) => { },        // 直接讀取 rowData
-      // valueSetter: (params) => { },        // 直接寫入 rowData
-      // cellStyle: { textAlign: "right" }
-    },
-    {
-      headerName: "Input",
-      field: "input",
-      type: "input",
-    },
-    {
-      headerName: "Number",
-      field: "number",
-      type: "number",
-      minInput: 1,    // 最少數值
-      maxInput: 100,  // 最大數值
-    },
-    {
-      headerName: "Date",
-      field: "date",
-      type: "date",
-    },
-    {
-      headerName: "選單 Array",
-      field: "array",
-      type: "option",
-      cellEditorParams: () => ({
-        values: arrayOption.data.value,
-        searchType: "matchAny",
-        allowTyping: true,
-        filterList: true,
-        highlightMatch: true,
-        valueListMaxHeight: 200,
-      }),
-    },
-    {
-      headerName: "選單 Object",
-      field: "object",
-      type: "option",
-      cellEditorParams: () => ({
-        values: Object.values(objectOption.data.value).map(({ id, name }) => `[${id}] ${name}`),
-        searchType: "matchAny",
-        allowTyping: true,
-        filterList: true,
-        highlightMatch: true,
-        valueListMaxHeight: 200,
-      }),
-      valueFormatter: (params) => {
-        const option = Object.values(objectOption.data.value).find(({ value }) => value === params.value)
-        if(option) return `[${option.id}] ${option.name}`
-      },
-      valueSetter: (params) => {
-        const id = params.newValue.slice(1, 4);
-        params.data.object = objectOption.data.value[id].value;
-      },
-    },
-    {
-      headerName: "選單 Object Array",
-      field: "objectArray",
-      type: "option",
-      cellEditorParams: () => ({
-        values: objectArrayOption.data.value.map(({ id, name }) => `[${id}] ${name}`),
-        searchType: "matchAny",
-        allowTyping: true,
-        filterList: true,
-        highlightMatch: true,
-        valueListMaxHeight: 200,
-      }),
-      valueFormatter: (params) => {
-        const option = Object.values(objectArrayOption.data.value).find(({ value }) => value === params.value)
-        if(option) return `[${option.id}] ${option.name}`
-      },
-      valueSetter: (params) => {
-        const newValueId = params.newValue.slice(1, 4);
-        params.data.objectArray = objectArrayOption.data.value.find(({ id }) => id === newValueId).value;
-      },
-    },
-    {
-      headerName: "按鈕",
-      minWidth: 185,
-      maxWidth: 185,
-      pinned: "right",
-      lockPosition: true,
-      headerComponent: "AgGridButtonGroup",
-      headerComponentParams: {
-        buttons: [
-          {
-            label: "Grid 資料",
-            type: "success",
-            show: true,
-            disabled: false,
-            func: () => console.log(agGrid.getGridData(gridApi.value))
-          },
-          {
-            label: "新增",
-            type: "primary",
-            show: true,
-            disabled: false,
-            func: (params) =>  agGrid.addMaseterRow(gridApi.value, params, {
-              cell: `New Master Row`,
-              date: null,
-              input: "",
-              array: "A",
-              object: "A",
-              objectArray: "A",
-              details: [],
-            })
-          }
-        ]
-      },
-      // headerClass: "left", // default: "center",
-      cellRenderer: "AgGridButtonGroup",
-      cellRendererParams: {
-        buttons: [
-          {
-            label: "資料",
-            type: "success",
-            show: true,
-            disabled: false,
-            func: (params) => console.log(agGrid.getMasterRowData(gridApi.value, params.data.masterRowIndex)),
-          },
-          {
-            label: "刪除",
-            type: "danger",
-            show: true,
-            disabled: false,
-            func: (params) => agGrid.deleteMasterRow(gridApi.value, params.data),
-          }
-        ]
-      },
-      cellClass: "left",
-    },
-  ],
-  onGridReady: (params) => { gridApi.value = params.api },
-  onRowGroupOpened: (event) => { agGrid.ensureSingleNodeExpended(gridApi.value, event) },
+  onGridReady: (params:any) => { gridApi.value = params.api },
+  onRowGroupOpened: (event:any) => { agGrid.ensureSingleNodeExpended(gridApi.value, event) },
   // onCellEditingStopped: (params) => {},
   // onCellValueChanged: (params) => {},
 };
+
+const columnDefs = [
+  {
+    headerName: "項次",
+    field: "masterRowNumber",
+    minWidth: 80,
+    maxWidth: 80,
+    pinned: "left",
+    headerCheckboxSelection: true, // 全選框
+    checkboxSelection: true, // 選擇框
+    cellRenderer: "agGroupCellRenderer", // detail grid
+    cellStyle: { textAlign: "center" },
+  },
+  {
+    headerName: "Cell",
+    field: "cell",
+    type: "",
+    flex: 1,
+    // minWidth: 120,
+    // maxWidth: 120,
+    // pinned: "left", // "left" 或 "right"
+    // editable: false, // 編輯
+    // rowGroup: false, // 分組
+    // hide: false, // 隱藏
+    // valueFormatter: (params) => { },     // 處理顯示的數據格式
+    // valueParser: (params) => { },        // 處理輸入的數據格式
+    // valueGetter: (params) => { },        // 直接讀取 rowData
+    // valueSetter: (params) => { },        // 直接寫入 rowData
+    // cellStyle: { textAlign: "right" }
+  },
+  {
+    headerName: "Input",
+    field: "input",
+    type: "input",
+  },
+  {
+    headerName: "Number",
+    field: "number",
+    type: "number",
+    minInput: 1,    // 最少數值
+    maxInput: 100,  // 最大數值
+  },
+  {
+    headerName: "Date",
+    field: "date",
+    type: "date",
+  },
+  {
+    headerName: "選單 Array",
+    field: "array",
+    type: "option",
+    cellEditorParams: () => ({
+      values: arrayOption.data.value,
+      searchType: "matchAny",
+      allowTyping: true,
+      filterList: true,
+      highlightMatch: true,
+      valueListMaxHeight: 200,
+    }),
+  },
+  {
+    headerName: "選單 Object",
+    field: "object",
+    type: "option",
+    cellEditorParams: () => ({
+      values: Object.values(objectOption.data.value).map(({ id, name }) => `[${id}] ${name}`),
+      searchType: "matchAny",
+      allowTyping: true,
+      filterList: true,
+      highlightMatch: true,
+      valueListMaxHeight: 200,
+    }),
+    valueFormatter: (params) => {
+      const option = Object.values(objectOption.data.value).find(({ value }) => value === params.value)
+      if(option) return `[${option.id}] ${option.name}`
+    },
+    valueSetter: (params) => {
+      const id = params.newValue.slice(1, 4);
+      params.data.object = objectOption.data.value[id].value;
+    },
+  },
+  {
+    headerName: "選單 Object Array",
+    field: "objectArray",
+    type: "option",
+    cellEditorParams: () => ({
+      values: objectArrayOption.data.value.map(({ id, name }) => `[${id}] ${name}`),
+      searchType: "matchAny",
+      allowTyping: true,
+      filterList: true,
+      highlightMatch: true,
+      valueListMaxHeight: 200,
+    }),
+    valueFormatter: (params) => {
+      const option = Object.values(objectArrayOption.data.value).find(({ value }) => value === params.value)
+      if(option) return `[${option.id}] ${option.name}`
+    },
+    valueSetter: (params) => {
+      const newValueId = params.newValue.slice(1, 4);
+      params.data.objectArray = objectArrayOption.data.value.find(({ id }) => id === newValueId).value;
+    },
+  },
+  {
+    headerName: "按鈕",
+    minWidth: 185,
+    maxWidth: 185,
+    pinned: "right",
+    lockPosition: true,
+    headerComponent: "AgGridButtonGroup",
+    headerComponentParams: {
+      buttons: [
+        {
+          label: "Grid 資料",
+          type: "success",
+          show: true,
+          disabled: false,
+          func: () => console.log(agGrid.getGridData(gridApi.value))
+        },
+        {
+          label: "新增",
+          type: "primary",
+          show: true,
+          disabled: false,
+          func: (params) =>  agGrid.addMaseterRow(gridApi.value, params, {
+            cell: `New Master Row`,
+            date: null,
+            input: "",
+            array: "A",
+            object: "A",
+            objectArray: "A",
+            details: [],
+          })
+        }
+      ]
+    },
+    // headerClass: "left", // default: "center",
+    cellRenderer: "AgGridButtonGroup",
+    cellRendererParams: {
+      buttons: [
+        {
+          label: "資料",
+          type: "success",
+          show: true,
+          disabled: false,
+          func: (params) => console.log(agGrid.getMasterRowData(gridApi.value, params.data.masterRowIndex)),
+        },
+        {
+          label: "刪除",
+          type: "danger",
+          show: true,
+          disabled: false,
+          func: (params) => agGrid.deleteMasterRow(gridApi.value, params.data),
+        }
+      ]
+    },
+    cellClass: "left",
+  }
+];
 
 const detailCellRendererParams = {
   detailGridOptions: {
