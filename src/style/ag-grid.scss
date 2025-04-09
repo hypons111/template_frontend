@@ -1,20 +1,25 @@
-.cellOption {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-  // background-color: yellow;
-}
+.agGrid {
+	flex-grow: 1;
+	max-height: 514px;
+	margin-top: auto;
+	margin-bottom: 0;
 
-.ag-cell-not-inline-editing.cellOption::after {
-	// content: '';
-	// border-style: solid;
-	// border-width: 0 5px 6px 5px;
-	// border-color:  transparent transparent var(--LIME) transparent;
-}
+	:deep(.cellInput) {
+		border-radius: 0.25rem;
+		cursor: pointer;
+		border: 1px solid var(--MAGENTA);
+	}
 
-.ag-cell-not-inline-editing.cellOption::after {
-	content: '';
-  width: 0.5rem;
-  height: 0.5rem;
-	border:  1px solid var(--MAGENTA);
+	.cellOption {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+	
+	.ag-cell-not-inline-editing.cellOption::after {
+		content: '';
+		border-style: solid;
+		border-width: 0 5px 6px 5px;
+		border-color:  transparent transparent var(--LIME) transparent;
+	}
 }

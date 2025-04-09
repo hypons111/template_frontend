@@ -1,7 +1,16 @@
 import { agGridThemeCustomize } from "@/style/ag-theme-customize";
 import AgGridButtonGroup from "@/components/AgGridButtonGroup.vue";
 import { localeText } from "@/settings/localeText";
-import { showMessageBox } from "@/utils/utility";
+
+/* 內部 function 內部 function 內部 function 內部 function 內部 function */
+const cellClassRules = {
+  'cellInputError': (params) => {
+    if(params.colDef.required) {
+      return !params.value || params.value.trim() === '';
+    }
+  }
+}
+/* 內部 function 內部 function 內部 function 內部 function 內部 function */
 
 export const agGridOptions = {
   theme: agGridThemeCustomize, // 主題
@@ -32,27 +41,8 @@ export const agGridOptions = {
     input: {
       editable: true,
       cellClass: "cellInput",
-      valueFormatter: (params) => params.value || "請輸入",
-    },
-    number: {
-      editable: true,
-      cellClass: "cellInput",
-      valueFormatter: (params) => (params.value === null || params.value === undefined) ? "請輸入" : params.value,
-      valueParser: (params) => {
-        const newValue = params.newValue.toString().replace(/[^0-9]+/g, "")
-        if(newValue === "") {
-          return undefined
-        } else if(params.colDef.minInput && params.newValue < params.colDef.minInput) {
-          setTimeout(() => showMessageBox(`輸入數值不可小於${params.colDef.minInput}`), 0); // setTimeout 保証觸發 showMessageBox
-          return params.oldValue
-        } else if(params.colDef.maxInput && params.newValue > params.colDef.maxInput) {
-          setTimeout(() => showMessageBox(`輸入數值不可大於${params.colDef.maxInput}`), 0); // setTimeout 保証觸發 showMessageBox
-          return params.oldValue
-        } else {
-          return Number(newValue)
-        }
-      },
-      cellStyle: { textAlign: "right" },
+      cellClassRules: cellClassRules,
+      valueFormatter: (params) => params.value || "請輸入"
     },
     date: {
       editable: true,
@@ -62,8 +52,49 @@ export const agGridOptions = {
     },
     option: {
       editable: true,
-      cellClass: "cellOption",
+      cellClass: "cellInput cellOption",
       cellEditor: "agRichSelectCellEditor",
+      cellClassRules: cellClassRules,
+    },
+    /* 只允許字母、數字、中文 */
+    engNumChi: {
+      editable: true,
+      cellClass: "cellInput",
+      cellClassRules: cellClassRules,
+      valueFormatter: (params) => (params.value === null || params.value === undefined) ? "請輸入" : params.value,
+      valueParser: (params) => params.newValue.toString().replace(/[^\w\u4e00-\u9fa5\s]+/g, "")
+    },
+    /* 只允許英文和數字 */
+    engNum: {
+      editable: true,
+      cellClass: "cellInput",
+      cellClassRules: cellClassRules,
+      valueFormatter: (params) => (params.value === null || params.value === undefined) ? "請輸入" : params.value,
+      valueParser: (params) => params.newValue.toString().replace(/[^a-zA-Z0-9]+/g, "")
+    },
+    /* 只允許數字 */
+    number: {
+      editable: true,
+      cellClass: "cellInput",
+      cellStyle: { textAlign: "right" },
+      cellClassRules: cellClassRules,
+      valueFormatter: (params) => (params.value === null || params.value === undefined) ? "請輸入" : params.value,
+      valueParser: (params) => params.newValue.toString().replace(/[^0-9]+/g, "")
+      /* 數字範圍 example 不能直接在這裡使用 不能直接在這裡使用 不能直接在這裡使用 */
+      /* {
+        const newValue = params.newValue.toString().replace(/[^0-9]+/g, "")
+        if(newValue === "") {
+          return undefined
+        } else if(params.colDef.minInput && params.newValue < params.colDef.minInput) {
+          setTimeout(() => messageBoxHandler(`輸入數值不可小於${params.colDef.minInput}`), 0); // setTimeout 保証觸發 messageBoxHandler
+          return params.oldValue
+        } else if(params.colDef.maxInput && params.newValue > params.colDef.maxInput) {
+          setTimeout(() => messageBoxHandler(`輸入數值不可大於${params.colDef.maxInput}`), 0); // setTimeout 保証觸發 messageBoxHandler
+          return params.oldValue
+        } else {
+          return Number(newValue)
+        }
+      }, */
     }
   },
 };
