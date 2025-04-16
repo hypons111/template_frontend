@@ -4,7 +4,8 @@
             <el-row :gutter="20">
                 <SelectStatic 
                     :label="'staticSelect'"
-                    :classList="''" 
+                    :labelPosition="'top'"
+                    :classList="'text-align-right'" 
                     :span="4" 
                     :prop="'staticModel'" 
                     :placeholder="'請選擇'"
@@ -16,6 +17,7 @@
 
                 <SelectPassvie 
                     :label="'Passvie Select'"
+                    :labelPosition="'top'"
                     :classList="''" 
                     :span="4" 
                     :prop="'passvieModel'"
@@ -30,7 +32,8 @@
                 />
 
                 <SelectApi 
-                    :label="'API Select'" 
+                    :label="'API Select'"
+                    :labelPosition="'top'"
                     :classList="''" 
                     :span="4"
                     :prop="'apiModel'"
@@ -45,7 +48,8 @@
                 />
 
                 <SelectSearch 
-                    :label="'Search Select'" 
+                    :label="'Search Select'"
+                    :labelPosition="'top'"
                     :classList="''" 
                     :span="4" 
                     :prop="'searchModel'"

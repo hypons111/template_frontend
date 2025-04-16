@@ -1,6 +1,6 @@
 <template>
-  <el-col class="selectSeries" :span="span" :xs="24">
-    <el-form-item :prop="prop" :label="label">
+  <el-col class="selectComponent" :span="span" :xs="24">
+    <el-form-item :prop="prop" :label="label" :label-position="labelPosition">
       <el-select-v2
         :class="classList"
         :placeholder="placeholder"
@@ -27,6 +27,7 @@ const options = ref<any[]>([]);
 
 interface Interface {
   label: string;
+  labelPosition: "top" | "left" | "right"
   classList: string;
   span: number;
   prop: string;
@@ -41,6 +42,7 @@ interface Interface {
 }
 
 const props = withDefaults(defineProps<Interface>(), {
+  labelPosition: "top",
   classList: "",
   span: 4,
   prop: "",

@@ -1,6 +1,6 @@
 <template>
   <el-col :span="span" :xs="24">
-    <el-form-item :prop="prop" :label="label">
+    <el-form-item :prop="prop" :label="label" :label-position="labelPosition">
       <el-input
         :class="classList"
         :placeholder="placeholder"
@@ -16,6 +16,7 @@
 <script lang="ts" setup>
 interface Interface {
   label: string;
+  labelPosition: "top" | "left" | "right"
   classList: string;
   placeholder: string;
   clearable: boolean;
@@ -33,12 +34,14 @@ interface Interface {
   | "engNum"
   | "numSym"
   | "";
+  inputLimit: number | null;
   span: number;
   prop: string;
 }
 
 const modelValue = defineModel() as any;
 const props = withDefaults(defineProps<Interface>(), {
+  labelPosition: "top",
   classList: "",
   span: 4,
   prop: "",
@@ -46,9 +49,10 @@ const props = withDefaults(defineProps<Interface>(), {
   clearable: true,
   disabled: false,
   inputType: "",
+  inputLimit: null
 });
 
-const regEx = {
+const REGEX_TYPE = {
   english: /[^a-zA-Z\s]+/g,                     /* 只允許英文 */
   number: /[^0-9]+/g,                           /* 只允許數字 */
   chinese: /[^\u4e00-\u9fa5]/g,                 /* 只允許中文 */
@@ -63,21 +67,24 @@ const regEx = {
 };
 
 function onInputChange(value: string) {
-  if(props.inputType === "") return;
-  const regex = regEx[props.inputType];
-  if (!regex) {
-    modelValue.value = value; // 不進行過濾
-    return;
+  let newValue = value;
+  /* 輸入限制 */
+  if(props.inputType) { 
+    const regex = REGEX_TYPE[props.inputType];
+    newValue = value.replace(regex, "");
   }
-  const processedValue = value.replace(regex, "");
-  modelValue.value = processedValue;
+  /* 輸入字數限制 */
+  if(props.inputLimit && newValue.length > props.inputLimit) {
+    newValue = newValue.slice(0, props.inputLimit);
+  } 
+  modelValue.value = newValue;
 }
 </script>
 
 <style lang="scss" scoped>
 :deep(.text-align-right) {
   border: 1px solid red;
-  INPUT {
+  input {
     text-align: right;
   }
 }

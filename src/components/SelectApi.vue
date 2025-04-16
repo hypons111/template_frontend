@@ -1,12 +1,8 @@
 <template>
-  <el-col class="selectSeries" :span="span" :xs="24">
+  <el-col class="selectComponent" :span="span" :xs="24">
     <el-skeleton v-if="isPending" :rows="1" animated />
 
-    <el-form-item v-else-if="isError" :label="label">
-      <el-input :value="'錯誤 : ' + error?.message" disabled />
-    </el-form-item>
-
-    <el-form-item v-else-if="data" :prop="prop" :label="label">
+    <el-form-item v-else-if="data" :prop="prop" :label="label" :label-position="labelPosition">
       <el-select-v2 
         :class="classList"
         :placeholder="placeholder" 
@@ -15,9 +11,13 @@
         :multiple="multiple" 
         :options="parsedOptions" 
         v-model="modelValue"
-        :teleported="false"
       />
     </el-form-item>
+    
+    <el-form-item v-else-if="isError" :label="label">
+      <el-input :value="'錯誤 : ' + error?.message" disabled />
+    </el-form-item>
+
   </el-col>
 </template>
 
@@ -28,8 +28,9 @@ import { useQuery } from "@tanstack/vue-query";
 
 const modelValue = defineModel();
 
-interface Interface {
+interface IProps {
   label: string,
+  labelPosition: "top" | "left" | "right"
   classList: string,
   span: number,
   prop: string,
@@ -43,7 +44,8 @@ interface Interface {
   returnValue: string;
 }
 
-const props = withDefaults(defineProps<Interface>(), {
+const props = withDefaults(defineProps<IProps>(), {
+  labelPosition: "top",
   classList: "",
   span: 4,
   prop: "",
@@ -70,6 +72,6 @@ const parsedOptions = computed(() => {
 });
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import '@/style/selectStyle.scss';
 </style>

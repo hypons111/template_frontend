@@ -1,6 +1,6 @@
 <template>
-  <el-col class="selectSeries" :span="span" :xs="24">
-    <el-form-item :prop="prop" :label="labelOptions">
+  <el-col class="selectComponent" :span="span" :xs="24">
+    <el-form-item :prop="prop" :label="labelOptions" :label-position="labelPosition">
       <el-select
         :class="classList"
         :placeholder="placeholder"
@@ -8,7 +8,6 @@
         :disabled="disabled"
         :multiple="multiple"
         v-model="modelValue"
-        :teleported="false"
       >
         <el-option
           v-for="item in valueOptions"
@@ -28,6 +27,7 @@ import { computed } from "vue";
 
 interface Interface {
   label: string;
+  labelPosition: "top" | "left" | "right"
   classList: string;
   span: number;
   prop: string;
@@ -38,6 +38,7 @@ interface Interface {
 }
 
 const props = withDefaults(defineProps<Interface>(), {
+  labelPosition: "top",
   classList: "",
   span: 4,
   prop: "",
@@ -65,6 +66,6 @@ const labelOptions = computed(() => {
   })
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import '@/style/selectStyle.scss';
 </style>
