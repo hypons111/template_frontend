@@ -2,6 +2,10 @@
   <el-col class="selectComponent" :span="span" :xs="24">
     <el-skeleton v-if="isPending" :rows="1" animated />
 
+    <el-form-item v-else-if="isError" :label="label">
+      <el-input :value="'錯誤 : ' + error?.message" disabled />
+    </el-form-item>
+
     <el-form-item v-else-if="data" :prop="prop" :label="label" :label-position="labelPosition">
       <el-select-v2 
         :class="classList"
@@ -10,14 +14,9 @@
         :disabled="disabled"
         :multiple="multiple" 
         :options="parsedOptions" 
-        v-model="modelValue"
+        v-model="modelValue" 
       />
     </el-form-item>
-    
-    <el-form-item v-else-if="isError" :label="label">
-      <el-input :value="'錯誤 : ' + error?.message" disabled />
-    </el-form-item>
-
   </el-col>
 </template>
 
@@ -39,10 +38,11 @@ interface IProps {
   disabled: boolean,
   multiple: boolean;
   apiUrl: string;
+  returnValue: string;
   optionFilter?: Function;
   optionParser?: Function;
-  returnValue: string;
 }
+
 
 const props = withDefaults(defineProps<IProps>(), {
   labelPosition: "top",

@@ -42,6 +42,7 @@
                     :disabled="false"
                     :multiple="false"
                     :apiUrl="'/json/countries.json'" 
+                    :returnValue="'id'"
                     :optionFilter="(item) => item.filter(({ name }) => name.startsWith('B'))"
                     :optionParser="(item) => `[${item.id}]${item.name}`" 
                     v-model="form.apiModel"
