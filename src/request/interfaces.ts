@@ -1,5 +1,5 @@
 /* 
-  管理 interface
+  Interfaces
 */
 
 export interface IExample {

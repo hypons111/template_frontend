@@ -60,10 +60,10 @@ const labelOptions = computed(() => {
 })
 
 /* <el-select> 選單 */
-  const valueOptions = computed(() => {
-    const data = staticData.data.value
-    return data ? data[props.label] : [] // 防止 fetchStaticMapsData 請求未返回時報錯
-  })
+const valueOptions = computed(() => {
+  const data = staticData.data.value
+  return data ? data[props.label] : [] // 防止 fetchStaticMapsData 請求未返回時報錯
+})
 </script>
 
 <style lang="scss">

@@ -41,7 +41,7 @@
 <script setup>
 import { onBeforeMount, ref } from "vue";
 import { useTabStore } from "@/store";
-import service from "@/api/service";
+import service from "@/api/apis/service";
 import { Expand, Fold, Setting } from "@element-plus/icons-vue";
 
 /* status */

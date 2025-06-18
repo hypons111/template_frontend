@@ -3,10 +3,10 @@
         <el-form :model="form" :rules="rules" ref="ruleFormRef" label-position="top">
             <el-row :gutter="20">
                 <SelectStatic 
-                    :label="'staticSelect'"
+                    :label="'example'"
                     :labelPosition="'top'"
                     :classList="'text-align-right'" 
-                    :span="4" 
+                    :span="12" 
                     :prop="'staticModel'" 
                     :placeholder="'請選擇'"
                     :clearable="true"
@@ -19,15 +19,15 @@
                     :label="'Passvie Select'"
                     :labelPosition="'top'"
                     :classList="''" 
-                    :span="4" 
+                    :span="12" 
                     :prop="'passvieModel'"
                     :placeholder="'請選擇'" 
                     :clearable="true" 
                     :disabled="false" 
                     :multiple="false"
                     :options="options"
-                    :optionFilter="(item) => item.filter(({ name }) => name.startsWith('A'))"
-                    :optionParser="(item) => `[${item.id}]${item.name}`" 
+                    :optionFilter="(item:any) =>  item.filter(({ species }:any) => species === 'Human')"
+                    :optionParser="(item:any) => `[${item.id}]${item.name}`" 
                     v-model="form.passvieModel" 
                 />
 
@@ -35,16 +35,18 @@
                     :label="'API Select'"
                     :labelPosition="'top'"
                     :classList="''" 
-                    :span="4"
+                    :span="12"
                     :prop="'apiModel'"
                     :placeholder="'請選擇'"
                     :clearable="true" 
                     :disabled="false"
                     :multiple="false"
-                    :apiUrl="'/json/countries.json'" 
+                    :requestMode="'get'" 
+                    :apiUrl="'https://api.sampleapis.com/rickandmorty/characters'" 
+                    :payload="{}"
                     :returnValue="'id'"
-                    :optionFilter="(item) => item.filter(({ name }) => name.startsWith('B'))"
-                    :optionParser="(item) => `[${item.id}]${item.name}`" 
+                    :optionParser="(item:any) => `[${item.id}]${item.name}`" 
+                    :optionFilter="(item:any) => item.filter(({ species }:any) => species !== 'Human')"
                     v-model="form.apiModel"
                 />
 
@@ -52,18 +54,18 @@
                     :label="'Search Select'"
                     :labelPosition="'top'"
                     :classList="''" 
-                    :span="4" 
+                    :span="12" 
                     :prop="'searchModel'"
                     :placeholder="'請輸入關鍵字'"
                     :clearable="true" 
                     :disabled="false"
-                    :apiUrl="'/json/countries.json'"
+                    :apiUrl="'https://api.sampleapis.com/rickandmorty/characters'"
                     :searchTextField= "'name'"
                     :searchNumberField= "'id'"
-                    :optionFilter="(item) => item.filter(({ abbreviation }) => abbreviation.startsWith('C'))"
-                    :optionParser="(item) => `[${item.id}]${item.name}`"
+                    :optionFilter="(item:any) => item.filter(({ species }:any) => species === 'Human')"
+                    :optionParser="(item:any) => `[${item.id}]${item.name}`"
                     v-model="form.searchModel"
-                />
+                    />
             </el-row>
         </el-form>
 
@@ -75,8 +77,8 @@
     </section>
 </template>
 
-<script setup>
-import service from "@/api/service.ts";
+<script setup lang="ts">
+import { testAPI } from "@/request/commonAPI"
 import { onBeforeMount } from "vue";
 
 const form = reactive({
@@ -95,14 +97,9 @@ const rules = reactive({
 });
 
 const options = ref([])
-async function fetchOption() {
-    const { success, error, data } = await service.getCountries()
-    if(success) options.value = data
-    else console.log(error)
-}
 
 function consoleLog() {
-    ruleFormRef.value?.validate((valid, fields) => {
+    ruleFormRef.value?.validate((valid:any, fields:any) => {
         if (valid) {
             console.log(form.staticModel);
             console.log(form.passvieModel);
@@ -116,8 +113,8 @@ function clear() {
     ruleFormRef.value.resetFields()
 }
 
-onBeforeMount(() => {
-    fetchOption()
+onBeforeMount(async () => {
+//    options.value = await testAPI()
 })
 </script>
 

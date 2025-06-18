@@ -7,6 +7,17 @@ export function showMessageBox(string: string) {
   });
 }
 
+/* 加千分位逗號
+*  value : "1000" / 1000
+*  return : "1,000"
+*/
+export function addTousandsSeparator(value: string | number) {
+  if (value === "") return value;
+  const num = Number(value);
+  if (isNaN(num)) return value;
+  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
 export function downloadBase64File(Base64File: { filename: string; data: string; }) {
   const { data, filename } = Base64File;
 
@@ -71,6 +82,15 @@ export function getDateTime(isAffixed: boolean) {
     date: `${Y}${hyphen}${M}${hyphen}${D}`,
     time: `${h}${colon}${m}${colon}${s}`,
   };
+}
+
+/* 選擇器 date 格式化
+*  dateObject : Date | string
+*  isAffixed : true / false
+*  return : 2025-03-28 16:28:10 / 20250328 162810
+*/
+export function parseToDateTime(dateObject: string, infix: string, ) {
+  return `${parseToDate(dateObject, true)}${infix}${parseToTime(dateObject, true)}`
 }
 
 /* 選擇器 date 格式化

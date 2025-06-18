@@ -8,12 +8,10 @@
     </div>
 
     <el-scrollbar>
-      <el-menu default-active="2" :collapse="collapse"
-        popper-class="menu-popper"
-      >
+      <el-menu default-active="2" :collapse="collapse" popper-class="menu-popper">
         <div v-for="(item, index) in menu" :index="index">
           
-          <el-menu-item v-if="item.children.length === 0 && item.available" :class="{ on: currentView === item.index }" :index="item.label" @click="menuHander(item)">
+          <el-menu-item v-if="item.children.length === 0 && item.available" :class="{ on: currentView === item.index }" :index="item.label" @click="menuHandler(item)">
             <router-link :to="item.path">
               <el-icon><setting /></el-icon>
               <span v-if="!collapse">{{ item.label }}</span>
@@ -27,7 +25,7 @@
             </template>
 
             <div v-for="child in item.children">
-              <el-menu-item v-if="child.available" :class="{ on: currentView === child.index }" :index="child.label" @click="menuHander(child)">
+              <el-menu-item v-if="child.available" :class="{ on: currentView === child.index }" :index="child.label" @click="menuHandler(child)">
                 <router-link :to="child.path">
                   <el-icon><setting /></el-icon>
                   <span>{{ child.label }}</span>
@@ -44,7 +42,7 @@
 <script setup>
 import { onBeforeMount, ref } from "vue";
 import { useTabStore } from "@/store";
-import service from "@/api/service";
+import axiosRequest from "@/request/axiosRequest.ts";
 import { Expand, Fold, Setting } from "@element-plus/icons-vue";
 
 /* status */
@@ -53,38 +51,39 @@ const menu = ref([]); // menu 清單
 const collapse = ref(false); // menu 開啟/關閉
 const currentView = ref("Home_0"); // 目前頁面
 
-function menuHander(event) {
+function menuHandler(event) {
   currentView.value = event.index;
   tabStore.addTab(event);
 }
 
-onBeforeMount(async () => {
-  /* 全部 menu */
-  /* 有權限的 menu */
+async function getMenu() {
+  Promise.all([
+    axiosRequest.getRequest("/json/menu.json", ""), // 全部 menu
+    axiosRequest.getRequest("/json/permittedMenu.json", "") // 有權限的 menu
+  ])
+  .then(data => { setPermittedMenu(data) })
+  .catch((error) => { ElNotification({ title: error?.response?.data?.detail, type: "error", duration: 2500 }) })
+}
 
-  // const response = await service.getMenu();
-  const { jsonMenu, permittedMenu } = await service.getMenu();
+function setPermittedMenu(data) {
+  const [fullMenu, permittedMenu ] = data
+  permittedMenu.forEach((item) => {
+    /* 將有權限的頁面設為 available === true */
+    const availableItem = fullMenu[item.index];
+    if (availableItem) {
+      availableItem.available = true;
+      /* 將有權限的子頁面設為 available === true */
+      item.children.forEach((child) => {
+        availableItem.children[child.index].available = true;
+      });
+    }
+  });
+  menu.value = fullMenu;
+}
 
-  if (jsonMenu.success && permittedMenu.success) {
-    // menu.value = menu.data;
 
-    permittedMenu.data.forEach((item) => {
-      /* 將有權限的頁面設為 available === true */
-      const availableItem = jsonMenu.data[item.index];
-      if (availableItem) {
-        availableItem.available = true;
-        /* 將有權限的子頁面設為 available === true */
-        item.children.forEach((child) => {
-          availableItem.children[child.index].available = true;
-        });
-      }
-    });
-
-    menu.value = jsonMenu.data;
-  } else {
-    console.log(`[ERROR] menu : ${response.menu.error}`);
-    console.log(`[ERROR] permittedMenu : ${response.permittedMenu.error}`);
-  }
+onBeforeMount(() => {
+  getMenu()
 });
 </script>
 

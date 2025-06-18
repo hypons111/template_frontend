@@ -7,7 +7,7 @@
 </template>
 
 <script setup>
-import service from "@/api/service.ts";
+import service from "@/api/apis/service";
 
 const agGridOptions = inject("agGridOptions"); // gridOptions 預設設定
 

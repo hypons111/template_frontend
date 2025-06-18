@@ -1,6 +1,6 @@
 <template>
   <el-main>
-    <router-link :to="'/layout'"><H1>LOGIN</H1></router-link>
+    <router-link :to="'/home'"><H1>LOGIN</H1></router-link>
   </el-main>
 </template>
 

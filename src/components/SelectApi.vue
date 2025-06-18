@@ -22,8 +22,8 @@
 
 <script lang="ts" setup>
 import { computed } from "vue";
-import axios from "axios";
 import { useQuery } from "@tanstack/vue-query";
+import axiosRequest from "@/request/axiosRequest";
 
 const modelValue = defineModel();
 
@@ -37,7 +37,9 @@ interface IProps {
   clearable: boolean,
   disabled: boolean,
   multiple: boolean;
+  requestMode?: "get" | "post";
   apiUrl: string;
+  payload?: Object;
   returnValue: string;
   optionFilter?: Function;
   optionParser?: Function;
@@ -53,13 +55,24 @@ const props = withDefaults(defineProps<IProps>(), {
   clearable: true,
   multiple: false,
   disabled: false,
-  returnValue: ""
+  requestMode: "get",
 });
+
+const queryFn = { // 用 useQuery 就不用加 async await
+  get: () => axiosRequest.getRequest(props.apiUrl)
+    /* .then .catch 用來處理 error, 如果不需要顥示 ElNotification, 可以註解 */
+    .then((data) => data)
+    .catch((errorMessage) => { ElNotification({ title: errorMessage, type: "error", duration: 2500 }) }),
+  post: () => axiosRequest.postRequest(props.apiUrl, props.payload)
+    /* .then .catch 用來處理 error, 如果不需要顥示 ElNotification, 可以註解 */
+    .then((data) => data)
+    .catch((errorMessage) => { ElNotification({ title: errorMessage, type: "error", duration: 2500 }) }),
+}
 
 /* fetch */
 const { isPending, isError, data, error } = useQuery({
   queryKey: [props.apiUrl],
-  queryFn: async () => await axios.get(props.apiUrl).then(({data}) => data)
+  queryFn: queryFn[props.requestMode]
 });
 
 /* parse & filter */

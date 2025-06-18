@@ -19,13 +19,13 @@
 
 <script lang="ts" setup>
 import { ref } from "vue";
-import axios from "axios";
+import axiosRequest from "@/request/axiosRequest";
 
 const modelValue = defineModel();
 const loading = ref(false);
 const options = ref<any[]>([]);
 
-interface Interface {
+interface IProps {
   label: string;
   labelPosition: "top" | "left" | "right"
   classList: string;
@@ -41,7 +41,7 @@ interface Interface {
   optionParser: Function ;
 }
 
-const props = withDefaults(defineProps<Interface>(), {
+const props = withDefaults(defineProps<IProps>(), {
   labelPosition: "top",
   classList: "",
   span: 4,
@@ -54,19 +54,28 @@ const props = withDefaults(defineProps<Interface>(), {
   searchNumberField: "id"
 });
 
-const remoteMethod = async (query: string) => {
-  if (query) {
+const remoteMethod = async (payload: string) => {
+  if (payload) {
     loading.value = true;
     let response = undefined as any
-    if (isNaN(Number(query))) {
-      response = await axios.get(`${props.apiUrl}?${props.searchTextField}.contains=${query}`)
-    } else if (query.length > 2) {
-      response = await axios.get(`${props.apiUrl}?${props.searchNumberField}.contains=${query}`)
+
+    if (isNaN(Number(payload))) { // 查字串
+      /* await 用來解 promise */
+      response = await axiosRequest.getRequest(`${props.apiUrl}?${props.searchTextField}`, "")
+        /* .then .catch 用來處理 error, 如果不需要顥示 ElNotification, 可以註解 */
+        .then((data:any) => data) 
+        .catch((errorMessage) => { ElNotification({ title: errorMessage, type: "error", duration: 2500 }) })
+    } else if (payload.length > 2) { // 查數字
+      /* await 用來解 promise */
+      response = await axiosRequest.getRequest(`${props.apiUrl}?${props.searchNumberField}`, "")
+        /* .then .catch 用來處理 error, 如果不需要顥示 ElNotification, 可以註解 */
+        .then((data:any) => data)
+        .catch((errorMessage) => { ElNotification({ title: errorMessage, type: "error", duration: 2500 }) })
     } else {
-      options.value = []
       return
     }
-    const filteredData = props.optionFilter ? props.optionFilter(response.data) : response.data;
+
+    const filteredData = props.optionFilter ? props.optionFilter(response) : response;
     const data = filteredData.map((item: any) => ({
       label: props.optionParser!(item),
       value: item,
