@@ -154,7 +154,7 @@ const columnDefs = {
       pinned: "right",
       lockPosition: true,
       headerComponent: "AgGridButtonGroup",
-      headerComponentParams: {
+      headerComponentParams: (params: any) => ({
         buttons: [
           {
             label: "Grid 資料",
@@ -168,7 +168,7 @@ const columnDefs = {
             type: "primary",
             show: true,
             disabled: false,
-            func: (params) =>  agGrid.addMaseterRow(gridApi.value, params, {
+            func: () =>  agGrid.addMaseterRow(gridApi.value, params, {
               cell: `New Master Row`,
               date: null,
               input: "",
@@ -179,27 +179,27 @@ const columnDefs = {
             })
           }
         ]
-      },
+      }),
       // headerClass: "left", // default: "center",
       cellRenderer: "AgGridButtonGroup",
-      cellRendererParams: {
+      cellRendererParams: (params: any) => ({
         buttons: [
           {
             label: "資料",
             type: "success",
             show: true,
             disabled: false,
-            func: (params) => console.log(agGrid.getMasterRowData(gridApi.value, params.data.masterRowIndex)),
+            func: () => console.log(agGrid.getMasterRowData(gridApi.value, params.data.masterRowIndex)),
           },
           {
             label: "刪除",
             type: "danger",
             show: true,
             disabled: false,
-            func: (params) => agGrid.deleteMasterRow(gridApi.value, params.data),
+            func: () => agGrid.deleteMasterRow(gridApi.value, params.data),
           }
         ]
-      },
+      }),
       cellClass: "left",
     }
   ],

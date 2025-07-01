@@ -55,6 +55,13 @@ export const agGridOptions = {
       cellClass: "cellInput cellOption",
       cellEditor: "agRichSelectCellEditor",
       cellClassRules: cellClassRules,
+      valueFormatter: (params) => {
+        if(!params.value || params.value === "" || params.value.length === 0) {
+          return "請選擇"
+        } else {
+          return params.value
+        }
+      },
     },
     /* 只允許字母、數字、中文 */
     engNumChi: {
