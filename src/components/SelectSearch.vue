@@ -26,57 +26,54 @@ const loading = ref(false);
 const options = ref<any[]>([]);
 
 interface IProps {
+  /* 必填 */
   label: string;
-  labelPosition: "top" | "left" | "right"
-  classList: string;
-  span: number;
-  prop: string;
-  placeholder: string;
-  clearable: boolean;
-  disabled: boolean;
   apiUrl: string;
-  searchTextField: string;
-  searchNumberField: string;
-  optionFilter: Function | false;
-  optionParser: Function ;
+  optionParser: Function;
+  /* 非必填 */
+  payload?: Object;
+  clearable?: boolean;
+  disabled?: boolean;
+  classList?: string;
+  labelPosition?: "top" | "left" | "right"
+  placeholder?: string;
+  span?: number;
+  prop?: string;
+  optionFilter?: Function | boolean;
 }
 
 const props = withDefaults(defineProps<IProps>(), {
-  labelPosition: "top",
-  classList: "",
-  span: 4,
-  prop: "",
-  placeholder: "請輸入關鍵字",
+  payload: {} as any,
   clearable: true,
   disabled: false,
+  classList: "",
+  labelPosition: "top",
+  placeholder: "請輸入關鍵字",
+  span: 4,
+  prop: "",
   optionFilter: false,
-  searchTextField: "name",
-  searchNumberField: "id"
 });
 
-const remoteMethod = async (payload: string) => {
-  if (payload) {
+const remoteMethod = async (keyword: string) => {
+  if (keyword) {
     loading.value = true;
     let response = undefined as any
-
-    if (isNaN(Number(payload))) { // 查字串
+    if (keyword.length > 1) { // 輸入2個字元才會查
+      /* 父子元件之間 data 單向流動, 防止子元件亂改 props 影響到父層 */
+      const requestPayload = { 
+        ...props.payload,
+        keyword // 將查詢關鍵字放入 requestPayload
+      }; 
       /* await 用來解 promise */
-      response = await axiosRequest.getRequest(`${props.apiUrl}?${props.searchTextField}`, "")
+      response = await axiosRequest.postRequest(props.apiUrl, requestPayload)
         /* .then .catch 用來處理 error, 如果不需要顥示 ElNotification, 可以註解 */
-        .then((data:any) => data) 
-        .catch((errorMessage) => { ElNotification({ title: errorMessage, type: "error", duration: 2500 }) })
-    } else if (payload.length > 2) { // 查數字
-      /* await 用來解 promise */
-      response = await axiosRequest.getRequest(`${props.apiUrl}?${props.searchNumberField}`, "")
-        /* .then .catch 用來處理 error, 如果不需要顥示 ElNotification, 可以註解 */
-        .then((data:any) => data)
+        .then((data) => data)
         .catch((errorMessage) => { ElNotification({ title: errorMessage, type: "error", duration: 2500 }) })
     } else {
       return
     }
-
-    const filteredData = props.optionFilter ? props.optionFilter(response) : response;
-    const data = filteredData.map((item: any) => ({
+    const filteredData = props.optionFilter ? (props.optionFilter as Function)(response) : response;
+    const data = filteredData.data.map((item: any) => ({
       label: props.optionParser!(item),
       value: item,
     }));
