@@ -1,17 +1,16 @@
-.selectComponent {
-
-  // popper 選單靠右
-  .text-align-right {
-    text-align: right;
-  }
+.select {
+  border: 1px solid gray;
 }
-
-// popper 字體顏色
-.el-popper {
-  .el-select-dropdown__item, .is-selected, .is-hovering {
-    font-weight: normal !important;
-      color: var(--el-text-color-regular) !important;
-  }
+.static {
+  border: 1px solid red;
 }
-
+.passvie {
+  border: 1px solid gold;
+}
+.search {
+  border: 1px solid green;
+}
+.api {
+  border: 1px solid blue;
+}
 

@@ -2,11 +2,11 @@
   <el-col :span="span" :xs="24">
     <el-form-item :prop="prop" :label="label" :label-position="labelPosition">
       <el-input
+        v-model="modelValue"
         :class="classList"
-        :placeholder="placeholder"
         :clearable="clearable"
         :disabled="disabled"
-        v-model="modelValue"
+        :placeholder="placeholder"
         @input="onInputChange"
       />
     </el-form-item>
@@ -16,19 +16,20 @@
 <script lang="ts" setup>
 interface Interface {
   label: string;
+  prop: string;
   labelPosition: "top" | "left" | "right"
   classList: string;
-  placeholder: string;
   clearable: boolean;
   disabled: boolean;
   inputType:
+  | "chinese"
   | "english"
   | "number"
-  | "chinese"
   | "symbol"
-  | "positive"
   | "integer"
+  | "positive"
   | "posInt"
+  | "decimal"
   | "engNumChi"
   | "engNumSym"
   | "engNum"
@@ -36,7 +37,7 @@ interface Interface {
   | "";
   inputLimit: number | null;
   span: number;
-  prop: string;
+  placeholder: string;
 }
 
 const modelValue = defineModel() as any;
@@ -53,13 +54,16 @@ const props = withDefaults(defineProps<Interface>(), {
 });
 
 const REGEX_TYPE = {
-  english: /[^a-zA-Z\s]+/g,                     /* 只允許英文 */
-  number: /[^0-9]+/g,                           /* 只允許數字 */
-  chinese: /[^\u4e00-\u9fa5]/g,                 /* 只允許中文 */
-  symbol: /[\w\s\u4e00-\u9fa5]+/g,              /* 只允許符號 */
-  positive: /[^0-9.]+/g,                        /* 只允許正數 */
-  integer: /[^0-9-]|^0|(?<=^|-)(0)|(?!^)-/g,    /* 只允許整數 */
-  posInt: /^(0|\D.*)|[^0-9]/g,                  /* 只允許正整數 */
+  chinese: /[^\u4e00-\u9fa5]/g,                           /* 只允許中文 */
+  english: /[^a-zA-Z\s]+/g,                               /* 只允許英文 */
+  number: /[^0-9]+/g,                                     /* 只允許數字 */
+  symbol: /[\w\s\u4e00-\u9fa5]+/g,                        /* 只允許符號 */
+  
+  integer: /[^0-9-]|^0|(?<=^|-)(0)|(?!^)-/g,              /* 🟩正數  🟩負數  🟩整數  🟥小數 */
+  posInt: /^(0|\D.*)|[^0-9]/g,                            /* 🟩正數  🟥負數  🟩整數  🟥小數 */
+  positive: /[^0-9.]|^\.|(?<=\.)\./g,                     /* 🟩正數  🟥負數  🟩整數  🟩小數 */
+  decimal: /[^0-9.-]|^\.|(?<=\.)\.|(?<!^)-|(?<=-)-/g,     /* 🟩正數  🟩負數  🟩整數  🟩小數 */
+  
   engNumChi: /[^\w\u4e00-\u9fa5\s]+/g,          /* 只允許字母、數字、中文 */
   engNumSym: /[\u4e00-\u9fa5]+/g,               /* 只允許英文、數字和符號 */
   engNum: /[^a-zA-Z0-9]+/g,                     /* 只允許英文和數字 */
@@ -77,7 +81,7 @@ function onInputChange(value: string) {
   if(props.inputLimit && newValue.length > props.inputLimit) {
     newValue = newValue.slice(0, props.inputLimit);
   } 
-  modelValue.value = newValue;
+  modelValue.value = newValue.trim();
 }
 </script>
 

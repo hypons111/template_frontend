@@ -1,4 +1,4 @@
-{
+const selectStaticOptions = {
   "labelOptions" : {
     "isOn": "開關",
     "has": "有無",
@@ -19,4 +19,6 @@
     { "label": "D", "value": "4-d" },
     { "label": "E", "value": "5-e" }
   ]
-}
+} as any
+
+export default selectStaticOptions

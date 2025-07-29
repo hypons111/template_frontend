@@ -1,16 +1,24 @@
-/* 
-  Request 封裝
-  return 成功 / throw 失敗 的請求給上層模件
-*/
 import axiosInstance from './axiosInstance'
 
 const axiosRequest = {
-  async getRequest(api:string, requestData="") {
-      return axiosInstance.get(`${api}${requestData}`);
+  async getRequest<T>(api:string, payload?:T) {
+    try {
+      const response = await axiosInstance.get(api, { params: payload });
+      return { data: response.data, status: 200 };
+    } catch (error:any) {
+      console.log(`[${api} 錯誤] : `, error)
+      throw error.response.data.detail;
+    }
   },
 
-  async postRequest<T>(api:string, requestData:T) {
-    return axiosInstance.post(api, requestData);
+  async postRequest<T>(api:string, payload:T) {
+    try {
+      const response = await axiosInstance.post(api, payload);
+      return { data: response.data, status: 200 };
+    } catch (error:any) {
+      console.log(`[${api} 錯誤] : `, error)
+      throw error.response.data.detail;
+    }
   }
 };
 

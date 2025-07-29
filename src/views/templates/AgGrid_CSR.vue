@@ -15,8 +15,8 @@
 
 <script setup lang="ts">
 import { useQuery } from "@tanstack/vue-query";
-import { arrayData, objectData, objectArrayData } from "@/utils/useQuery";
-import { agGrid } from "@/utils/agGrid";
+import { arrayData, objectData, objectArrayData } from "@/request/useQuery";
+import { agGrid } from "@/utility/utility_AgGrid";
 import { inject, ref } from "vue";
 
 const operationMode = ref("master");

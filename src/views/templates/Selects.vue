@@ -4,14 +4,15 @@
             <el-row :gutter="20">
                 <SelectStatic 
                     :label="'example'"
+                    :value="'example'"
                     :labelPosition="'top'"
                     :classList="'text-align-right'" 
-                    :span="12" 
-                    :prop="'staticModel'" 
-                    :placeholder="'請選擇'"
                     :clearable="true"
                     :disabled="false" 
                     :multiple="false" 
+                    :prop="'staticModel'" 
+                    :span="12" 
+                    :placeholder="'請選擇'"
                     v-model="form.staticModel"
                 />
 
@@ -100,11 +101,11 @@ const options = ref([])
 
 function consoleLog() {
     ruleFormRef.value?.validate((valid:any, fields:any) => {
+        console.log(form.staticModel);
+        console.log(form.passvieModel);
+        console.log(form.apiModel);
+        console.log(form.searchModel);
         if (valid) {
-            console.log(form.staticModel);
-            console.log(form.passvieModel);
-            console.log(form.apiModel);
-            console.log(form.searchModel);
         }
     });
 }
@@ -118,11 +119,7 @@ onBeforeMount(async () => {
 })
 </script>
 
-<style lang="scss" scoped>
-// SECTION {
-//     height: 20%;
-// }
-</style>
+<style lang="scss" scoped></style>
 
 
 

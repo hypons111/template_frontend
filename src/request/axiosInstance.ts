@@ -1,7 +1,3 @@
-/* 
-  建立 Axios 實例
-  設定請求
-*/
 import axios from 'axios'
 
 const axiosInstance = axios.create({
@@ -16,11 +12,8 @@ axiosInstance.interceptors.request.use(
 )
 
 axiosInstance.interceptors.response.use(
-  (response) => response.data,
-  (error) => {
-    console.log("[錯誤]", error)
-    throw error?.response?.data?.detail || error.message;
-  }
+  (response) => response,
+  (error) => Promise.reject(error)
 )
 
 export default axiosInstance
