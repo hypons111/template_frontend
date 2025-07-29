@@ -7,6 +7,15 @@ export function showMessageBox(string: string) {
   });
 }
 
+// key value 互換
+export function reverseObject(object: Record<string, string>) {
+  const reversedObject = {} as any;
+  for (const key in object) {
+    reversedObject[object[key]] = key
+  }
+  return reversedObject
+}
+
 /* 加千分位逗號
 *  value : "1000" / 1000
 *  return : "1,000"
@@ -89,7 +98,7 @@ export function getDateTime(isAffixed: boolean) {
 *  isAffixed : true / false
 *  return : 2025-03-28 16:28:10 / 20250328 162810
 */
-export function parseToDateTime(dateObject: string, infix: string, ) {
+export function parseToDateTime(dateObject: string, infix: string) {
   return `${parseToDate(dateObject, true)}${infix}${parseToTime(dateObject, true)}`
 }
 
@@ -143,6 +152,10 @@ export function parseToDayOfYear(dateObject: Date | string) {
   return dayOfYear;
 }
 
+export function utcTOLocal(utc: string) {
+  const local = new Date(utc);
+  return parseToDateTime(local.toString(), " ")
+}
 
 /* CUSTOMIZE */ /* CUSTOMIZE */ /* CUSTOMIZE */
 // export function parseNumberToString(number: number, affix: string = "-"): string {

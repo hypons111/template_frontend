@@ -1,4 +1,14 @@
 export const agGrid = {
+
+  /* 基本的 row data parser */
+  inputParser: (data: any) => {
+    data.forEach((item: any, index: number) => {
+      item.masterRowNumber = index + 1;
+      item.masterRowIndex = index;
+    });
+    return data
+  },
+
   /* 取得新 master rorIndex , rowNumber */
   getMasterLength: (params:any) => {
     let length = 0; // 初始化行數
