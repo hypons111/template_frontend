@@ -2,15 +2,33 @@
     <section>
         <el-form :model="form" :rules="rules" ref="ruleFormRef" label-position="top">
             <el-row :gutter="30">
-                <Input
-                    :label="'不限輸入 (全屬性)'" 
-                    :class="'text-align-right'" 
-                    :placeholder="'自定義 placeholder'" 
+                <InputDate 
+                    :label= "'日期'"
                     :clearable="true" 
                     :disabled="false" 
+                    :disableDate= "'2025-07-10'"
+                    :disableOperator= "'<'"
+                    :prop= "'date'"
+                    :labelPosition= "'top'"
+                    :span= "6"
+                    :placeholder= "'請選擇'"
+                    :classList= "''"
+                    v-model="form.date"
+                />
+            </el-row>
+
+            <el-row :gutter="30">
+                <Input
+                    :label="'不限輸入'"
+                    :clearable="true"
+                    :disabled="false"
                     :inputType="''"
+                    :inputLimit="null"
+                    :prop="'normal'"
+                    :labelPosition= "'top'"
                     :span="6"
-                    :prop="'normal'" 
+                    :placeholder="'請輸入'"
+                    :class="''"
                     v-model="form.normal"
                 />
             </el-row>
@@ -30,7 +48,7 @@
             </el-row>
 
             <el-row :gutter="30">
-                <Input :label="'字母、數字、中文'" :inputType="'engNumChi'" v-model="form.engNumChi" :prop="'engNumChi'" />
+                <Input :label="'英文、數字、中文'" :inputType="'engNumChi'" v-model="form.engNumChi" :prop="'engNumChi'" />
                 <Input :label="'英文、數字、符號'" :inputType="'engNumSym'" v-model="form.engNumSym" :prop="'engNumSym'" />
                 <Input :label="'英文、數字'" :inputType="'engNum'" v-model="form.engNum" :prop="'engNum'" />
                 <Input :label="'數字、符號'" :inputType="'numSym'" v-model="form.numSym" :prop="'numSym'" />
@@ -58,6 +76,7 @@ const form = reactive({
     engNum: '',
     numSym: '',
     normal: '',
+    date: ''
 });
 
 const ruleFormRef = ref();
@@ -66,8 +85,8 @@ const rules = reactive({
 });
 
 function consoleLog() {
-    ruleFormRef.value?.validate((valid, fields) => {
-        if (valid) {
+    // ruleFormRef.value?.validate((valid, fields) => {
+        // if (valid) {
             console.log(form.normal.trim())
             console.log(form.english.trim())
             console.log(form.number.trim())
@@ -80,8 +99,8 @@ function consoleLog() {
             console.log(form.engNumSym.trim())
             console.log(form.engNum.trim())
             console.log(form.numSym.trim())
-        }
-    });
+        // }
+    // });
 }
 
 function clear() {

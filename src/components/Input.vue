@@ -16,9 +16,6 @@
 <script lang="ts" setup>
 interface Interface {
   label: string;
-  prop: string;
-  labelPosition: "top" | "left" | "right"
-  classList: string;
   clearable: boolean;
   disabled: boolean;
   inputType:
@@ -36,21 +33,25 @@ interface Interface {
   | "numSym"
   | "";
   inputLimit: number | null;
+  prop: string;
+  labelPosition: "top" | "left" | "right"
   span: number;
   placeholder: string;
+  classList: string;
+
 }
 
 const modelValue = defineModel() as any;
 const props = withDefaults(defineProps<Interface>(), {
-  labelPosition: "top",
-  classList: "",
-  span: 4,
-  prop: "",
-  placeholder: "請輸入",
   clearable: true,
   disabled: false,
   inputType: "",
-  inputLimit: null
+  inputLimit: null,
+  prop: "",
+  labelPosition: "top",
+  span: 4,
+  placeholder: "請輸入",
+  classList: "",
 });
 
 const REGEX_TYPE = {
