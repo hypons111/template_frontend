@@ -1,13 +1,13 @@
 <template>
-  <el-col class="selectComponent" :span="span" :xs="24">
+  <el-col class="select passvie" :span="span" :xs="24">
     <el-form-item :prop="prop" :label="label" :label-position="labelPosition">
       <el-select-v2 
-        :class="classList"
-        :placeholder="placeholder"
         :clearable="clearable"
         :disabled="disabled"
         :multiple="multiple"
-        :options="parsedOptions"
+        :options="processedOptions"
+        :placeholder="placeholder"
+        :class="classList"
         v-model="modelValue"
       />
     </el-form-item>
@@ -21,40 +21,45 @@ const modelValue = defineModel();
 
 interface Interface {
   label: string,
-  labelPosition: "top" | "left" | "right"
-  classList: string,
-  span: number
-  prop: string,
-  placeholder: string,
   clearable: boolean,
   disabled: boolean,
   multiple: boolean;
   options: any[],
-  optionFilter?: Function;
-  optionParser?: Function;
+  returnLabel?: Function | null;
+  returnValue?: string
+  optionFilter?: Function | null;
+  prop: string,
+  labelPosition: "top" | "left" | "right"
+  span: number
+  placeholder: string,
+  classList: string,  
 }
 
 const props = withDefaults(defineProps<Interface>(), {
-  labelPosition: "top",
-  classList: "",
-  span: 4,
-  prop: "",
-  placeholder: "請選擇",
   clearable: true,
   disabled: false,
   multiple: false,
+
+  returnLabel: null,
+  returnValue: "",
+  optionFilter: null,
+  
+  prop: "",
+  labelPosition: "top",
+  span: 4,
+  placeholder: "請選擇",
+  classList: "",
 });
 
-/* parsed / filter */
-const parsedOptions = computed(() => {
-  const filteredData = props.optionFilter ? props.optionFilter(props.options) : props.options// 篩選選單
+const processedOptions = computed(() => {
+  const filteredData = props.optionFilter === null ? props.options : props.optionFilter!(props.options) // 篩選選單
   return filteredData.map((item: any) => ({
-    label: props.optionParser!(item), // 選項
-    value: item, // 回傳值
+    label: props.returnLabel === null ? item : props.returnLabel(item),
+    value: props.returnValue === "" ? item : item[props.returnValue], // 不可回傳 object
   }));
 });
 </script>
 
 <style lang="scss">
-@import '@/style/selectStyle.scss';
+@use '@/style/select.scss';
 </style>

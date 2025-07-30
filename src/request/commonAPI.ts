@@ -26,7 +26,7 @@ export const promiseALlExample = (payload1="", payload2="") => {
   // .catch((errorMessage) => { ElNotification({ title: errorMessage, type: "error", duration: 2500 }) })
 }
 
-export const testAPI = (payload="") => axiosRequest.getRequest("https://api.sampleapis.com/rickandmorty/characters", payload)
+export const dragonballAPI = (payload="") => axiosRequest.getRequest("https://dragonball-api.com/api/characters", payload)
   .then((data:any) => data)
   .catch((errorMessage) => { ElNotification({ title: errorMessage, type: "error", duration: 2500 }) })
 

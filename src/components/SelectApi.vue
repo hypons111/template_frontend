@@ -1,5 +1,5 @@
 <template>
-  <el-col class="selectComponent" :span="span" :xs="24">
+  <el-col class="select api" :span="span" :xs="24">
     <el-skeleton v-if="isPending" :rows="1" animated />
 
     <el-form-item v-else-if="isError" :label="label">
@@ -8,12 +8,12 @@
 
     <el-form-item v-else-if="data" :prop="prop" :label="label" :label-position="labelPosition">
       <el-select-v2 
-        :class="classList"
-        :placeholder="placeholder" 
         :clearable="clearable" 
         :disabled="disabled"
         :multiple="multiple" 
         :options="parsedOptions" 
+        :placeholder="placeholder" 
+        :class="classList"
         v-model="modelValue" 
       />
     </el-form-item>
@@ -29,45 +29,69 @@ const modelValue = defineModel();
 
 interface IProps {
   label: string,
-  labelPosition: "top" | "left" | "right"
-  classList: string,
-  span: number,
-  prop: string,
-  placeholder: string,
   clearable: boolean,
   disabled: boolean,
   multiple: boolean;
+
   requestMode?: "get" | "post";
   apiUrl: string;
-  payload?: Object;
-  returnValue: string;
-  optionFilter?: Function;
-  optionParser?: Function;
+  payload?: any;
+
+  returnLabel?: Function | null;
+  returnValue?: string
+  optionFilter?: Function | null;
+  
+  prop: string,
+
+  labelPosition: "top" | "left" | "right"
+  span: number,
+  placeholder: string,
+  classList: string,
 }
 
 
 const props = withDefaults(defineProps<IProps>(), {
-  labelPosition: "top",
-  classList: "",
-  span: 4,
-  prop: "",
-  placeholder: "請選擇",
   clearable: true,
   multiple: false,
   disabled: false,
+
   requestMode: "get",
+  payload: {},
+  returnLabel: null,
+  returnValue: "",
+  optionFilter: null,
+
+  prop: "",
+  labelPosition: "top",
+  span: 4,
+  placeholder: "請選擇",
+  classList: "",
 });
 
 const queryFn = { // 用 useQuery 就不用加 async await
   get: () => axiosRequest.getRequest(props.apiUrl)
     /* .then .catch 用來處理 error, 如果不需要顥示 ElNotification, 可以註解 */
     .then((data) => data)
-    .catch((errorMessage) => { ElNotification({ title: errorMessage, type: "error", duration: 2500 }) }),
+    .catch((errorMessage) => {
+      ElNotification({ title: errorMessage, type: "error", duration: 2500 })
+      throw errorMessage; // 拋俾 useQuery 判斷 isError
+    }),
   post: () => axiosRequest.postRequest(props.apiUrl, props.payload)
     /* .then .catch 用來處理 error, 如果不需要顥示 ElNotification, 可以註解 */
     .then((data) => data)
-    .catch((errorMessage) => { ElNotification({ title: errorMessage, type: "error", duration: 2500 }) }),
+    .catch((errorMessage) => { 
+      ElNotification({ title: errorMessage, type: "error", duration: 2500 }) 
+      throw errorMessage; // 拋俾 useQuery 判斷 isError
+    }),
 }
+
+const parsedOptions = computed(() => {
+  const filteredData = [] as any //props.optionFilter ? props.optionFilter(data.value) : data.value// 篩選選單
+  return filteredData.map((item: any) => ({
+    label: props.returnLabel === null ? item : props.returnLabel!(item),
+    value: props.returnValue === "" ? item : item[props.returnValue], // 不可回傳 object
+  }));
+});
 
 /* fetch */
 const { isPending, isError, data, error } = useQuery({
@@ -75,16 +99,8 @@ const { isPending, isError, data, error } = useQuery({
   queryFn: queryFn[props.requestMode]
 });
 
-/* parse & filter */
-const parsedOptions = computed(() => {
-  const filteredData = props.optionFilter ? props.optionFilter(data.value) : data.value// 篩選選單
-  return filteredData.map((item: any) => ({
-    label: props.optionParser!(item), // 選項
-    value: item[props.returnValue], // 不可回傳 object
-  }));
-});
 </script>
 
 <style lang="scss">
-@import '@/style/selectStyle.scss';
+@use '@/style/select.scss';
 </style>

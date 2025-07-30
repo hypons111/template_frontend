@@ -2,11 +2,11 @@
   <el-col class="select static" :span="span" :xs="24">
     <el-form-item :prop="prop" :label="labelOptions" :label-position="labelPosition">
       <el-select
-        :class="classList"
-        :placeholder="placeholder"
         :clearable="clearable"
         :disabled="disabled"
         :multiple="multiple"
+        :placeholder="placeholder"
+        :class="classList"
         v-model="modelValue"
       >
         <el-option
@@ -27,14 +27,14 @@ import selectStaticOptions from "@/static/selectStaticOptions" // options 都放
 interface Interface {
   label: string;
   value: string;
-  labelPosition?: "top" | "left" | "right"
-  classList?: string;
   clearable?: boolean;
   disabled?: boolean;
   multiple?: boolean;
   prop?: string;
+  labelPosition?: "top" | "left" | "right"
   span?: number;
   placeholder?: string;
+  classList?: string;
 }
 
 const props = withDefaults(defineProps<Interface>(), {
@@ -64,5 +64,5 @@ const valueOptions = computed(() => {
 </script>
 
 <style lang="scss">
-@import '@/style/selectStyle.scss';
+@use '@/style/select.scss';
 </style>

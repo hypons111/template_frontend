@@ -1,0 +1,34 @@
+.select {
+  // border: 1px solid gray;
+}
+.static {
+  // border: 1px solid red;
+}
+.passvie {
+  // border: 1px solid gold;
+}
+.search {
+  // border: 1px solid green;
+}
+.api {
+  // border: 1px solid blue;
+}
+
+// popper 字體顏色
+.el-popper {
+  .el-select-dropdown__item {
+    font-weight: normal !important;
+    color: gary !important;
+  }
+
+  .is-selected {
+    font-weight: normal !important;
+    color: red !important;
+  }
+
+  // .is-hovering{
+  //   font-weight: normal !important;
+  //   color: green !important;
+  // }
+  
+}

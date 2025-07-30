@@ -2,7 +2,7 @@ const selectStaticOptions = {
   "labelOptions" : {
     "isOn": "開關",
     "has": "有無",
-    "example": "Static Select"
+    "dragonball": "Static Select"
   },
   "isOn": [
     { "label": "啟用", "value": true },
@@ -12,12 +12,17 @@ const selectStaticOptions = {
     { "label": "有", "value": true },
     { "label": "無", "value": false }
   ],
-  "example": [
-    { "label": "A", "value": "1-a" },
-    { "label": "B", "value": "2-b" },
-    { "label": "C", "value": "3-c" },
-    { "label": "D", "value": "4-d" },
-    { "label": "E", "value": "5-e" }
+  "dragonball": [
+    { "label": "Goku [Saiyan]", "value": 1 },
+    {"label": "Vegeta [Saiyan]", "value": 2 },
+    {"label": "Piccolo [Namekian]", "value": 3 },
+    {"label": "Bulma [Human]", "value": 5 },
+    {"label": "Freezer [Frieza Race]", "value": 5 },
+    {"label": "Zarbon [Frieza Race]", "value": 6 },
+    {"label": "Dodoria [Frieza Race]", "value": 7 },
+    {"label": "Ginyu [Frieza Race]", "value": 8 },
+    {"label": "Celula [Android]", "value": 9 },
+    {"label": "Gohan [Saiyan]", "value": 10 }
   ]
 } as any
 

@@ -3,70 +3,78 @@
         <el-form :model="form" :rules="rules" ref="ruleFormRef" label-position="top">
             <el-row :gutter="20">
                 <SelectStatic 
-                    :label="'example'"
-                    :value="'example'"
-                    :labelPosition="'top'"
-                    :classList="'text-align-right'" 
+                    :label="'dragonball'"
+                    :value="'dragonball'"
                     :clearable="true"
                     :disabled="false" 
                     :multiple="false" 
                     :prop="'staticModel'" 
+                    :labelPosition="'top'"
                     :span="12" 
                     :placeholder="'請選擇'"
+                    :classList="''" 
                     v-model="form.staticModel"
                 />
 
                 <SelectPassvie 
                     :label="'Passvie Select'"
-                    :labelPosition="'top'"
-                    :classList="''" 
-                    :span="12" 
-                    :prop="'passvieModel'"
-                    :placeholder="'請選擇'" 
                     :clearable="true" 
                     :disabled="false" 
                     :multiple="false"
                     :options="options"
-                    :optionFilter="(item:any) =>  item.filter(({ species }:any) => species === 'Human')"
-                    :optionParser="(item:any) => `[${item.id}]${item.name}`" 
+                    :returnLabel="(item:any) => `${item.name} [${item.race}]`" 
+                    :returnValue= "'id'"
+                    :optionFilter="(item:any) =>  item.filter((item:any) => item)"
+                    :prop="'passvieModel'"
+                    :labelPosition="'top'"
+                    :span="12" 
+                    :placeholder="'請選擇'" 
+                    :classList="''" 
                     v-model="form.passvieModel" 
                 />
 
                 <SelectApi 
                     :label="'API Select'"
-                    :labelPosition="'top'"
-                    :classList="''" 
-                    :span="12"
-                    :prop="'apiModel'"
-                    :placeholder="'請選擇'"
                     :clearable="true" 
                     :disabled="false"
                     :multiple="false"
+
                     :requestMode="'get'" 
-                    :apiUrl="'https://api.sampleapis.com/rickandmorty/characters'" 
+                    :apiUrl="'https://dragonball-api.com/api/characters'" 
                     :payload="{}"
-                    :returnValue="'id'"
-                    :optionParser="(item:any) => `[${item.id}]${item.name}`" 
-                    :optionFilter="(item:any) => item.filter(({ species }:any) => species !== 'Human')"
+                    :returnLabel="(item:any) => `${item.name} [${item.race}]`" 
+                    :returnValue= "'id'"
+                    :optionFilter="(item:any) =>  item.filter((item:any) => item)"
+
+                    :prop="'apiModel'"
+                    :labelPosition="'top'"
+                    :span="12"
+                    :placeholder="'請選擇'"
+                    :classList="''" 
+                    
                     v-model="form.apiModel"
                 />
 
                 <SelectSearch 
                     :label="'Search Select'"
-                    :labelPosition="'top'"
-                    :classList="''" 
-                    :span="12" 
-                    :prop="'searchModel'"
-                    :placeholder="'請輸入關鍵字'"
                     :clearable="true" 
                     :disabled="false"
-                    :apiUrl="'https://api.sampleapis.com/rickandmorty/characters'"
-                    :searchTextField= "'name'"
-                    :searchNumberField= "'id'"
-                    :optionFilter="(item:any) => item.filter(({ species }:any) => species === 'Human')"
-                    :optionParser="(item:any) => `[${item.id}]${item.name}`"
+
+                    :requestMode="'get'" 
+                    :apiUrl="'https://dragonball-api.com/api/characters'" 
+                    :payload="{}"
+                    :returnLabel="(item:any) => `${item.name} [${item.race}]`" 
+                    :returnValue= "'id'"
+                    :optionFilter="(item:any) =>  item.filter((item:any) => item)"
+
+                    :prop="'searchModel'"
+                    :labelPosition="'top'"
+                    :span="12"
+                    :placeholder="'請輸入關鍵字'"
+                    :classList="''" 
+
                     v-model="form.searchModel"
-                    />
+                />
             </el-row>
         </el-form>
 
@@ -79,7 +87,7 @@
 </template>
 
 <script setup lang="ts">
-import { testAPI } from "@/request/commonAPI"
+import { dragonballAPI } from "@/request/commonAPI"
 import { onBeforeMount } from "vue";
 
 const form = reactive({
@@ -97,7 +105,7 @@ const rules = reactive({
     searchModel: [{ required: true, message: "請選擇 search", trigger: "blur" }],
 });
 
-const options = ref([])
+const options = ref([]) as any;
 
 function consoleLog() {
     ruleFormRef.value?.validate((valid:any, fields:any) => {
@@ -115,7 +123,12 @@ function clear() {
 }
 
 onBeforeMount(async () => {
-//    options.value = await testAPI()
+    try {
+        const dragonballData = await dragonballAPI()
+        options.value = dragonballData.data.items
+    } catch(error) {
+        console.log(error)
+    }
 })
 </script>
 
