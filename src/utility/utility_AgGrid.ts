@@ -1,12 +1,25 @@
 export const agGrid = {
 
-  /* 基本的 row data parser */
-  inputParser: (data: any) => {
-    data.forEach((item: any, index: number) => {
-      item.masterRowNumber = index + 1;
-      item.masterRowIndex = index;
-    });
-    return data
+  /* 預設 rawData => rowData 處理 */
+  processToRowData: (rawData: any) => {
+    const processedData = rawData.map((masterItem: any, masterIndex: number) => {
+      const hasDetails = Array.isArray(masterItem.details); // 判斷有無 details 資料
+      return {
+        ...masterItem,
+        masterRowIndex: masterIndex,
+        masterRowNumber: masterIndex + 1,
+        ...(hasDetails && {
+          details: masterItem.details.map((detailItem: any, detailIndex: number) => ({
+            ...detailItem,
+            masterRowIndex: masterIndex,
+            masterRowNumber: masterIndex + 1,
+            detailRowIndex: detailIndex,
+            detailRowNumber: detailIndex + 1
+          }))
+        })
+      }
+    })
+    return processedData;
   },
 
   /* 取得新 master rorIndex , rowNumber */
