@@ -12,7 +12,7 @@ import { agGridOptions } from "@/settings/agGridOptions";
 
 /* 樣式 */
 import "element-plus/dist/index.css";
-import "./style/style.scss";
+import "./style/global.scss";
 import "./style/ag-grid.scss";
 import "leaflet/dist/leaflet.css";
 

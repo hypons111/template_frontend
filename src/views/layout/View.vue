@@ -1,11 +1,9 @@
 <template>
   <el-container>
-    <el-header><p>Header</p></el-header>
     <el-main>
       <Tab />
       <router-view id="view-container"/>
     </el-main>
-    <el-footer><p>Footer</p></el-footer>
   </el-container>
 </template>
 

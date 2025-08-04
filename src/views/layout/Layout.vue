@@ -1,12 +1,12 @@
 <template>
   <el-container>
-    <el-aside><Menu :collapse="collapse" /></el-aside>
-    <el-main><View /></el-main>
+    <el-main>
+      <View />
+    </el-main>
   </el-container>
 </template>
 
 <script setup>
-import Menu from "@/views/layout/Menu.vue";
 import View from "@/views/layout/View.vue";
 </script>
 

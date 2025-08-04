@@ -20,70 +20,58 @@ const guard = (to, from, next) => {
 const routes = [
   {
     path: '/',
-    name: 'Login',
-    meta: { title: "Login", affix: true },
-    component: () => import('../views/login/Login.vue')
-  },
-  {
-    path: '/layout',
-    name: 'Layout',
-    component: () => import('../views/layout/Layout.vue'),
-    meta: { title: "Layout", affix: true },
+    name: 'Home',
+    meta: { title: "Home", affix: true },
+    component: () => import('../views/layout/Home.vue'),
     children: [
-      {
-        path: '/home',
-        name: 'Home',
-        meta: { title: "Home", affix: true },
-        component: () => import('../views/templates/Home.vue')
-      },
       {
         path: '/buttons',
         name: 'Buttons',
         meta: { title: "Buttons", affix: true },
         beforeEnter: guard,
-        component: () => import('../views/templates/Buttons.vue')
+        component: () => import('../views/Buttons.vue')
       },
       {
         path: '/selects',
         name: 'Selects',
         meta: { title: "Selects", affix: true },
         beforeEnter: guard,
-        component: () => import('../views/templates/Selects.vue')
+        component: () => import('../views/Selects.vue')
       },
       {
         path: '/inputs',
         name: 'Inputs',
         meta: { title: "Inputs", affix: true },
         beforeEnter: guard,
-        component: () => import('../views/templates/Inputs.vue')
+        component: () => import('../views/Inputs.vue')
       },
       {
         path: '/csr',
         name: 'CSR',
         meta: { title: "AgGrid CSR", affix: true },
         beforeEnter: guard,
-        component: () => import('../views/templates/AgGrid_CSR.vue')
+        component: () => import('../views/AgGrid_CSR.vue')
       },
       {
         path: '/ssr',
         name: 'SSR',
         meta: { title: "AgGrid SSR", affix: true },
         beforeEnter: guard,
-        component: () => import('../views/templates/AgGrid_SSR.vue')
+        component: () => import('../views/AgGrid_SSR.vue')
       },
       {
         path: '/example',
         name: 'Example',
         meta: { title: "AgGrid", affix: true },
         beforeEnter: guard,
-        component: () => import('../views/templates/Example.vue')
+        component: () => import('../views/Example.vue')
       },
       {
         path: '/openStreetMap',
         name: 'OpenStreetMap',
         meta: { title: "Open Street Map", affix: true },
         beforeEnter: guard,
-        component: () => import('../views/templates/OpenStreetMap.vue')
+        component: () => import('../views/OpenStreetMap.vue')
       }
     ]
   }

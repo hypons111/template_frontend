@@ -1,8 +1,9 @@
 .agGrid {
 	flex-grow: 1;
-	max-height: 514px;
+	height: 100%;
 	margin-top: auto;
 	margin-bottom: 0;
+
 
 	:deep(.cellInput) {
 		border-radius: 0.25rem;
