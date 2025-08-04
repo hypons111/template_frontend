@@ -1,5 +1,5 @@
 <template>
-  <el-col :span="24" :xs="24">
+  <el-col :span="24" :xs="24" :class="verticalAlign">
     <el-button v-for="(btn, index) in buttons" :key="index"
       :type="btn.type"
       :plain="btn.plain"
@@ -15,8 +15,9 @@
 
 <script lang="ts" setup>
 interface IProps {
+  verticalAlign: string;
   buttons: {
-    label: string;
+    label: "left" | "center" | "right";
     type: "primary" | "success" | "warning" | "danger" | "info" | "";
     plain: boolean;
     round: boolean;
@@ -33,16 +34,30 @@ const parameter: any = undefined;
 
 <style lang="scss" scoped>
   .el-button {
+    margin-top: 0;
     margin-bottom: 1rem;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
   }
 
-  .el-button+.el-button {
-    margin-left: 0.5rem;
+  .left {
+    text-align: left;
+    .el-button {
+      margin-left: 0;
+      margin-right: 1rem;
+    }
+  }
+  
+  .center {
+    text-align: center;
   }
 
-  .el-button,
-  .hidden+.el-button {
-    margin-left: 0.5rem;
+  .right {
+    text-align: right;
+    .el-button {
+      margin-left: 1rem;
+      margin-right: 0;
+    }
   }
 
   .hidden {

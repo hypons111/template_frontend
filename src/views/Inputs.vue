@@ -1,7 +1,7 @@
 <template>
     <section>
         <el-form :model="form" :rules="rules" ref="ruleFormRef" label-position="top">
-            <el-row :gutter="30">
+            <el-row :gutter="35">
                 <InputDate 
                     :label= "'日期'"
                     :clearable="true" 
@@ -10,14 +10,13 @@
                     :disableOperator= "'<'"
                     :prop= "'date'"
                     :labelPosition= "'top'"
-                    :span= "6"
                     :placeholder= "'請選擇'"
                     :classList= "''"
                     v-model="form.date"
                 />
             </el-row>
 
-            <el-row :gutter="30">
+            <el-row :gutter="35">
                 <Input
                     :label="'不限輸入'"
                     :clearable="true"
@@ -26,32 +25,31 @@
                     :inputLimit="null"
                     :prop="'normal'"
                     :labelPosition= "'top'"
-                    :span="6"
                     :placeholder="'請輸入'"
                     :class="''"
                     v-model="form.normal"
                 />
             </el-row>
 
-            <el-row :gutter="30">
-                <Input :label="'中文'" :inputType="'chinese'" v-model="form.chinese" :prop="'chinese'" />
-                <Input :label="'英文'" :inputType="'english'" v-model="form.english" :prop="'english'" />
-                <Input :label="'數字'" :inputType="'number'" v-model="form.number" :prop="'number'" />
-                <Input :label="'符號'" :inputType="'symbol'" v-model="form.symbol" :prop="'symbol'" />
+            <el-row :gutter="35">
+                <Input :label="'中文'" :inputType="'chinese'" v-model="form.chinese" :prop="'chinese'" :span= "6" />
+                <Input :label="'英文'" :inputType="'english'" v-model="form.english" :prop="'english'" :span= "6" />
+                <Input :label="'數字'" :inputType="'number'" v-model="form.number" :prop="'number'" :span= "6" />
+                <Input :label="'符號'" :inputType="'symbol'" v-model="form.symbol" :prop="'symbol'" :span= "6" />
             </el-row>
 
-            <el-row :gutter="30">
-                <Input :label="'正數'" :inputType="'positive'" v-model="form.positive" :prop="'positive'" />
-                <Input :label="'整數'" :inputType="'integer'" v-model="form.integer" :prop="'integer'" />
-                <Input :label="'正整數'" :inputType="'posInt'" v-model="form.posInt" :prop="'posInt'" />
-                <Input :label="'正負整小數'" :inputType="'decimal'" v-model="form.decimal" :prop="'decimal'" />
+            <el-row :gutter="35">
+                <Input :label="'正數'" :inputType="'positive'" v-model="form.positive" :prop="'positive'" :span= "6" />
+                <Input :label="'整數'" :inputType="'integer'" v-model="form.integer" :prop="'integer'" :span= "6" />
+                <Input :label="'正整數'" :inputType="'posInt'" v-model="form.posInt" :prop="'posInt'" :span= "6" />
+                <Input :label="'正負整小數'" :inputType="'decimal'" v-model="form.decimal" :prop="'decimal'" :span= "6" />
             </el-row>
 
-            <el-row :gutter="30">
-                <Input :label="'英文、數字、中文'" :inputType="'engNumChi'" v-model="form.engNumChi" :prop="'engNumChi'" />
-                <Input :label="'英文、數字、符號'" :inputType="'engNumSym'" v-model="form.engNumSym" :prop="'engNumSym'" />
-                <Input :label="'英文、數字'" :inputType="'engNum'" v-model="form.engNum" :prop="'engNum'" />
-                <Input :label="'數字、符號'" :inputType="'numSym'" v-model="form.numSym" :prop="'numSym'" />
+            <el-row :gutter="35">
+                <Input :label="'英文、數字、中文'" :inputType="'engNumChi'" v-model="form.engNumChi" :prop="'engNumChi'" :span= "6" />
+                <Input :label="'英文、數字、符號'" :inputType="'engNumSym'" v-model="form.engNumSym" :prop="'engNumSym'" :span= "6" />
+                <Input :label="'英文、數字'" :inputType="'engNum'" v-model="form.engNum" :prop="'engNum'" :span= "6" />
+                <Input :label="'數字、符號'" :inputType="'numSym'" v-model="form.numSym" :prop="'numSym'" :span= "6" />
             </el-row>
 
         </el-form>

@@ -78,7 +78,7 @@
             </el-row>
         </el-form>
 
-        <el-row :gutter="0">
+        <el-row :gutter="35">
             <button @click="consoleLog()">Console Log</button>
             <button @click="clear()">Clear Inputs</button>
         </el-row>

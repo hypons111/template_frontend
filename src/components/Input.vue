@@ -49,7 +49,7 @@ const props = withDefaults(defineProps<Interface>(), {
   inputLimit: null,
   prop: "",
   labelPosition: "top",
-  span: 4,
+  span: 24,
   placeholder: "請輸入",
   classList: "",
 });
