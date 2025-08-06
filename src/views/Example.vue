@@ -50,7 +50,6 @@
 <script setup>
 import { inject, reactive, ref } from "vue";
 import { useQuery } from "@tanstack/vue-query";
-import { arrayData, objectData, objectArrayData } from "@/request/useQuery";
 import { agGrid } from "@/utility/utility_AgGrid";
 
 const agGridOptions = inject("agGridOptions");

@@ -38,20 +38,17 @@
                     :clearable="true" 
                     :disabled="false"
                     :multiple="false"
-
                     :requestMode="'get'" 
                     :apiUrl="'https://dragonball-api.com/api/characters'" 
                     :payload="{}"
                     :returnLabel="(item:any) => `${item.name} [${item.race}]`" 
                     :returnValue= "'id'"
                     :optionFilter="(item:any) =>  item.filter((item:any) => item)"
-
                     :prop="'apiModel'"
                     :labelPosition="'top'"
                     :span="12"
                     :placeholder="'請選擇'"
                     :classList="''" 
-                    
                     v-model="form.apiModel"
                 />
 
@@ -87,7 +84,7 @@
 </template>
 
 <script setup lang="ts">
-import { dragonballAPI } from "@/request/commonAPI"
+import axiosRequest from "@/request/axiosRequest";
 import { onBeforeMount } from "vue";
 
 const form = reactive({
@@ -122,13 +119,18 @@ function clear() {
     ruleFormRef.value.resetFields()
 }
 
-onBeforeMount(async () => {
+async function getDragonballAPI() {
     try {
+        const dragonballAPI = () => axiosRequest.getRequest("https://dragonball-api.com/api/characters", {}).then(({data}) => data)
         const dragonballData = await dragonballAPI()
-        options.value = dragonballData.data.items
+        options.value = dragonballData.items
     } catch(error) {
         console.log(error)
     }
+}
+
+onBeforeMount(async () => {
+    getDragonballAPI()
 })
 </script>
 

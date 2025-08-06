@@ -71,7 +71,7 @@ const props = withDefaults(defineProps<IProps>(), {
 const queryFn = { // 用 useQuery 就不用加 async await
   get: () => axiosRequest.getRequest(props.apiUrl)
     /* .then .catch 用來處理 error, 如果不需要顥示 ElNotification, 可以註解 */
-    .then((data) => data)
+    .then((data) => data) // .data.items
     .catch((errorMessage) => {
       ElNotification({ title: errorMessage, type: "error", duration: 2500 })
       throw errorMessage; // 拋俾 useQuery 判斷 isError
@@ -86,10 +86,10 @@ const queryFn = { // 用 useQuery 就不用加 async await
 }
 
 const parsedOptions = computed(() => {
-  const filteredData = [] as any //props.optionFilter ? props.optionFilter(data.value) : data.value// 篩選選單
+  const filteredData = props.optionFilter ? props.optionFilter(data.value) : data.value // 篩選選單
   return filteredData.map((item: any) => ({
     label: props.returnLabel === null ? item : props.returnLabel!(item),
-    value: props.returnValue === "" ? item : item[props.returnValue], // 不可回傳 object
+    value: props.returnValue === "" ? item : item[props.returnValue] // 不可回傳 object
   }));
 });
 
