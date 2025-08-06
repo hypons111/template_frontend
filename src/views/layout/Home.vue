@@ -1,5 +1,6 @@
 <template>
   <el-container>
+    
     <el-header>
       <router-link :to="'/buttons'"><H1>BUTTONS</H1></router-link> |
       <router-link :to="'/inputs'"><H1>INPUTS</H1></router-link> |
@@ -15,7 +16,7 @@
       <router-view id="view-container"/>
     </el-main>
     
-    <el-footer><p>Footer</p></el-footer>
+    <!-- <el-footer><p>Footer</p></el-footer> -->
 
   </el-container>
 </template>
